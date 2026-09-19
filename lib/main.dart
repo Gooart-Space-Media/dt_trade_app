@@ -55,7 +55,7 @@ class _EngulfingMasterAppState extends State<EngulfingMasterApp> {
       theme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.light,
-        colorSchemeSeed: const Color(0xFF2563EB),
+        colorSchemeSeed: const Color(0xFFF59E0B), // 金色主调
         scaffoldBackgroundColor: const Color(0xFFF8FAFC),
         cardColor: Colors.white,
         appBarTheme: const AppBarTheme(
@@ -71,7 +71,7 @@ class _EngulfingMasterAppState extends State<EngulfingMasterApp> {
       darkTheme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.dark,
-        colorSchemeSeed: const Color(0xFF3B82F6),
+        colorSchemeSeed: const Color(0xFFF59E0B), // 金色主调
         scaffoldBackgroundColor: const Color(0xFF0F172A),
         cardColor: const Color(0xFF1E293B),
         appBarTheme: const AppBarTheme(
@@ -151,7 +151,7 @@ class _MainScreenState extends State<MainScreen> {
     } else if (h >= 15 && (h < 20 || (h == 20 && m < 30))) {
       status = '🇬🇧 伦敦盘爆发中';
       desc = '欧洲资金进场，日线挂单迎来首波突破与测试';
-      color = const Color(0xFF2563EB);
+      color = const Color(0xFFF59E0B);
       active = true;
       int diff = (20 * 60 + 30) - totalMinutes;
       int dh = diff ~/ 60;
@@ -374,7 +374,7 @@ class _MainScreenState extends State<MainScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
                       children: [
-                        const Icon(Icons.radar_rounded, color: Color(0xFF2563EB), size: 20),
+                        const Icon(Icons.radar_rounded, color: Color(0xFFF59E0B), size: 20),
                         const SizedBox(width: 8),
                         const Expanded(
                           child: Text(
@@ -389,7 +389,7 @@ class _MainScreenState extends State<MainScreen> {
                             color: const Color(0xFFEFF6FF),
                             borderRadius: BorderRadius.circular(4),
                           ),
-                          child: const Text('MYT (GMT+8)', style: TextStyle(fontSize: 10, color: Color(0xFF2563EB), fontWeight: FontWeight.bold)),
+                          child: const Text('MYT (GMT+8)', style: TextStyle(fontSize: 10, color: Color(0xFFF59E0B), fontWeight: FontWeight.bold)),
                         ),
                       ],
                     ),
@@ -466,7 +466,7 @@ class _MainScreenState extends State<MainScreen> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
               decoration: BoxDecoration(
-                gradient: const LinearGradient(colors: [Color(0xFF2563EB), Color(0xFF4F46E5)]),
+                gradient: const LinearGradient(colors: [Color(0xFFF59E0B), Color(0xFFD97706)]), // 流金渐变
                 borderRadius: BorderRadius.circular(6),
               ),
               child: const Text('DT', style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900)),
@@ -477,7 +477,7 @@ class _MainScreenState extends State<MainScreen> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.radar_rounded, color: Color(0xFF2563EB)),
+            icon: const Icon(Icons.radar_rounded, color: Color(0xFFF59E0B)),
             tooltip: '盘口雷达',
             onPressed: () {
               HapticFeedback.selectionClick();
@@ -898,7 +898,7 @@ void showWatchlistAtlasDialog(BuildContext context, {ValueChanged<WatchlistPair>
               children: [
                 const Row(
                   children: [
-                    Icon(Icons.radar_rounded, color: Color(0xFF2563EB), size: 22),
+                    Icon(Icons.radar_rounded, color: Color(0xFFF59E0B), size: 22),
                     SizedBox(width: 8),
                     Text('🎯 16 大监控货币对全景图鉴', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                   ],
@@ -1222,8 +1222,8 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
                 TextButton.icon(
                   style: TextButton.styleFrom(visualDensity: VisualDensity.compact, padding: const EdgeInsets.symmetric(horizontal: 6)),
                   onPressed: () => showWatchlistAtlasDialog(context),
-                  icon: const Icon(Icons.menu_book_rounded, size: 15, color: Color(0xFF2563EB)),
-                  label: const Text('16品种图鉴', style: TextStyle(fontSize: 12, color: Color(0xFF2563EB), fontWeight: FontWeight.bold)),
+                  icon: const Icon(Icons.menu_book_rounded, size: 15, color: Color(0xFFF59E0B)),
+                  label: const Text('16品种图鉴', style: TextStyle(fontSize: 12, color: Color(0xFFF59E0B), fontWeight: FontWeight.bold)),
                 ),
                 TextButton.icon(
                   style: TextButton.styleFrom(visualDensity: VisualDensity.compact, padding: const EdgeInsets.symmetric(horizontal: 6)),
@@ -1255,7 +1255,7 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
               ),
               InkWell(
                 onTap: () => showWatchlistAtlasDialog(context),
-                child: const Text('详解 >', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF2563EB))),
+                child: const Text('详解 >', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFFF59E0B))),
               ),
             ],
           ),
@@ -1666,7 +1666,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
         return {
           'status': '🔵 黄金偏大蜡烛 (250 ~ 350 Pips / \$25~\$35)',
           'desc': '突破止损偏大，严禁追突破挂单！必须用 Fib 50% 回踩折半入场！',
-          'color': const Color(0xFF2563EB),
+          'color': const Color(0xFFF59E0B),
         };
       } else {
         return {
@@ -1692,7 +1692,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
       return {
         'status': '🔵 偏大蜡烛 (80 ~ 100 Pips)',
         'desc': '突破止损偏大。强烈建议使用【50% 回调法】，将入场风险折半压缩至 40~50 Pips！',
-        'color': const Color(0xFF2563EB),
+        'color': const Color(0xFFF59E0B),
       };
     } else {
       return {
@@ -1761,7 +1761,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Text('50pips: ${row['s50']}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF2563EB))),
+                                Text('50pips: ${row['s50']}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFFF59E0B))),
                                 Text('80pips: ${row['s80']}', style: TextStyle(fontSize: 11, color: (row['s80'] as String).contains('不可用') ? Colors.red : Colors.grey)),
                               ],
                             ),
@@ -1850,7 +1850,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     decoration: BoxDecoration(
-                      color: !isMicroMode ? const Color(0xFF2563EB) : Colors.transparent,
+                      color: !isMicroMode ? const Color(0xFFF59E0B) : Colors.transparent,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Center(
@@ -1924,7 +1924,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
             Text(isGoldMode ? '黄金点值: 0.1\$ 波动 = 1 Pip' : '外汇点值: 0.01手 ≈ \$0.10/Pip', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.grey)),
             InkWell(
               onTap: _showStandardLotsTable,
-              child: const Text('📊 打开手数对照表', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF2563EB))),
+              child: const Text('📊 打开手数对照表', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFFF59E0B))),
             ),
           ],
         ),
@@ -1961,7 +1961,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
                       const Text('汇率 (MYR)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
                       GestureDetector(
                         onTap: isFetchingRate ? null : _fetchLiveExchangeRate,
-                        child: Text(isFetchingRate ? '刷新中..' : '🔄 实时', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF2563EB))),
+                        child: Text(isFetchingRate ? '刷新中..' : '🔄 实时', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFFF59E0B))),
                       ),
                     ],
                   ),
@@ -1998,7 +1998,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Text('变速箱风控红线 (Risk %)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
-            Text(balance <= 2000 ? '🔥 激进翻倍档 (\$500~\$2k)' : '🛡️ 稳健巡航档 (>\$2k)', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: balance <= 2000 ? const Color(0xFFD97706) : const Color(0xFF2563EB))),
+            Text(balance <= 2000 ? '🔥 激进翻倍档 (\$500~\$2k)' : '🛡️ 稳健巡航档 (>\$2k)', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: balance <= 2000 ? const Color(0xFFD97706) : const Color(0xFFF59E0B))),
           ],
         ),
         const SizedBox(height: 8),
@@ -2044,7 +2044,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                 title: Row(
                   children: const [
-                    Icon(Icons.account_balance, size: 18, color: Color(0xFF2563EB)),
+                    Icon(Icons.account_balance, size: 18, color: Color(0xFFF59E0B)),
                     SizedBox(width: 8),
                     Expanded(child: Text('XM 账户规格与选型指南', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))),
                   ],
@@ -2057,7 +2057,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
                       Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF2563EB).withOpacity(0.08),
+                          color: const Color(0xFFF59E0B).withOpacity(0.08),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: const Text('源自《XM 券商大马区硬核评测指南》：选对账户类型是小资金交易员生存的第一道风控防线！', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF1E40AF), height: 1.4)),
@@ -2094,7 +2094,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
             ),
             child: Row(
               children: const [
-                Icon(Icons.account_balance, size: 14, color: Color(0xFF2563EB)),
+                Icon(Icons.account_balance, size: 14, color: Color(0xFFF59E0B)),
                 SizedBox(width: 6),
                 Expanded(child: Text('XM 账户规格与选型指南', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold))),
                 Icon(Icons.arrow_forward_ios, size: 12, color: Colors.grey),
@@ -2164,7 +2164,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
                                 const SizedBox(height: 4),
                                 Text('理论需: ${rawLots.toStringAsFixed(3)} 手\n(强烈建议转 Micro 微型)', textAlign: TextAlign.center, style: const TextStyle(fontSize: 11, color: Colors.red)),
                               ] else ...[
-                                FittedBox(fit: BoxFit.scaleDown, child: Text('${finalLots.toStringAsFixed(2)} 手', style: TextStyle(fontSize: 34, fontWeight: FontWeight.w900, color: isGoldMode ? const Color(0xFFD97706) : const Color(0xFF2563EB)))),
+                                FittedBox(fit: BoxFit.scaleDown, child: Text('${finalLots.toStringAsFixed(2)} 手', style: TextStyle(fontSize: 34, fontWeight: FontWeight.w900, color: isGoldMode ? const Color(0xFFD97706) : const Color(0xFFF59E0B)))),
                                 const SizedBox(height: 8),
                                 Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -2195,7 +2195,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
                           const SizedBox(height: 4),
                           Text('理论需: ${rawLots.toStringAsFixed(3)} 手 (强烈建议转 Micro 微型账户执行)', style: const TextStyle(fontSize: 12, color: Colors.red)),
                         ] else ...[
-                          Text('${finalLots.toStringAsFixed(2)} 手', style: TextStyle(fontSize: 36, fontWeight: FontWeight.w900, color: isGoldMode ? const Color(0xFFD97706) : const Color(0xFF2563EB))),
+                          Text('${finalLots.toStringAsFixed(2)} 手', style: TextStyle(fontSize: 36, fontWeight: FontWeight.w900, color: isGoldMode ? const Color(0xFFD97706) : const Color(0xFFF59E0B))),
                           const SizedBox(height: 10),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -2227,7 +2227,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
             data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
             child: ExpansionTile(
               initiallyExpanded: false,
-              leading: const Icon(Icons.table_chart_rounded, color: Color(0xFF2563EB), size: 20),
+              leading: const Icon(Icons.table_chart_rounded, color: Color(0xFFF59E0B), size: 20),
               title: const Text('📖 资金阶梯标准速查表 (50 Pips 止损基准)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
               childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               children: [
@@ -2312,7 +2312,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
       children: [
         Padding(padding: const EdgeInsets.all(6), child: Text(col1, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w600), textAlign: TextAlign.center)),
         Padding(padding: const EdgeInsets.all(6), child: Text(col2, style: const TextStyle(fontSize: 10, color: Colors.red), textAlign: TextAlign.center)),
-        Padding(padding: const EdgeInsets.all(6), child: Text(col3, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF2563EB)), textAlign: TextAlign.center)),
+        Padding(padding: const EdgeInsets.all(6), child: Text(col3, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFFF59E0B)), textAlign: TextAlign.center)),
         Padding(padding: const EdgeInsets.all(6), child: Text(col4, style: const TextStyle(fontSize: 10, color: Color(0xFF059669)), textAlign: TextAlign.center)),
       ],
     );
@@ -2413,7 +2413,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
       return {
         'stars': '★★★☆',
         'title': '高胜率波段 (3星共振)',
-        'color': const Color(0xFF2563EB),
+        'color': const Color(0xFFF59E0B),
         'bg': const Color(0xFFEFF6FF),
         'desc': '🛡️ 三重共振达标：标准高质量形态，严格执行 1:1 推保本！',
       };
@@ -2679,8 +2679,8 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
       label: Text(title, style: TextStyle(fontSize: 11, fontWeight: selected ? FontWeight.bold : FontWeight.normal)),
       selected: selected,
       tooltip: tooltip,
-      selectedColor: const Color(0xFF2563EB).withOpacity(0.18),
-      checkmarkColor: const Color(0xFF2563EB),
+      selectedColor: const Color(0xFFF59E0B).withOpacity(0.18),
+      checkmarkColor: const Color(0xFFF59E0B),
       onSelected: (v) {
         HapticFeedback.lightImpact();
         onChanged(v);
@@ -2776,7 +2776,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     decoration: BoxDecoration(
-                      color: entryMode == 0 ? const Color(0xFF2563EB) : Colors.transparent,
+                      color: entryMode == 0 ? const Color(0xFFF59E0B) : Colors.transparent,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Center(child: Text('🚀 常规突破', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: entryMode == 0 ? Colors.white : Colors.grey))),
@@ -2847,12 +2847,12 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
               style: OutlinedButton.styleFrom(
                 visualDensity: VisualDensity.compact,
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                side: const BorderSide(color: Color(0xFF2563EB), width: 1.2),
+                side: const BorderSide(color: Color(0xFFF59E0B), width: 1.2),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
               ),
               onPressed: () => showWatchlistAtlasDialog(context, onSelect: (p) => _selectWatchlistPair(p)),
-              icon: const Icon(Icons.menu_book_rounded, size: 14, color: Color(0xFF2563EB)),
-              label: const Text('16品种图鉴', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF2563EB))),
+              icon: const Icon(Icons.menu_book_rounded, size: 14, color: Color(0xFFF59E0B)),
+              label: const Text('16品种图鉴', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFFF59E0B))),
             ),
           ],
         ),
@@ -2879,7 +2879,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                 decoration: BoxDecoration(
                   color: currentPairInfo.isCore
                       ? const Color(0xFFF59E0B)
-                      : (currentPairInfo.isGold ? const Color(0xFFD97706) : const Color(0xFF2563EB)),
+                      : (currentPairInfo.isGold ? const Color(0xFFD97706) : const Color(0xFFF59E0B)),
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Text(
@@ -3029,7 +3029,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        _buildPriceCard(context, 'Trade 1 (1:1 落袋)', (isLong ? fib50 + fib50Risk : fib50 - fib50Risk).toStringAsFixed(decimals), '到此立刻平仓，推保本', const Color(0xFF2563EB)),
+                        _buildPriceCard(context, 'Trade 1 (1:1 落袋)', (isLong ? fib50 + fib50Risk : fib50 - fib50Risk).toStringAsFixed(decimals), '到此立刻平仓，推保本', const Color(0xFFF59E0B)),
                         const SizedBox(width: 8),
                         _buildPriceCard(context, 'Trade 2 (1:2 波段)', (isLong ? fib50 + fib50Risk * 2 : fib50 - fib50Risk * 2).toStringAsFixed(decimals), '长线奔跑目标 1', const Color(0xFF059669)),
                         const SizedBox(width: 8),
@@ -3052,14 +3052,14 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('🚀 突破挂单入场 (含10pips假突破缓冲)', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Color(0xFF2563EB))),
+                        const Text('🚀 突破挂单入场 (含10pips假突破缓冲)', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Color(0xFFF59E0B))),
                         Text('止损空间: ${(breakoutRisk * pipMultiplier).toStringAsFixed(1)} Pips', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.grey)),
                       ],
                     ),
                     const SizedBox(height: 12),
                     Row(
                       children: [
-                        _buildPriceCard(context, '挂单入场价 (Buy/Sell Stop)', breakoutEntry.toStringAsFixed(decimals), '极值外+10 Pips缓冲防假破', const Color(0xFF2563EB)),
+                        _buildPriceCard(context, '挂单入场价 (Buy/Sell Stop)', breakoutEntry.toStringAsFixed(decimals), '极值外+10 Pips缓冲防假破', const Color(0xFFF59E0B)),
                         const SizedBox(width: 8),
                         _buildPriceCard(context, '止损价格 (SL)', breakoutSl.toStringAsFixed(decimals), '极值外+9 Pips缓冲', const Color(0xFFDC2626)),
                       ],
@@ -3067,7 +3067,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                     const Divider(height: 24),
                     Row(
                       children: [
-                        _buildPriceCard(context, 'Trade 1 (1:1 落袋)', (isLong ? breakoutEntry + breakoutRisk : breakoutEntry - breakoutRisk).toStringAsFixed(decimals), '落袋后立即推保本', const Color(0xFF2563EB)),
+                        _buildPriceCard(context, 'Trade 1 (1:1 落袋)', (isLong ? breakoutEntry + breakoutRisk : breakoutEntry - breakoutRisk).toStringAsFixed(decimals), '落袋后立即推保本', const Color(0xFFF59E0B)),
                         const SizedBox(width: 8),
                         _buildPriceCard(context, 'Trade 2 (1:2 跑单)', (isLong ? breakoutEntry + breakoutRisk * 2 : breakoutEntry - breakoutRisk * 2).toStringAsFixed(decimals), '第二结构阻力', const Color(0xFF059669)),
                         const SizedBox(width: 8),
@@ -3114,7 +3114,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                           children: [
                             const Text('Trade 1 (1:1保本仓)', style: TextStyle(fontSize: 10, color: Colors.grey)),
                             const SizedBox(height: 2),
-                            Text('${tradeLot.toStringAsFixed(2)} 手', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Color(0xFF2563EB))),
+                            Text('${tradeLot.toStringAsFixed(2)} 手', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Color(0xFFF59E0B))),
                           ],
                         ),
                         const Text('➕', style: TextStyle(fontSize: 16, color: Colors.grey)),
@@ -3130,7 +3130,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                           children: [
                             const Text('单轨全仓 (2% 风险)', style: TextStyle(fontSize: 10, color: Colors.grey)),
                             const SizedBox(height: 2),
-                            Text('${tradeLot.toStringAsFixed(2)} 手', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Color(0xFF2563EB))),
+                            Text('${tradeLot.toStringAsFixed(2)} 手', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Color(0xFFF59E0B))),
                           ],
                         ),
                       ],
@@ -3257,7 +3257,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                     children: [
                       const Row(
                         children: [
-                          Icon(Icons.radar_rounded, size: 18, color: Color(0xFF2563EB)),
+                          Icon(Icons.radar_rounded, size: 18, color: Color(0xFFF59E0B)),
                           SizedBox(width: 6),
                           Text(
                             '⚔️ T.S.C.F. 四维共振评级雷达',
@@ -3402,7 +3402,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                 flex: 7,
                 child: FilledButton.icon(
                   style: FilledButton.styleFrom(
-                    backgroundColor: (entryMode == 1) ? const Color(0xFFD97706) : const Color(0xFF2563EB),
+                    backgroundColor: (entryMode == 1) ? const Color(0xFFD97706) : const Color(0xFFF59E0B),
                     padding: const EdgeInsets.symmetric(vertical: 13),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   ),
@@ -3430,7 +3430,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                 child: OutlinedButton.icon(
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 13),
-                    side: BorderSide(color: (entryMode == 1) ? const Color(0xFFD97706) : const Color(0xFF2563EB), width: 1.5),
+                    side: BorderSide(color: (entryMode == 1) ? const Color(0xFFD97706) : const Color(0xFFF59E0B), width: 1.5),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   ),
                   onPressed: () => _addCurrentPlan(
@@ -3500,7 +3500,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                   children: [
                     Row(
                       children: [
-                        const Icon(Icons.menu_book_rounded, size: 18, color: Color(0xFF2563EB)),
+                        const Icon(Icons.menu_book_rounded, size: 18, color: Color(0xFFF59E0B)),
                         const SizedBox(width: 6),
                         Text('📌 今日挂单战术簿 (${_savedPlans.length} 笔)', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
                       ],
@@ -3541,7 +3541,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        _buildStatCol('总挂单', '${_savedPlans.length}', const Color(0xFF2563EB)),
+                        _buildStatCol('总挂单', '${_savedPlans.length}', const Color(0xFFF59E0B)),
                         _buildStatCol('挂单中', '${_savedPlans.where((e) => e['status'] == '⏳ 挂单中').length}', const Color(0xFFD97706)),
                         _buildStatCol('1:1保本', '${_savedPlans.where((e) => e['status'] == '🎯 1:1已推保本' || e['status'] == '🛡️ 保本离场').length}', const Color(0xFF059669)),
                         _buildStatCol('全止盈', '${_savedPlans.where((e) => e['status'] == '💰 全部止盈').length}', const Color(0xFF16A34A)),
@@ -3790,7 +3790,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
             children: [
               Text('入场: ${item['entry']}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'monospace')),
               Text('止损: ${item['sl']} (${item['pips']}p)', style: const TextStyle(fontSize: 11, color: Color(0xFFDC2626), fontFamily: 'monospace')),
-              Text('1:1保本: ${item['tp1']}', style: const TextStyle(fontSize: 11, color: Color(0xFF2563EB), fontFamily: 'monospace')),
+              Text('1:1保本: ${item['tp1']}', style: const TextStyle(fontSize: 11, color: Color(0xFFF59E0B), fontFamily: 'monospace')),
             ],
           ),
           const SizedBox(height: 4),
@@ -3814,7 +3814,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                     decoration: BoxDecoration(
                       color: (item['tscfStars'] == '★★★★'
                               ? const Color(0xFF10B981)
-                              : (item['tscfStars'] == '★★★☆' ? const Color(0xFF2563EB) : const Color(0xFFDC2626)))
+                              : (item['tscfStars'] == '★★★☆' ? const Color(0xFFF59E0B) : const Color(0xFFDC2626)))
                           .withOpacity(0.12),
                       borderRadius: BorderRadius.circular(4),
                     ),
@@ -3825,7 +3825,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                         fontWeight: FontWeight.bold,
                         color: item['tscfStars'] == '★★★★'
                             ? const Color(0xFF059669)
-                            : (item['tscfStars'] == '★★★☆' ? const Color(0xFF2563EB) : const Color(0xFFDC2626)),
+                            : (item['tscfStars'] == '★★★☆' ? const Color(0xFFF59E0B) : const Color(0xFFDC2626)),
                       ),
                     ),
                   ),
@@ -3883,9 +3883,9 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: isSel ? const Color(0xFF2563EB).withOpacity(0.15) : Colors.transparent,
+          color: isSel ? const Color(0xFFF59E0B).withOpacity(0.15) : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: isSel ? const Color(0xFF2563EB) : Theme.of(context).dividerColor.withOpacity(0.4)),
+          border: Border.all(color: isSel ? const Color(0xFFF59E0B) : Theme.of(context).dividerColor.withOpacity(0.4)),
         ),
         child: Text(label, style: TextStyle(fontSize: 11, fontWeight: isSel ? FontWeight.bold : FontWeight.normal, color: isSel ? const Color(0xFF1E40AF) : Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7))),
       ),
@@ -3915,7 +3915,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                 ? const Icon(Icons.star_rounded, size: 14, color: Color(0xFFD97706))
                 : (p.isGold
                     ? const Icon(Icons.circle, size: 10, color: Color(0xFFB45309))
-                    : const Icon(Icons.label_outline_rounded, size: 14, color: Color(0xFF2563EB))),
+                    : const Icon(Icons.label_outline_rounded, size: 14, color: Color(0xFFF59E0B))),
             const SizedBox(width: 4),
             Text(
               '${p.symbol} ${p.chineseName}',
