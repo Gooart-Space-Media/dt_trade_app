@@ -1505,7 +1505,8 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
         });
       },
       child: Container(
-        margin: const EdgeInsets.only(bottom: 8),
+        width: 280,
+        margin: const EdgeInsets.only(right: 10, bottom: 10),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         decoration: BoxDecoration(
           color: active ? const Color(0xFFFEF3C7) : Colors.transparent,
@@ -1626,8 +1627,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.2)),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Wrap(
             children: [
               _buildTierButton('🥇 第一梯队', '绝对恒定组 (\$0.10)', 'EURUSD, GBPUSD\nAUDUSD, NZDUSD'),
               _buildTierButton('🛡️ 第二梯队', '超级防御组 (~\$0.06)', 'USDJPY, EURJPY, GBPJPY\nAUDJPY, CADJPY, AUDNZD'),
@@ -1879,7 +1879,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
               ),
               const SizedBox(width: 12),
               Expanded(
-                flex: 6,
+                flex: 4,
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(10),
                   child: Column(
