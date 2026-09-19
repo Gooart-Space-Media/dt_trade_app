@@ -3364,7 +3364,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  flex: 6,
+                  flex: 5,
                   child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -3374,7 +3374,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  flex: 4,
+                  flex: 5,
                   child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
