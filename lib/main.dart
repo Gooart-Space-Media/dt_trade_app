@@ -1501,10 +1501,9 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
     bool isInsufficient = isMicroMode ? (finalLots < 0.02 * 100) : (finalLots < 0.02);
 
     final fightIq = _getFightIqDiagnosis(slPips);
+    bool isDesktop = MediaQuery.of(context).size.width > 800;
 
-    return ListView(
-      padding: const EdgeInsets.all(10),
-      children: [
+    final leftChildren = <Widget>[
         // Account Mode (XM Standard vs Micro)
         Container(
           padding: const EdgeInsets.all(4),
@@ -1583,7 +1582,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: ['EURUSD', 'USDJPY', 'AUDUSD', 'GBPUSD'].map((pair) {
+            children: kWatchlistPairs.map((p) => p.symbol).toList().map((pair) {
               bool active = activePair == pair;
               return GestureDetector(
                 onTap: () {
@@ -1757,6 +1756,9 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
 
         const SizedBox(height: 16),
 
+        ];
+
+    final rightChildren = <Widget>[
         // 结果卡片
         Card(
           elevation: 0,
@@ -1847,8 +1849,47 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
             ),
           ),
         ),
-      ],
-    );
+
+    ];
+
+    if (isDesktop) {
+      return Center(
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 1200),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 5,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: leftChildren,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                flex: 6,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: rightChildren,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      return ListView(
+        padding: const EdgeInsets.all(10),
+        children: [...leftChildren, ...rightChildren],
+      );
+    }
   }
 
   TableRow _buildTableRow(String col1, String col2, String col3, String col4) {
