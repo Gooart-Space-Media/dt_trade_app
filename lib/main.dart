@@ -1491,6 +1491,47 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
   }
 
   @override
+
+  Widget _buildPairButton(String pair) {
+    bool active = activePair == pair;
+    return GestureDetector(
+      onTap: () {
+        HapticFeedback.selectionClick();
+        setState(() {
+          activePair = pair;
+          isGoldMode = pair == 'XAUUSD';
+          _saveParam('calc_active_pair', pair);
+          _saveParam('calc_is_gold', isGoldMode);
+        });
+      },
+      child: Container(
+        margin: const EdgeInsets.only(right: 6, bottom: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: active ? const Color(0xFFFEF3C7) : Colors.transparent,
+          border: Border.all(color: active ? const Color(0xFFF59E0B) : Colors.grey.shade300),
+          borderRadius: BorderRadius.circular(6),
+        ),
+        child: Text(pair, style: TextStyle(fontSize: 11, fontWeight: active ? FontWeight.bold : FontWeight.normal, color: active ? const Color(0xFFD97706) : Colors.grey.shade700)),
+      ),
+    );
+  }
+
+  Widget _buildPairGroup(String title, List<String> pairs) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(bottom: 6, top: 4),
+          child: Text(title, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.blueGrey)),
+        ),
+        Wrap(
+          children: pairs.map((p) => _buildPairButton(p)).toList(),
+        ),
+      ],
+    );
+  }
+
   Widget build(BuildContext context) {
     double riskAmt = balance * (riskPct / 100);
     double riskAmtRM = riskAmt * rate;
