@@ -1395,7 +1395,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
       };
     } else if (pips <= 80) {
       return {
-        'status': '🟢 标准黄金蜡烛 (50 ~ 80 Pips)',
+        'status': '🟢 标准外汇波动 (50 ~ 80 Pips)',
         'desc': '完美舒适区！波动充足且方向明确，突破法与 50% 回调法均可完美执行！',
         'color': const Color(0xFF16A34A),
       };
