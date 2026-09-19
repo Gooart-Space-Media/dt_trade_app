@@ -1505,31 +1505,23 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
         });
       },
       child: Container(
-        width: 280,
-        margin: const EdgeInsets.only(right: 10, bottom: 10),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        width: 250,
+        margin: const EdgeInsets.only(right: 12, bottom: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
           color: active ? const Color(0xFFFEF3C7) : Colors.transparent,
           border: Border.all(color: active ? const Color(0xFFF59E0B) : Colors.grey.shade300),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(10),
         ),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(
-              flex: 4,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: active ? const Color(0xFFD97706) : Colors.blueGrey)),
-                  const SizedBox(height: 2),
-                  Text(subtitle, style: TextStyle(fontSize: 10, color: active ? const Color(0xFFD97706).withOpacity(0.8) : Colors.grey)),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 5,
-              child: Text(pairs, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500, color: active ? const Color(0xFFD97706) : Colors.grey.shade600), textAlign: TextAlign.right),
-            ),
+            Text(title, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: active ? const Color(0xFFD97706) : Colors.blueGrey)),
+            const SizedBox(height: 2),
+            Text(subtitle, style: TextStyle(fontSize: 11, color: active ? const Color(0xFFD97706).withOpacity(0.8) : Colors.grey)),
+            const SizedBox(height: 8),
+            Text(pairs.replaceAll('\n', ' '), style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: active ? const Color(0xFFD97706) : Colors.grey.shade600)),
           ],
         ),
       ),
@@ -1778,31 +1770,81 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
             padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                const Text('本次亏损上限 (风险金额)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
-                const SizedBox(height: 4),
-                Text('\$${riskAmt.toStringAsFixed(2)}', style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w900)),
-                Text('≈ RM ${riskAmtRM.toStringAsFixed(2)}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF059669))),
-                const Divider(height: 30),
-                const Text('执行双轨总手数 (恒为偶数)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
-                const SizedBox(height: 4),
-                if (isInsufficient) ...[
-                  const Text('🚫 资金不足以挂双单', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.red)),
-                  const SizedBox(height: 4),
-                  Text('理论需: ${rawLots.toStringAsFixed(3)} 手 (强烈建议转 Micro 微型账户执行)', style: const TextStyle(fontSize: 12, color: Colors.red)),
-                ] else ...[
-                  Text('${finalLots.toStringAsFixed(2)} 手', style: TextStyle(fontSize: 36, fontWeight: FontWeight.w900, color: isGoldMode ? const Color(0xFFD97706) : const Color(0xFF2563EB))),
-                  const SizedBox(height: 10),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-            decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.grey.withOpacity(0.3)),
+              isDesktop
+                  ? Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text('本次亏损上限 (风险金额)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
+                              const SizedBox(height: 6),
+                              Text('\$''${riskAmt.toStringAsFixed(2)}', style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w900)),
+                              Text('≈ RM ${riskAmtRM.toStringAsFixed(2)}', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Color(0xFF059669))),
+                            ],
+                          ),
+                        ),
+                        Container(width: 1, height: 80, color: Theme.of(context).dividerColor.withOpacity(0.2), margin: const EdgeInsets.symmetric(horizontal: 10)),
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text('执行双轨总手数 (恒为偶数)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
+                              const SizedBox(height: 6),
+                              if (isInsufficient) ...[
+                                const Text('🚫 资金不足以挂双单', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.red)),
+                                const SizedBox(height: 4),
+                                Text('理论需: ${rawLots.toStringAsFixed(3)} 手\n(强烈建议转 Micro 微型)', textAlign: TextAlign.center, style: const TextStyle(fontSize: 11, color: Colors.red)),
+                              ] else ...[
+                                Text('${finalLots.toStringAsFixed(2)} 手', style: TextStyle(fontSize: 34, fontWeight: FontWeight.w900, color: isGoldMode ? const Color(0xFFD97706) : const Color(0xFF2563EB))),
+                                const SizedBox(height: 8),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).cardColor,
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(color: Colors.grey.withOpacity(0.3)),
+                                  ),
+                                  child: Text('实操双单：A单 ${(finalLots / 2).toStringAsFixed(2)}手 ➕ B单 ${(finalLots / 2).toStringAsFixed(2)}手', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11)),
+                                ),
+                              ],
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        const Text('本次亏损上限 (风险金额)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
+                        const SizedBox(height: 4),
+                        Text('\$''${riskAmt.toStringAsFixed(2)}', style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w900)),
+                        Text('≈ RM ${riskAmtRM.toStringAsFixed(2)}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF059669))),
+                        const Divider(height: 30),
+                        const Text('执行双轨总手数 (恒为偶数)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
+                        const SizedBox(height: 4),
+                        if (isInsufficient) ...[
+                          const Text('🚫 资金不足以挂双单', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.red)),
+                          const SizedBox(height: 4),
+                          Text('理论需: ${rawLots.toStringAsFixed(3)} 手 (强烈建议转 Micro 微型账户执行)', style: const TextStyle(fontSize: 12, color: Colors.red)),
+                        ] else ...[
+                          Text('${finalLots.toStringAsFixed(2)} 手', style: TextStyle(fontSize: 36, fontWeight: FontWeight.w900, color: isGoldMode ? const Color(0xFFD97706) : const Color(0xFF2563EB))),
+                          const SizedBox(height: 10),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).cardColor,
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: Colors.grey.withOpacity(0.3)),
+                            ),
+                            child: Text('实操双单：A单 ${(finalLots / 2).toStringAsFixed(2)} 手 ➕ B单 ${(finalLots / 2).toStringAsFixed(2)} 手', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                          ),
+                        ],
+                      ],
                     ),
-                    child: Text('实操双单：A单 ${(finalLots / 2).toStringAsFixed(2)} 手 ➕ B单 ${(finalLots / 2).toStringAsFixed(2)} 手', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                  ),
-                ],
-              ],
+                  ],
             ),
           ),
         ),
