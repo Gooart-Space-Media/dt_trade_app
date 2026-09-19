@@ -1592,18 +1592,6 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
             ],
           ),
         ),
-        const SizedBox(height: 8),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            TextButton.icon(
-              onPressed: (){},
-              icon: const Icon(Icons.info_outline, size: 14),
-              label: const Text('XM 账户选型指南', style: TextStyle(fontSize: 12)),
-            ),
-
-          ],
-        ),
         const SizedBox(height: 4),
         Row(
           children: [
@@ -1758,51 +1746,75 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
         ];
 
     final rightChildren = <Widget>[
-        // XM 账户规格与选型指南
-        Card(
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-            side: BorderSide(color: Theme.of(context).dividerColor.withOpacity(0.2)),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(14),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+        // XM 账户规格与选型指南 (点击弹出)
+        GestureDetector(
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (ctx) => AlertDialog(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                title: Row(
                   children: const [
-                    Icon(Icons.account_balance, size: 16, color: Color(0xFF2563EB)),
-                    SizedBox(width: 6),
-                    Text('XM 账户规格与选型指南', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+                    Icon(Icons.account_balance, size: 18, color: Color(0xFF2563EB)),
+                    SizedBox(width: 8),
+                    Expanded(child: Text('XM 账户规格与选型指南', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))),
                   ],
                 ),
-                const SizedBox(height: 8),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF2563EB).withOpacity(0.08),
-                    borderRadius: BorderRadius.circular(8),
+                content: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF2563EB).withOpacity(0.08),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: const Text('源自《XM 券商大马区硬核评测指南》：选对账户类型是小资金交易员生存的第一道风控防线！', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF1E40AF), height: 1.4)),
+                      ),
+                      const SizedBox(height: 14),
+                      const Text('1. Standard 标准账户 (适合资金 >= \$500)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFFD97706))),
+                      const SizedBox(height: 6),
+                      const Text('• 1 手 = 100,000 合约，点值 ≈ \$10/pip，最小交易 0.01 手 (\$0.10/pip)。\n• 双轨分仓底线：必须开出 0.02 手 (0.01 + 0.01)。若本金仅 \$100，开 0.02 手止损 50p 风险高达 \$10 (10%)，直接违反 2% 铁律！', style: TextStyle(fontSize: 11, color: Colors.grey, height: 1.5)),
+                      const SizedBox(height: 14),
+                      const Text('2. Micro 微型账户 (适合资金 \$50 ~ \$300 · 强烈推荐)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF059669))),
+                      const SizedBox(height: 6),
+                      const Text('• 1 手 = 1,000 合约 (标准手的 1/100)，点值 ≈ \$0.10/pip，最小交易 0.01 micro手。\n• 破局解法：\$100 本金 2% 风险仅 \$2。在微型账户中可精准开出 0.40 Micro手，完美拆成 0.20 + 0.20 手执行 2x1% 双轨！', style: TextStyle(fontSize: 11, color: Colors.grey, height: 1.5)),
+                      const SizedBox(height: 14),
+                      const Text('3. 杠杆 (1:888 / 1:1000) 认知真相', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF7C3AED))),
+                      const SizedBox(height: 6),
+                      const Text('• 杠杆只决定保证金占用，不决定交易盈亏！盈亏只由【手数】与【止损点数】决定。\n• 坚守本终端计算的严格双轨手数，高杠杆不仅不会爆仓，反能大幅降低保证金被占用的压力。', style: TextStyle(fontSize: 11, color: Colors.grey, height: 1.5)),
+                    ],
                   ),
-                  child: const Text('源自《XM 券商大马区硬核评测指南》：选对账户类型是小资金交易员生存的第一道风控防线！', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF1E40AF), height: 1.4)),
                 ),
-                const SizedBox(height: 10),
-                const Text('1. Standard 标准账户 (适合资金 >= \$500)', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFFD97706))),
-                const SizedBox(height: 4),
-                const Text('• 1 手 = 100,000 合约，点值 ≈ \$10/pip，最小交易 0.01 手 (\$0.10/pip)。\n• 双轨分仓底线：必须开出 0.02 手 (0.01 + 0.01)。若本金仅 \$100，开 0.02 手止损 50p 风险高达 \$10 (10%)，直接违反 2% 铁律！', style: TextStyle(fontSize: 10, color: Colors.grey, height: 1.5)),
-                const SizedBox(height: 10),
-                const Text('2. Micro 微型账户 (适合资金 \$50 ~ \$300 · 强烈推荐)', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF059669))),
-                const SizedBox(height: 4),
-                const Text('• 1 手 = 1,000 合约 (标准手的 1/100)，点值 ≈ \$0.10/pip，最小交易 0.01 micro手。\n• 破局解法：\$100 本金 2% 风险仅 \$2。在微型账户中可精准开出 0.40 Micro手，完美拆成 0.20 + 0.20 手执行 2x1% 双轨！', style: TextStyle(fontSize: 10, color: Colors.grey, height: 1.5)),
-                const SizedBox(height: 10),
-                const Text('3. 杠杆 (1:888 / 1:1000) 认知真相', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF7C3AED))),
-                const SizedBox(height: 4),
-                const Text('• 杠杆只决定保证金占用，不决定交易盈亏！盈亏只由【手数】与【止损点数】决定。\n• 坚守本终端计算的严格双轨手数，高杠杆不仅不会爆仓，反能大幅降低保证金被占用的压力。', style: TextStyle(fontSize: 10, color: Colors.grey, height: 1.5)),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(ctx),
+                    child: const Text('知晓铁律', style: TextStyle(fontWeight: FontWeight.bold)),
+                  ),
+                ],
+              ),
+            );
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.2)),
+            ),
+            child: Row(
+              children: const [
+                Icon(Icons.account_balance, size: 14, color: Color(0xFF2563EB)),
+                SizedBox(width: 6),
+                Expanded(child: Text('XM 账户规格与选型指南', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold))),
+                Icon(Icons.arrow_forward_ios, size: 12, color: Colors.grey),
               ],
             ),
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 10),
+
 
         // Fight IQ 物理级蜡烛诊断横幅
         Container(
