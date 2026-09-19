@@ -1492,7 +1492,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
 
   @override
 
-  Widget _buildTierButton(String title, String subtitle, String pairs) {
+  Widget _buildTierButton(String title, String subtitle, String pairs, {double? width}) {
     bool active = activePair == title;
     return GestureDetector(
       onTap: () {
@@ -1505,9 +1505,9 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
         });
       },
       child: Container(
-        width: 250,
-        margin: const EdgeInsets.only(right: 12, bottom: 12),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        width: width,
+        margin: const EdgeInsets.only(right: 6, bottom: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
         decoration: BoxDecoration(
           color: active ? const Color(0xFFFEF3C7) : Colors.transparent,
           border: Border.all(color: active ? const Color(0xFFF59E0B) : Colors.grey.shade300),
@@ -1517,11 +1517,11 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(title, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: active ? const Color(0xFFD97706) : Colors.blueGrey)),
+            Text(title, style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: active ? const Color(0xFFD97706) : Colors.blueGrey)),
             const SizedBox(height: 2),
-            Text(subtitle, style: TextStyle(fontSize: 11, color: active ? const Color(0xFFD97706).withOpacity(0.8) : Colors.grey)),
+            Text(subtitle, style: TextStyle(fontSize: 9, color: active ? const Color(0xFFD97706).withOpacity(0.8) : Colors.grey)),
             const SizedBox(height: 8),
-            Text(pairs.replaceAll('\n', ' '), style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: active ? const Color(0xFFD97706) : Colors.grey.shade600)),
+            Text(pairs.replaceAll('\n', ' '), style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: active ? const Color(0xFFD97706) : Colors.grey.shade600)),
           ],
         ),
       ),
@@ -1619,15 +1619,26 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.2)),
           ),
-          child: Wrap(
-            children: [
-              _buildTierButton('🥇 第一梯队', '绝对恒定组 (\$0.10)', 'EURUSD, GBPUSD\nAUDUSD, NZDUSD'),
-              _buildTierButton('🛡️ 第二梯队', '超级防御组 (~\$0.06)', 'USDJPY, EURJPY, GBPJPY\nAUDJPY, CADJPY, AUDNZD'),
-              _buildTierButton('📉 第三梯队', '安全打折组 (~\$0.07)', 'USDCAD, AUDCAD, EURCAD'),
-              _buildTierButton('⚠️ 第四梯队', '点值溢价组 (警惕微超)', 'USDCHF, EURGBP'),
-              _buildTierButton('👑 独立品种', '美黄金 (0.1\$ = 1Pip)', 'XAUUSD'),
-            ],
-          ),
+          child: isDesktop
+              ? Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(child: _buildTierButton('🥇 第一梯队', '绝对恒定 (\$0.10)', 'EURUSD, GBPUSD, AUDUSD, NZDUSD', width: null)),
+                    Expanded(child: _buildTierButton('🛡️ 第二梯队', '超级防御 (~\$0.06)', 'USDJPY, EURJPY, GBPJPY, AUDJPY, CADJPY, AUDNZD', width: null)),
+                    Expanded(child: _buildTierButton('📉 第三梯队', '安全打折 (~\$0.07)', 'USDCAD, AUDCAD, EURCAD', width: null)),
+                    Expanded(child: _buildTierButton('⚠️ 第四梯队', '点值溢价 (警惕微超)', 'USDCHF, EURGBP', width: null)),
+                    Expanded(child: _buildTierButton('👑 独立品种', '美黄金 (0.1\$ = 1Pip)', 'XAUUSD', width: null)),
+                  ],
+                )
+              : Wrap(
+                  children: [
+                    _buildTierButton('🥇 第一梯队', '绝对恒定 (\$0.10)', 'EURUSD, GBPUSD, AUDUSD, NZDUSD', width: 250),
+                    _buildTierButton('🛡️ 第二梯队', '超级防御 (~\$0.06)', 'USDJPY, EURJPY, GBPJPY, AUDJPY, CADJPY, AUDNZD', width: 250),
+                    _buildTierButton('📉 第三梯队', '安全打折 (~\$0.07)', 'USDCAD, AUDCAD, EURCAD', width: 250),
+                    _buildTierButton('⚠️ 第四梯队', '点值溢价 (警惕微超)', 'USDCHF, EURGBP', width: 250),
+                    _buildTierButton('👑 独立品种', '美黄金 (0.1\$ = 1Pip)', 'XAUUSD', width: 250),
+                  ],
+                ),
         ),
         const SizedBox(height: 12),
         Row(
@@ -1781,7 +1792,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
                             children: [
                               const Text('本次亏损上限 (风险金额)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
                               const SizedBox(height: 6),
-                              Text('\$''${riskAmt.toStringAsFixed(2)}', style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w900)),
+                              FittedBox(fit: BoxFit.scaleDown, child: Text('\$''${riskAmt.toStringAsFixed(2)}', style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w900))),
                               Text('≈ RM ${riskAmtRM.toStringAsFixed(2)}', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Color(0xFF059669))),
                             ],
                           ),
@@ -1799,7 +1810,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
                                 const SizedBox(height: 4),
                                 Text('理论需: ${rawLots.toStringAsFixed(3)} 手\n(强烈建议转 Micro 微型)', textAlign: TextAlign.center, style: const TextStyle(fontSize: 11, color: Colors.red)),
                               ] else ...[
-                                Text('${finalLots.toStringAsFixed(2)} 手', style: TextStyle(fontSize: 34, fontWeight: FontWeight.w900, color: isGoldMode ? const Color(0xFFD97706) : const Color(0xFF2563EB))),
+                                FittedBox(fit: BoxFit.scaleDown, child: Text('${finalLots.toStringAsFixed(2)} 手', style: TextStyle(fontSize: 34, fontWeight: FontWeight.w900, color: isGoldMode ? const Color(0xFFD97706) : const Color(0xFF2563EB)))),
                                 const SizedBox(height: 8),
                                 Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -3114,7 +3125,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
           Row(
             children: [
               Expanded(
-                flex: 6,
+                flex: 7,
                 child: FilledButton.icon(
                   style: FilledButton.styleFrom(
                     backgroundColor: (entryMode == 1) ? const Color(0xFFD97706) : const Color(0xFF2563EB),
