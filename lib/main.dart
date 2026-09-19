@@ -2647,38 +2647,42 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
           ),
         ),
         const SizedBox(height: 8),
-        // 品种横向滚动 Chips (标注核心/次要/黄金)
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: displayedPairs.map((p) => Padding(
-              padding: const EdgeInsets.only(right: 6),
-              child: _buildPairChipV2(p),
-            )).toList(),
-          ),
+        // 品种自动折行展示 (Wrap)
+        Wrap(
+          spacing: 6,
+          runSpacing: 6,
+          children: displayedPairs.map((p) => _buildPairChipV2(p)).toList(),
         ),
 
         const SizedBox(height: 12),
-        TextFormField(
-          controller: _highCtrl,
-          keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          decoration: InputDecoration(
-            labelText: '吞没形态蜡烛最高点 (Candle High)',
-            filled: true,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-          ),
-          onChanged: (v) { setState(() => highPrice = double.tryParse(v)); _saveState('tp_high', v); },
-        ),
-        const SizedBox(height: 12),
-        TextFormField(
-          controller: _lowCtrl,
-          keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          decoration: InputDecoration(
-            labelText: '吞没形态蜡烛最低点 (Candle Low)',
-            filled: true,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-          ),
-          onChanged: (v) { setState(() => lowPrice = double.tryParse(v)); _saveState('tp_low', v); },
+        Row(
+          children: [
+            Expanded(
+              child: TextFormField(
+                controller: _highCtrl,
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                decoration: InputDecoration(
+                  labelText: '最高点 (Candle High)',
+                  filled: true,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+                onChanged: (v) { setState(() => highPrice = double.tryParse(v)); _saveState('tp_high', v); },
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: TextFormField(
+                controller: _lowCtrl,
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                decoration: InputDecoration(
+                  labelText: '最低点 (Candle Low)',
+                  filled: true,
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+                onChanged: (v) { setState(() => lowPrice = double.tryParse(v)); _saveState('tp_low', v); },
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: 16),
 
