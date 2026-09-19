@@ -1400,7 +1400,7 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: isChecked ? FontWeight.bold : FontWeight.w500,
-                  color: isChecked ? const Color(0xFF166534) : const Color(0xFF475569),
+                  color: isChecked ? (Theme.of(context).brightness == Brightness.dark ? const Color(0xFF86EFAC) : const Color(0xFF166534)) : (Theme.of(context).brightness == Brightness.dark ? Colors.white70 : const Color(0xFF475569)),
                   decoration: isChecked ? TextDecoration.lineThrough : null,
                 ),
               ),
