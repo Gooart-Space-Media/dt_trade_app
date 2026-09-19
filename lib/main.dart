@@ -1654,17 +1654,27 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
         const SizedBox(height: 8),
 
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               flex: 1,
-              child: _buildInput('账户本金 (USD)', _balCtrl, (v) {
-                setState(() => balance = double.tryParse(v) ?? 0);
-                _saveParam('calc_balance', balance);
-              }),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildInput('账户本金 (USD)', _balCtrl, (v) {
+                    setState(() => balance = double.tryParse(v) ?? 0);
+                    _saveParam('calc_balance', balance);
+                  }),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4, top: 4),
+                    child: Text('≈ RM ${(balance * rate).toStringAsFixed(2)}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF059669))),
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 10),
             Expanded(
-              flex: 2,
+              flex: 1,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -1695,11 +1705,15 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
                 ],
               ),
             ),
+            const SizedBox(width: 10),
+            Expanded(
+              flex: 1,
+              child: _buildInput(isGoldMode ? '形态止损 (0.1\$ = 1 Pip)' : '形态止损空间 (Pips)', _slCtrl, (v) {
+                setState(() => slPips = double.tryParse(v) ?? 0);
+                _saveParam('calc_sl', slPips);
+              }),
+            ),
           ],
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 4, top: 4, bottom: 12),
-          child: Text('≈ RM ${(balance * rate).toStringAsFixed(2)}', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Color(0xFF059669))),
         ),
 
         // 动态变速箱风控档位
@@ -1739,13 +1753,8 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
             );
           }).toList(),
         ),
-        const SizedBox(height: 12),
-
-        _buildInput(isGoldMode ? '形态止损点数 (0.1\$ 为 1 Pip)' : '形态止损空间 (Pips)', _slCtrl, (v) {
-          setState(() => slPips = double.tryParse(v) ?? 0);
-          _saveParam('calc_sl', slPips);
-        }),
         const SizedBox(height: 10),
+
 
         // Fight IQ 物理级蜡烛诊断横幅
         Container(
