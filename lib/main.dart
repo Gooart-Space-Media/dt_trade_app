@@ -1564,11 +1564,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
               icon: const Icon(Icons.info_outline, size: 14),
               label: const Text('XM 账户选型指南', style: TextStyle(fontSize: 12)),
             ),
-            TextButton.icon(
-              onPressed: (){},
-              icon: const Icon(Icons.bar_chart, size: 14, color: Colors.teal),
-              label: const Text('打开手数对照表', style: TextStyle(fontSize: 12, color: Colors.teal)),
-            ),
+
           ],
         ),
         const SizedBox(height: 4),
@@ -1614,21 +1610,6 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
             }).toList(),
           ),
         ),
-        const SizedBox(height: 12),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(isMicroMode ? '外汇点值: 0.01手 = \$0.001/Pip (Micro)' : '外汇点值: 0.01手 = \$0.10/Pip', style: TextStyle(fontSize: 11, color: Colors.grey)),
-            Row(
-              children: [
-                Icon(Icons.business_center, size: 12, color: Colors.grey),
-                SizedBox(width: 4),
-                Text(isMicroMode ? '微型账户点值' : '标准账户点值', style: TextStyle(fontSize: 11, color: Colors.grey)),
-              ],
-            )
-          ],
-        ),
-
         const SizedBox(height: 12),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
