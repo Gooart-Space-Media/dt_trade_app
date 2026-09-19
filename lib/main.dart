@@ -2600,10 +2600,14 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
               ),
               const SizedBox(width: 8),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 8,
+                  runSpacing: 4,
                   children: [
                     Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
                           '${currentPairInfo.symbol} (${currentPairInfo.chineseName})',
@@ -2614,18 +2618,15 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                           currentPairInfo.isJpy ? '· 3位报价' : (currentPairInfo.isGold ? '· 2位报价' : '· 5位报价'),
                           style: const TextStyle(fontSize: 10, color: Colors.grey),
                         ),
-                        const SizedBox(height: 6),
+                        const SizedBox(width: 4),
                         Text(
                           currentPairInfo.session,
                           style: const TextStyle(fontSize: 10, color: Colors.grey),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 2),
                     Text(
                       currentPairInfo.feature,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                       style: const TextStyle(fontSize: 11, color: Color(0xFF475569)),
                     ),
                   ],
@@ -3363,7 +3364,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  flex: 5,
+                  flex: 6,
                   child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -3373,7 +3374,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  flex: 6,
+                  flex: 4,
                   child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
