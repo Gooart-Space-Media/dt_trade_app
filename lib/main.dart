@@ -573,6 +573,8 @@ class _MainScreenState extends State<MainScreen> {
         ],
       ),
       bottomNavigationBar: NavigationBar(
+        backgroundColor: Theme.of(context).brightness == Brightness.dark ? const Color(0xFF1E293B) : Colors.white,
+        surfaceTintColor: Colors.transparent,
         selectedIndex: _currentIndex,
         onDestinationSelected: (idx) {
           HapticFeedback.selectionClick();
@@ -1033,7 +1035,7 @@ Widget _buildPairDetailTile(BuildContext context, WatchlistPair p, ValueChanged<
                     ],
                   ),
                   const SizedBox(height: 3),
-                  Text(p.feature, style: const TextStyle(fontSize: 11, color: Color(0xFF475569))),
+                  Text(p.feature, style: TextStyle(fontSize: 11, color: Theme.of(context).brightness == Brightness.dark ? Colors.white60 : const Color(0xFF475569))),
                 ],
               ),
             ),
@@ -1284,31 +1286,31 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
         Container(
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            color: (audit['hasRisk'] as bool) ? const Color(0xFFFEF2F2) : const Color(0xFFF0FDF4),
+            color: (audit['hasRisk'] as bool) ? (Theme.of(context).brightness == Brightness.dark ? const Color(0xFF450a0a) : const Color(0xFFFEF2F2)) : (Theme.of(context).brightness == Brightness.dark ? const Color(0xFF022c22) : const Color(0xFFF0FDF4)),
             borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: (audit['hasRisk'] as bool) ? const Color(0xFFFECACA) : const Color(0xFFBBF7D0)),
+            border: Border.all(color: (audit['hasRisk'] as bool) ? (Theme.of(context).brightness == Brightness.dark ? const Color(0xFF7f1d1d) : const Color(0xFFFECACA)) : (Theme.of(context).brightness == Brightness.dark ? const Color(0xFF14532d) : const Color(0xFFBBF7D0))),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  Icon((audit['hasRisk'] as bool) ? Icons.warning_rounded : Icons.radar_rounded, size: 18, color: (audit['hasRisk'] as bool) ? Colors.red : const Color(0xFF15803D)),
+                  Icon((audit['hasRisk'] as bool) ? Icons.warning_rounded : Icons.radar_rounded, size: 18, color: (audit['hasRisk'] as bool) ? Colors.red : (Theme.of(context).brightness == Brightness.dark ? const Color(0xFF4ade80) : const Color(0xFF15803D))),
                   const SizedBox(width: 6),
-                  Text((audit['hasRisk'] as bool) ? '晨间自审预警：同质化过度曝险' : '晨间 10 秒风控自审雷达', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: (audit['hasRisk'] as bool) ? Colors.red : const Color(0xFF15803D))),
+                  Text((audit['hasRisk'] as bool) ? '晨间自审预警：同质化过度曝险' : '晨间 10 秒风控自审雷达', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: (audit['hasRisk'] as bool) ? Colors.red : (Theme.of(context).brightness == Brightness.dark ? const Color(0xFF4ade80) : const Color(0xFF15803D)))),
                 ],
               ),
               const SizedBox(height: 4),
-              Text(audit['msg'] as String, style: TextStyle(fontSize: 11, height: 1.4, color: (audit['hasRisk'] as bool) ? const Color(0xFF991B1B) : const Color(0xFF166534))),
+              Text(audit['msg'] as String, style: TextStyle(fontSize: 11, height: 1.4, color: (audit['hasRisk'] as bool) ? (Theme.of(context).brightness == Brightness.dark ? const Color(0xFFfca5a5) : const Color(0xFF991B1B)) : (Theme.of(context).brightness == Brightness.dark ? const Color(0xFF86efac) : const Color(0xFF166534)))),
             ],
           ),
         ),
         const SizedBox(height: 24),
         Row(
           children: [
-            const Icon(Icons.fact_check_rounded, size: 18, color: Color(0xFF475569)),
+            Icon(Icons.fact_check_rounded, size: 18, color: Theme.of(context).brightness == Brightness.dark ? Colors.white60 : const Color(0xFF475569)),
             const SizedBox(width: 8),
-            const Text('飞行员起飞前：最后 10 秒防呆自检', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Color(0xFF334155))),
+            Text('飞行员起飞前：最后 10 秒防呆自检', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Theme.of(context).brightness == Brightness.dark ? Colors.white70 : const Color(0xFF334155))),
             const Spacer(),
             if (checklist.every((e) => e))
               Container(
@@ -2913,7 +2915,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                     ),
                     Text(
                       currentPairInfo.feature,
-                      style: const TextStyle(fontSize: 11, color: Color(0xFF475569)),
+                      style: TextStyle(fontSize: 11, color: Theme.of(context).brightness == Brightness.dark ? Colors.white60 : const Color(0xFF475569)),
                     ),
                   ],
                 ),
