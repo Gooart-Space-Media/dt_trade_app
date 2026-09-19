@@ -1492,43 +1492,46 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
 
   @override
 
-  Widget _buildPairButton(String pair) {
-    bool active = activePair == pair;
+  Widget _buildTierButton(String title, String subtitle, String pairs) {
+    bool active = activePair == title;
     return GestureDetector(
       onTap: () {
         HapticFeedback.selectionClick();
         setState(() {
-          activePair = pair;
-          isGoldMode = pair == 'XAUUSD';
-          _saveParam('calc_active_pair', pair);
+          activePair = title;
+          isGoldMode = title.contains('黄金');
+          _saveParam('calc_active_pair', title);
           _saveParam('calc_is_gold', isGoldMode);
         });
       },
       child: Container(
-        margin: const EdgeInsets.only(right: 6, bottom: 6),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        margin: const EdgeInsets.only(bottom: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         decoration: BoxDecoration(
           color: active ? const Color(0xFFFEF3C7) : Colors.transparent,
           border: Border.all(color: active ? const Color(0xFFF59E0B) : Colors.grey.shade300),
-          borderRadius: BorderRadius.circular(6),
+          borderRadius: BorderRadius.circular(8),
         ),
-        child: Text(pair, style: TextStyle(fontSize: 11, fontWeight: active ? FontWeight.bold : FontWeight.normal, color: active ? const Color(0xFFD97706) : Colors.grey.shade700)),
+        child: Row(
+          children: [
+            Expanded(
+              flex: 4,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: active ? const Color(0xFFD97706) : Colors.blueGrey)),
+                  const SizedBox(height: 2),
+                  Text(subtitle, style: TextStyle(fontSize: 10, color: active ? const Color(0xFFD97706).withOpacity(0.8) : Colors.grey)),
+                ],
+              ),
+            ),
+            Expanded(
+              flex: 5,
+              child: Text(pairs, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500, color: active ? const Color(0xFFD97706) : Colors.grey.shade600), textAlign: TextAlign.right),
+            ),
+          ],
+        ),
       ),
-    );
-  }
-
-  Widget _buildPairGroup(String title, List<String> pairs) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 6, top: 4),
-          child: Text(title, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.blueGrey)),
-        ),
-        Wrap(
-          children: pairs.map((p) => _buildPairButton(p)).toList(),
-        ),
-      ],
     );
   }
 
@@ -1626,11 +1629,11 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildPairGroup('🥇 第一梯队：绝对恒定组 (\$0.10)', ['EURUSD', 'GBPUSD', 'AUDUSD', 'NZDUSD']),
-              _buildPairGroup('🛡️ 第二梯队：超级防御组 (~\$0.06)', ['USDJPY', 'EURJPY', 'GBPJPY', 'AUDJPY', 'CADJPY', 'AUDNZD']),
-              _buildPairGroup('📉 第三梯队：安全打折组 (~\$0.07)', ['USDCAD', 'AUDCAD', 'EURCAD']),
-              _buildPairGroup('⚠️ 第四梯队：点值溢价组 (警惕微超)', ['USDCHF', 'EURGBP']),
-              _buildPairGroup('👑 独立品种：美黄金 (0.1\$ = 1Pip)', ['XAUUSD']),
+              _buildTierButton('🥇 第一梯队', '绝对恒定组 (\$0.10)', 'EURUSD, GBPUSD\nAUDUSD, NZDUSD'),
+              _buildTierButton('🛡️ 第二梯队', '超级防御组 (~\$0.06)', 'USDJPY, EURJPY, GBPJPY\nAUDJPY, CADJPY, AUDNZD'),
+              _buildTierButton('📉 第三梯队', '安全打折组 (~\$0.07)', 'USDCAD, AUDCAD, EURCAD'),
+              _buildTierButton('⚠️ 第四梯队', '点值溢价组 (警惕微超)', 'USDCHF, EURGBP'),
+              _buildTierButton('👑 独立品种', '美黄金 (0.1\$ = 1Pip)', 'XAUUSD'),
             ],
           ),
         ),
@@ -4535,4 +4538,3 @@ class DualEquityCurvePainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
-
