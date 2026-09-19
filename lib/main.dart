@@ -2457,9 +2457,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
 
     final currentPairInfo = getWatchlistPair(selectedPair);
 
-    return ListView(
-      padding: const EdgeInsets.all(10),
-      children: [
+    final leftChildren = <Widget>[
         // 模式切换：突破挂单 vs 黄金口袋 Fib vs 极值突破
         Container(
           padding: const EdgeInsets.all(4),
@@ -2535,97 +2533,6 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
             ),
           ],
         ),
-        const SizedBox(height: 12),
-        // 双轨/单轨切换
-        Container(
-          padding: const EdgeInsets.all(4),
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.2)),
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: GestureDetector(
-                  onTap: () { HapticFeedback.selectionClick(); setState(() { isDualTrack = true; _saveState('tp_dual_track', true); }); },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    decoration: BoxDecoration(
-                      color: isDualTrack ? const Color(0xFF059669) : Colors.transparent,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(child: Text('⚖️ 双轨 1%+1%', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: isDualTrack ? Colors.white : Colors.grey))),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () { HapticFeedback.selectionClick(); setState(() { isDualTrack = false; _saveState('tp_dual_track', false); }); },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    decoration: BoxDecoration(
-                      color: !isDualTrack ? const Color(0xFFDC2626) : Colors.transparent,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(child: Text('🎯 单轨 2%', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: !isDualTrack ? Colors.white : Colors.grey))),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 16),
-        // 模式切换：突破挂单 vs 黄金口袋 Fib
-        Container(
-          padding: const EdgeInsets.all(4),
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.2)),
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    HapticFeedback.selectionClick();
-                    setState(() { entryMode = 1; _saveState('tp_mode', 1); });
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    decoration: BoxDecoration(
-                      color: (entryMode == 1) ? const Color(0xFFD97706) : Colors.transparent,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(
-                      child: Text('🎯 黄金口袋 (Fib 50~61.8%)', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: (entryMode == 1) ? Colors.white : Colors.grey)),
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    HapticFeedback.selectionClick();
-                    setState(() { entryMode = 0; _saveState('tp_mode', 0); });
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    decoration: BoxDecoration(
-                      color: !(entryMode == 1) ? const Color(0xFF2563EB) : Colors.transparent,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(
-                      child: Text('🚀 常规突破 (+10pips缓冲)', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: !(entryMode == 1) ? Colors.white : Colors.grey)),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-
         const SizedBox(height: 12),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2775,6 +2682,9 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
         ),
         const SizedBox(height: 16),
 
+    ];
+
+    final rightChildren = <Widget>[
         if (hasData) ...[
           if (entryMode == 1) ...[
             // 黄金口袋 Fib 5618 狙击结果
@@ -3433,7 +3343,48 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
             ),
           ),
         ),
-      ],
+    ];
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth > 800) {
+          return Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: leftChildren,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  flex: 6,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: rightChildren,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+
+        return ListView(
+          padding: const EdgeInsets.all(10),
+          children: [
+            ...leftChildren,
+            ...rightChildren,
+          ],
+        );
+      },
     );
   }
 
