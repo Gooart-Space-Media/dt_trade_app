@@ -1,0 +1,11 @@
+const fs = require('fs');
+let code = fs.readFileSync('lib/main.dart', 'utf-8');
+const imports = `import 'dart:math';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fl_chart/fl_chart.dart';
+`;
+code = imports + code;
+fs.writeFileSync('lib/main.dart', code);
+console.log('Restored imports!');
