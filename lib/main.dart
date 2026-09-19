@@ -463,13 +463,9 @@ class _MainScreenState extends State<MainScreen> {
       appBar: AppBar(
         title: Row(
           children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(colors: [Color(0xFFF59E0B), Color(0xFFD97706)]), // 流金渐变
-                borderRadius: BorderRadius.circular(6),
-              ),
-              child: const Text('DT', style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w900)),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(6),
+              child: Image.asset('assets/logo.png', width: 26, height: 26, fit: BoxFit.cover),
             ),
             const SizedBox(width: 8),
             const Text('双轨风控大师 Pro', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
@@ -1378,7 +1374,7 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
         margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         decoration: BoxDecoration(
-          color: isChecked ? const Color(0xFFF0FDF4) : Theme.of(context).cardColor,
+          color: isChecked ? (Theme.of(context).brightness == Brightness.dark ? const Color(0xFF022C22) : const Color(0xFFF0FDF4)) : Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(color: isChecked ? const Color(0xFF4ADE80) : Theme.of(context).dividerColor.withOpacity(0.2)),
           boxShadow: isChecked ? [BoxShadow(color: const Color(0xFF4ADE80).withOpacity(0.2), blurRadius: 8, offset: const Offset(0, 2))] : [],
@@ -1416,6 +1412,7 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
 
   Widget _buildDropdownRow(String label, String? current, String dir, List<String> list, List<String?> others, ValueChanged<String?> onPairChanged, ValueChanged<String> onDirChanged) {
     return Card(
+      color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFF1E293B) : Colors.white,
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14),
