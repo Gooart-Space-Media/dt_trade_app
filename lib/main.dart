@@ -2511,50 +2511,55 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
           ),
         ),
         const SizedBox(height: 12),
-        // Timeframe Selector
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        // Timeframe & Buy/Sell Toggle & Atlas Button
+        Wrap(
+          spacing: 12,
+          runSpacing: 12,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          alignment: WrapAlignment.spaceBetween,
           children: [
-            const Text('执行级别 (Timeframe):', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
-            ToggleButtons(
-              constraints: const BoxConstraints(minHeight: 40, minWidth: 50),
-              borderRadius: BorderRadius.circular(8),
-              isSelected: ['D1', 'H4', 'H1', 'M15'].map((t) => t == selectedTimeframe).toList(),
-              onPressed: (idx) {
-                HapticFeedback.selectionClick();
-                setState(() { selectedTimeframe = ['D1', 'H4', 'H1', 'M15'][idx]; _saveState('tp_timeframe', selectedTimeframe); });
-              },
-              children: const [
-                Text('D1', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-                Text('H4', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-                Text('H1', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-                Text('M15', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+            // Left: Timeframe
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text('Timeframe: ', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
+                ToggleButtons(
+                  constraints: const BoxConstraints(minHeight: 32, minWidth: 42),
+                  borderRadius: BorderRadius.circular(6),
+                  isSelected: ['D1', 'H4', 'H1', 'M15'].map((t) => t == selectedTimeframe).toList(),
+                  onPressed: (idx) {
+                    HapticFeedback.selectionClick();
+                    setState(() { selectedTimeframe = ['D1', 'H4', 'H1', 'M15'][idx]; _saveState('tp_timeframe', selectedTimeframe); });
+                  },
+                  children: const [
+                    Text('D1', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+                    Text('H4', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+                    Text('H1', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+                    Text('M15', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+                  ],
+                ),
               ],
             ),
-          ],
-        ),
-        const SizedBox(height: 12),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
+            // Middle: Buy/Sell
             ToggleButtons(
               isSelected: [isLong, !isLong],
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(6),
               constraints: const BoxConstraints(minWidth: 65, minHeight: 32),
               selectedColor: Colors.white,
               fillColor: isLong ? const Color(0xFF16A34A) : const Color(0xFFDC2626),
               onPressed: (idx) => setState(() => isLong = idx == 0),
               children: const [
-                Text('做多 (BUY)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                Text('做空 (SELL)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                Text('做多 (BUY)', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+                Text('做空 (SELL)', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
               ],
             ),
+            // Right: Atlas
             OutlinedButton.icon(
               style: OutlinedButton.styleFrom(
                 visualDensity: VisualDensity.compact,
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 side: const BorderSide(color: Color(0xFF2563EB), width: 1.2),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
               ),
               onPressed: () => showWatchlistAtlasDialog(context, onSelect: (p) => _selectWatchlistPair(p)),
               icon: const Icon(Icons.menu_book_rounded, size: 14, color: Color(0xFF2563EB)),
