@@ -519,7 +519,7 @@ class _MainScreenState extends State<MainScreen> {
                     child: LayoutBuilder(
                       builder: (context, constraints) {
                         final topRowChildren = [
-                          Text(session['status'] as String, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: session['color'] as Color)),
+                          Text(session['status'] as String, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Theme.of(context).brightness == Brightness.dark && (session['color'] as Color == const Color(0xFF475569) || session['color'] as Color == const Color(0xFF64748B)) ? Colors.white70 : session['color'] as Color)),
                           const SizedBox(width: 6),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
@@ -530,7 +530,7 @@ class _MainScreenState extends State<MainScreen> {
                             ),
                             child: Text(
                               session['countdown'] as String,
-                              style: TextStyle(fontSize: 9, fontWeight: FontWeight.w700, color: session['color'] as Color),
+                              style: TextStyle(fontSize: 9, fontWeight: FontWeight.w700, color: Theme.of(context).brightness == Brightness.dark && (session['color'] as Color == const Color(0xFF475569) || session['color'] as Color == const Color(0xFF64748B)) ? Colors.white70 : session['color'] as Color),
                             ),
                           ),
                         ];
@@ -541,7 +541,7 @@ class _MainScreenState extends State<MainScreen> {
                               ...topRowChildren,
                               const SizedBox(width: 12),
                               Expanded(
-                                child: Text(session['desc'] as String, style: TextStyle(fontSize: 10, color: (session['color'] as Color).withOpacity(0.85)), overflow: TextOverflow.ellipsis),
+                                child: Text(session['desc'] as String, style: TextStyle(fontSize: 10, color: Theme.of(context).brightness == Brightness.dark && (session['color'] as Color == const Color(0xFF475569) || session['color'] as Color == const Color(0xFF64748B)) ? Colors.white60 : (session['color'] as Color).withOpacity(0.85)), overflow: TextOverflow.ellipsis),
                               ),
                             ],
                           );
@@ -551,7 +551,7 @@ class _MainScreenState extends State<MainScreen> {
                             children: [
                               Row(children: topRowChildren),
                               const SizedBox(height: 2),
-                              Text(session['desc'] as String, style: TextStyle(fontSize: 10, color: (session['color'] as Color).withOpacity(0.85)), overflow: TextOverflow.ellipsis),
+                              Text(session['desc'] as String, style: TextStyle(fontSize: 10, color: Theme.of(context).brightness == Brightness.dark && (session['color'] as Color == const Color(0xFF475569) || session['color'] as Color == const Color(0xFF64748B)) ? Colors.white60 : (session['color'] as Color).withOpacity(0.85)), overflow: TextOverflow.ellipsis),
                             ],
                           );
                         }
