@@ -2952,30 +2952,51 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
 
         const SizedBox(height: 12),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: TextFormField(
-                controller: _highCtrl,
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                decoration: InputDecoration(
-                  labelText: '最高点 (Candle High)',
-                  filled: true,
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                ),
-                onChanged: (v) { setState(() => highPrice = double.tryParse(v)); _saveState('tp_high', v); },
-              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextFormField(
+                    controller: _highCtrl,
+                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                    decoration: InputDecoration(
+                      labelText: '全区最高价 High (整片形态最高上影线顶点)',
+                      labelStyle: const TextStyle(fontSize: 11),
+                      filled: true,
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    ),
+                    onChanged: (v) { setState(() => highPrice = double.tryParse(v)); _saveState('tp_high', v); },
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 4, top: 4),
+                    child: Text('⚠️ 注意：取全区最高影线顶点 High，绝不是看实体开/收盘价', style: TextStyle(fontSize: 10, color: Colors.grey)),
+                  )
+                ],
+              )
             ),
             const SizedBox(width: 12),
             Expanded(
-              child: TextFormField(
-                controller: _lowCtrl,
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                decoration: InputDecoration(
-                  labelText: '最低点 (Candle Low)',
-                  filled: true,
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                ),
-                onChanged: (v) { setState(() => lowPrice = double.tryParse(v)); _saveState('tp_low', v); },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextFormField(
+                    controller: _lowCtrl,
+                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                    decoration: InputDecoration(
+                      labelText: '全区最低价 Low (做多止损基准)',
+                      labelStyle: const TextStyle(fontSize: 11),
+                      filled: true,
+                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                    ),
+                    onChanged: (v) { setState(() => lowPrice = double.tryParse(v)); _saveState('tp_low', v); },
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 4, top: 4),
+                    child: Text('⚠️ 注意：全区谁的下影线更深就填谁 (止损 = 该 Low - 缓冲)', style: TextStyle(fontSize: 10, color: Colors.grey)),
+                  )
+                ],
               ),
             ),
           ],
@@ -3708,14 +3729,14 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
               const Text('🏆', style: TextStyle(fontSize: 16)),
               const SizedBox(width: 8),
               Expanded(
-                child: Text('吞没战法实战 3 句真诀 (必须刻在 DNA 里)：', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFFDBA74) : const Color(0xFF9A3412))),
+                child: Text('吞没战法实战三句真诀 (必须焊死在脑海)：', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFFDBA74) : const Color(0xFF9A3412))),
               ),
             ],
           ),
           const SizedBox(height: 8),
-          _buildMantraLine(context, '1) 顺大势逆小势：', '只要大周期 (H4/D1) 没破位，小周期的逆向吞没直接无视！'),
-          _buildMantraLine(context, '2) 必须吃掉前一根的实体：', '不能只包住引线，一定要实体包实体，越饱满越好！'),
-          _buildMantraLine(context, '3) 不要追离均线太远的吞没：', '如果价格已经暴涨/暴跌偏离均线极远，这叫强弩之末，极易反抽！'),
+          _buildMantraLine(context, '① 做多确认看实体吞没 —— ', '形态真假看 Body，后一根实体必须彻底吃掉前一根；'),
+          _buildMantraLine(context, '② 止损躲在全区最低影线底 —— ', '取整片形态区域 (母烛 + 前置烛) 最低的下影线 (Lowest Wick) - 10p；'),
+          _buildMantraLine(context, '③ 50% 取自全区极高与极低的中点 —— ', '(全区最高 High + 全区最低 Low) ÷ 2，绝不仅看单根母烛！'),
         ],
       ),
     );
@@ -3757,114 +3778,138 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
         children: [
           Row(
             children: [
-              const Text('🧲', style: TextStyle(fontSize: 16)),
+              const Text('📐', style: TextStyle(fontSize: 16)),
               const SizedBox(width: 8),
-              Expanded(
-                child: RichText(
-                  text: TextSpan(
-                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Theme.of(context).brightness == Brightness.dark ? Colors.white : const Color(0xFF0F172A)),
-                    children: [
-                      const TextSpan(text: '吞没结构与黄金口袋狙击蓝图 '),
-                      TextSpan(text: '图中以做多(Buy) 为例，阴阳反包，回调寻找黄金坑狙击', style: TextStyle(fontSize: 10, fontWeight: FontWeight.normal, color: Theme.of(context).brightness == Brightness.dark ? Colors.white60 : Colors.grey)),
-                    ],
-                  ),
+              const Expanded(
+                child: Text('吞没结构与黄金口袋解剖蓝图', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFDCFCE7),
+                  borderRadius: BorderRadius.circular(4),
                 ),
+                child: const Text('多重 K 线形态区', style: TextStyle(fontSize: 10, color: Color(0xFF166534), fontWeight: FontWeight.bold)),
               ),
             ],
           ),
+          const SizedBox(height: 12),
+          Text(
+            '黄金口袋 50% 模式：全区极值画网，回踩入场将止损精准压缩',
+            style: TextStyle(fontSize: 11, color: Theme.of(context).brightness == Brightness.dark ? Colors.white60 : Colors.grey.shade700),
+          ),
           const SizedBox(height: 16),
           Container(
-            height: 140,
+            height: 160,
             decoration: BoxDecoration(
               color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFC),
               borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.1)),
             ),
             child: Stack(
               children: [
+                // Top Line (Candle High)
                 Positioned(
-                  top: 20, left: 100, right: 20,
+                  top: 25, left: 130, right: 20,
                   child: Row(
                     children: [
-                      const Expanded(child: _DashedLine(color: Color(0xFF22C55E))),
+                      const Expanded(child: _DashedLine(color: Colors.grey)),
                       const SizedBox(width: 8),
-                      Text('形态最高点 (Candle High)', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: const Color(0xFF22C55E))),
+                      Text('全区最高价 High', style: TextStyle(fontSize: 10, color: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade400 : Colors.grey.shade600)),
                     ],
                   ),
                 ),
+                // Middle Line (Entry 50%)
                 Positioned(
-                  top: 70, left: 100, right: 20,
+                  top: 80, left: 130, right: 20,
                   child: Row(
                     children: [
                       const Expanded(child: _DashedLine(color: Color(0xFFF59E0B))),
                       const SizedBox(width: 8),
-                      Text('Fib 50% / 61.8% 黄金坑', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: const Color(0xFFF59E0B))),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(color: const Color(0xFF22C55E), borderRadius: BorderRadius.circular(4)),
+                        child: const Text('Entry / 50%', style: TextStyle(fontSize: 10, color: Colors.white, fontWeight: FontWeight.bold)),
+                      ),
                     ],
                   ),
                 ),
+                // Bottom Line (Candle Low)
                 Positioned(
-                  bottom: 20, left: 100, right: 20,
+                  bottom: 35, left: 130, right: 20,
+                  child: Row(
+                    children: [
+                      const Expanded(child: _DashedLine(color: Colors.grey)),
+                      const SizedBox(width: 8),
+                      Text('全区最低价 Low', style: TextStyle(fontSize: 10, color: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade400 : Colors.grey.shade600)),
+                    ],
+                  ),
+                ),
+                // Stop Loss Line
+                Positioned(
+                  bottom: 15, left: 130, right: 20,
                   child: Row(
                     children: [
                       const Expanded(child: _DashedLine(color: Color(0xFFEF4444))),
                       const SizedBox(width: 8),
-                      Text('形态最低点 (Candle Low)', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: const Color(0xFFEF4444))),
+                      const Text('Stop Loss (-10p)', style: TextStyle(fontSize: 10, color: Color(0xFFEF4444), fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ),
+                
+                // Candle 1 (Bearish, Highest Wick)
                 Positioned(
-                  bottom: 25, left: 20,
+                  bottom: 45, left: 20,
                   child: Column(
                     children: [
-                      Container(width: 2, height: 15, color: const Color(0xFFEF4444)),
-                      Container(width: 14, height: 35, color: const Color(0xFFEF4444)),
-                      Container(width: 2, height: 10, color: const Color(0xFFEF4444)),
-                      const SizedBox(height: 4),
-                      const Text('前 K', style: TextStyle(fontSize: 9, color: Colors.grey)),
+                      Container(width: 1.5, height: 45, color: const Color(0xFFEF4444)),
+                      Container(width: 10, height: 35, color: const Color(0xFFEF4444)),
+                      Container(width: 1.5, height: 10, color: const Color(0xFFEF4444)),
                     ],
                   ),
                 ),
+                // Candle 2 (Bearish, Lowest Wick)
                 Positioned(
-                  bottom: 20, left: 60,
+                  bottom: 35, left: 45,
                   child: Column(
                     children: [
-                      Container(width: 2, height: 10, color: const Color(0xFF22C55E)),
-                      Container(width: 22, height: 95, color: const Color(0xFF22C55E)),
-                      Container(width: 2, height: 15, color: const Color(0xFF22C55E)),
-                      const SizedBox(height: 4),
-                      const Text('吞没大 K 线', style: TextStyle(fontSize: 9, color: Colors.grey)),
+                      Container(width: 1.5, height: 10, color: const Color(0xFFEF4444)),
+                      Container(width: 10, height: 20, color: const Color(0xFFEF4444)),
+                      Container(width: 1.5, height: 40, color: const Color(0xFFEF4444)),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _buildBadge(context, '✅', '实体反包'),
-              const SizedBox(width: 12),
-              _buildBadge(context, '🩸', '阴阳交替'),
-              const SizedBox(width: 12),
-              _buildBadge(context, '🔋', '动能强劲'),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            decoration: BoxDecoration(
-              color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFF022C22) : const Color(0xFFF0FDF4),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('💡', style: TextStyle(fontSize: 14)),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    '实战规律：通常大K线突破后，价格会回踩其波段的 50%~61.8% 确认支撑，这里是盈亏比极佳的进场点。',
-                    style: TextStyle(fontSize: 11, color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFF86EFAC) : const Color(0xFF166534)),
+                // Candle 3 (Bullish, Huge Engulfing)
+                Positioned(
+                  bottom: 45, left: 70,
+                  child: Column(
+                    children: [
+                      Container(width: 1.5, height: 10, color: const Color(0xFF22C55E)),
+                      Container(width: 12, height: 65, color: const Color(0xFF22C55E)), // engulfs the bodies
+                      Container(width: 1.5, height: 15, color: const Color(0xFF22C55E)),
+                    ],
+                  ),
+                ),
+                // Candle 4 (Bullish, Small)
+                Positioned(
+                  bottom: 80, left: 95,
+                  child: Column(
+                    children: [
+                      Container(width: 1.5, height: 15, color: const Color(0xFF22C55E)),
+                      Container(width: 10, height: 20, color: const Color(0xFF22C55E)),
+                      Container(width: 1.5, height: 10, color: const Color(0xFF22C55E)),
+                    ],
+                  ),
+                ),
+                // Candle 5 (Bullish, Small)
+                Positioned(
+                  bottom: 60, left: 120,
+                  child: Column(
+                    children: [
+                      Container(width: 1.5, height: 10, color: const Color(0xFF22C55E)),
+                      Container(width: 10, height: 15, color: const Color(0xFF22C55E)),
+                      Container(width: 1.5, height: 15, color: const Color(0xFF22C55E)),
+                    ],
                   ),
                 ),
               ],
