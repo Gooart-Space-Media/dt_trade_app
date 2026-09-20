@@ -2948,6 +2948,8 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
           children: displayedPairs.map((p) => _buildPairChipV2(p)).toList(),
         ),
 
+        _buildMantraCard(context),
+
         const SizedBox(height: 12),
         Row(
           children: [
@@ -2978,6 +2980,9 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
             ),
           ],
         ),
+        
+        _buildBlueprintCard(context),
+        
         const SizedBox(height: 16),
 
     ];
