@@ -7134,10 +7134,6 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
   Widget _statItem(String label, String value, Color valueColor) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-      alignment: WrapAlignment.spaceBetween,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      runSpacing: 4,
       children: [
         Flexible(
             child: Text(label,
@@ -7152,10 +7148,6 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
   Widget _row(String label, String value, Color vColor) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-      alignment: WrapAlignment.spaceBetween,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      runSpacing: 4,
       children: [
         Text(label, style: const TextStyle(fontSize: 10, color: Colors.grey)),
         Text(value,
