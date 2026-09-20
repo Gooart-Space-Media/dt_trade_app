@@ -1,3 +1,4 @@
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -194,6 +195,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   final List<Widget> _pages = const [
+    HomePage(),
     OverlapCheckerPage(),
     LotSizeCalcPage(),
     TpCalculatorPage(),
@@ -762,6 +764,11 @@ class _MainScreenState extends State<MainScreen> {
         },
         destinations: const [
           NavigationDestination(
+            icon: Icon(Icons.home_outlined),
+            selectedIcon: Icon(Icons.home_rounded),
+            label: '首页',
+          ),
+          NavigationDestination(
             icon: Icon(Icons.shield_outlined),
             selectedIcon: Icon(Icons.shield_rounded),
             label: '组合防呆',
@@ -1288,6 +1295,421 @@ Widget _buildPairDetailTile(BuildContext context, WatchlistPair p,
       ),
     ),
   );
+}
+
+// -------------------------------------------------------------
+// 0. 首页 (Home Page) - XM Affiliate & Knowledge Base
+// -------------------------------------------------------------
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    bool isDesktop = MediaQuery.of(context).size.width > 800;
+    return Center(
+      child: Container(
+        constraints: BoxConstraints(maxWidth: isDesktop ? 1200 : 750),
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            _buildXMAffiliateBanner(context),
+            _buildMantraCard(context),
+            _buildBlueprintCard(context),
+            const SizedBox(height: 40),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildXMAffiliateBanner(BuildContext context) {
+    return GestureDetector(
+      onTap: () async {
+        // TODO: Insert your actual XM Affiliate Link here
+        await launchUrl(Uri.parse('https://clicks.pipaffiliates.com/c?c=1302046&l=zh-hans&p=6'));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('正在前往 XM 官方认证开户通道...')),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [Color(0xFF22C55E), Color(0xFF16A34A)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF22C55E).withOpacity(0.3),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            )
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.2),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.account_balance_wallet,
+                  color: Colors.white, size: 24),
+            ),
+            const SizedBox(width: 12),
+            const Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('XM 官方认证开户通道 (专属活动)',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold)),
+                  SizedBox(height: 2),
+                  Text('点击立即注册，尊享极低点差与入金赠金',
+                      style: TextStyle(color: Colors.white70, fontSize: 11)),
+                ],
+              ),
+            ),
+            const Icon(Icons.arrow_forward_ios,
+                color: Colors.white70, size: 14),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMantraCard(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: 6, bottom: 6),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Theme.of(context).brightness == Brightness.dark
+            ? const Color(0xFF451A03)
+            : const Color(0xFFFFF7ED),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? const Color(0xFF9A3412)
+                : const Color(0xFFFDBA74).withOpacity(0.5)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Text('🏆', style: TextStyle(fontSize: 16)),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text('吞没战法实战三句真诀 (必须焊死在脑海)：',
+                    style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? const Color(0xFFFDBA74)
+                            : const Color(0xFF9A3412))),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          _buildMantraLine(
+              context, '① 做多确认看实体吞没 —— ', '形态真假看 Body，后一根实体必须彻底吃掉前一根；'),
+          _buildMantraLine(context, '② 止损躲在全区最低影线底 —— ',
+              '取整片形态区域 (母烛 + 前置烛) 最低的下影线 (Lowest Wick) - 10p；'),
+          _buildMantraLine(context, '③ 50% 取自全区极高与极低的中点 —— ',
+              '(全区最高 High + 全区最低 Low) ÷ 2，绝不仅看单根母烛！'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMantraLine(BuildContext context, String title, String desc) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: RichText(
+        text: TextSpan(
+          style: TextStyle(
+              fontSize: 11.5,
+              height: 1.4,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white70
+                  : const Color(0xFF431407)),
+          children: [
+            TextSpan(
+                text: title,
+                style: const TextStyle(fontWeight: FontWeight.bold)),
+            TextSpan(text: desc),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBlueprintCard(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: 12, bottom: 6),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+          color: Theme.of(context).brightness == Brightness.dark
+              ? const Color(0xFF1E293B)
+              : Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+              color: Theme.of(context).dividerColor.withOpacity(0.2)),
+          boxShadow: [
+            BoxShadow(
+              color: Theme.of(context).shadowColor.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            )
+          ]),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              const Text('📐', style: TextStyle(fontSize: 16)),
+              const SizedBox(width: 8),
+              const Expanded(
+                child: Text('吞没结构与黄金口袋解剖蓝图',
+                    style:
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFDCFCE7),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: const Text('多重 K 线形态区',
+                    style: TextStyle(
+                        fontSize: 10,
+                        color: Color(0xFF166534),
+                        fontWeight: FontWeight.bold)),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Text(
+            '黄金口袋 50% 模式：全区极值画网，回踩入场将止损精准压缩',
+            style: TextStyle(
+                fontSize: 11,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white60
+                    : Colors.grey.shade700),
+          ),
+          const SizedBox(height: 16),
+          Container(
+            height: 160,
+            decoration: BoxDecoration(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? const Color(0xFF0F172A)
+                  : const Color(0xFFF8FAFC),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                  color: Theme.of(context).dividerColor.withOpacity(0.1)),
+            ),
+            child: Stack(
+              children: [
+                // Top Line (Candle High)
+                Positioned(
+                  top: 25,
+                  left: 130,
+                  right: 20,
+                  child: Row(
+                    children: [
+                      const Expanded(child: _DashedLine(color: Colors.grey)),
+                      const SizedBox(width: 8),
+                      Text('全区最高价 High',
+                          style: TextStyle(
+                              fontSize: 10,
+                              color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? Colors.grey.shade400
+                                  : Colors.grey.shade600)),
+                    ],
+                  ),
+                ),
+                // Middle Line (Entry 50%)
+                Positioned(
+                  top: 80,
+                  left: 130,
+                  right: 20,
+                  child: Row(
+                    children: [
+                      const Expanded(
+                          child: _DashedLine(color: Color(0xFFF59E0B))),
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                            color: const Color(0xFF22C55E),
+                            borderRadius: BorderRadius.circular(4)),
+                        child: const Text('Entry / 50%',
+                            style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold)),
+                      ),
+                    ],
+                  ),
+                ),
+                // Bottom Line (Candle Low)
+                Positioned(
+                  bottom: 35,
+                  left: 130,
+                  right: 20,
+                  child: Row(
+                    children: [
+                      const Expanded(child: _DashedLine(color: Colors.grey)),
+                      const SizedBox(width: 8),
+                      Text('全区最低价 Low',
+                          style: TextStyle(
+                              fontSize: 10,
+                              color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? Colors.grey.shade400
+                                  : Colors.grey.shade600)),
+                    ],
+                  ),
+                ),
+                // Stop Loss Line
+                Positioned(
+                  bottom: 15,
+                  left: 130,
+                  right: 20,
+                  child: Row(
+                    children: [
+                      const Expanded(
+                          child: _DashedLine(color: Color(0xFFEF4444))),
+                      const SizedBox(width: 8),
+                      const Text('Stop Loss (-10p)',
+                          style: TextStyle(
+                              fontSize: 10,
+                              color: Color(0xFFEF4444),
+                              fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                ),
+
+                // Candle 1 (Bearish, Highest Wick)
+                Positioned(
+                  bottom: 45,
+                  left: 20,
+                  child: Column(
+                    children: [
+                      Container(
+                          width: 1.5,
+                          height: 45,
+                          color: const Color(0xFFEF4444)),
+                      Container(
+                          width: 10,
+                          height: 35,
+                          color: const Color(0xFFEF4444)),
+                      Container(
+                          width: 1.5,
+                          height: 10,
+                          color: const Color(0xFFEF4444)),
+                    ],
+                  ),
+                ),
+                // Candle 2 (Bearish, Lowest Wick)
+                Positioned(
+                  bottom: 35,
+                  left: 45,
+                  child: Column(
+                    children: [
+                      Container(
+                          width: 1.5,
+                          height: 10,
+                          color: const Color(0xFFEF4444)),
+                      Container(
+                          width: 10,
+                          height: 20,
+                          color: const Color(0xFFEF4444)),
+                      Container(
+                          width: 1.5,
+                          height: 40,
+                          color: const Color(0xFFEF4444)),
+                    ],
+                  ),
+                ),
+                // Candle 3 (Bullish, Huge Engulfing)
+                Positioned(
+                  bottom: 45,
+                  left: 70,
+                  child: Column(
+                    children: [
+                      Container(
+                          width: 1.5,
+                          height: 10,
+                          color: const Color(0xFF22C55E)),
+                      Container(
+                          width: 12,
+                          height: 65,
+                          color: const Color(0xFF22C55E)), // engulfs the bodies
+                      Container(
+                          width: 1.5,
+                          height: 15,
+                          color: const Color(0xFF22C55E)),
+                    ],
+                  ),
+                ),
+                // Candle 4 (Bullish, Small)
+                Positioned(
+                  bottom: 80,
+                  left: 95,
+                  child: Column(
+                    children: [
+                      Container(
+                          width: 1.5,
+                          height: 15,
+                          color: const Color(0xFF22C55E)),
+                      Container(
+                          width: 10,
+                          height: 20,
+                          color: const Color(0xFF22C55E)),
+                      Container(
+                          width: 1.5,
+                          height: 10,
+                          color: const Color(0xFF22C55E)),
+                    ],
+                  ),
+                ),
+                // Candle 5 (Bullish, Small)
+                Positioned(
+                  bottom: 60,
+                  left: 120,
+                  child: Column(
+                    children: [
+                      Container(
+                          width: 1.5,
+                          height: 10,
+                          color: const Color(0xFF22C55E)),
+                      Container(
+                          width: 10,
+                          height: 15,
+                          color: const Color(0xFF22C55E)),
+                      Container(
+                          width: 1.5,
+                          height: 15,
+                          color: const Color(0xFF22C55E)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 // -------------------------------------------------------------
@@ -2091,394 +2513,6 @@ class _AvoidCard extends StatelessWidget {
     );
   }
 
-  Widget _buildXMAffiliateBanner(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        // TODO: Insert your actual XM Affiliate Link here
-        // launchUrl(Uri.parse('https://clicks.pipaffiliates.com/c?c=XXXXX'));
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('正在前往 XM 官方认证开户通道...')),
-        );
-      },
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [Color(0xFF22C55E), Color(0xFF16A34A)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFF22C55E).withOpacity(0.3),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
-            )
-          ],
-        ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(6),
-              decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(Icons.account_balance_wallet,
-                  color: Colors.white, size: 24),
-            ),
-            const SizedBox(width: 12),
-            const Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('XM 官方认证开户通道 (专属活动)',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold)),
-                  SizedBox(height: 2),
-                  Text('点击立即注册，尊享极低点差与入金赠金',
-                      style: TextStyle(color: Colors.white70, fontSize: 11)),
-                ],
-              ),
-            ),
-            const Icon(Icons.arrow_forward_ios,
-                color: Colors.white70, size: 14),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMantraCard(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: 6, bottom: 6),
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark
-            ? const Color(0xFF451A03)
-            : const Color(0xFFFFF7ED),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-            color: Theme.of(context).brightness == Brightness.dark
-                ? const Color(0xFF9A3412)
-                : const Color(0xFFFDBA74).withOpacity(0.5)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Text('🏆', style: TextStyle(fontSize: 16)),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text('吞没战法实战三句真诀 (必须焊死在脑海)：',
-                    style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? const Color(0xFFFDBA74)
-                            : const Color(0xFF9A3412))),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          _buildMantraLine(
-              context, '① 做多确认看实体吞没 —— ', '形态真假看 Body，后一根实体必须彻底吃掉前一根；'),
-          _buildMantraLine(context, '② 止损躲在全区最低影线底 —— ',
-              '取整片形态区域 (母烛 + 前置烛) 最低的下影线 (Lowest Wick) - 10p；'),
-          _buildMantraLine(context, '③ 50% 取自全区极高与极低的中点 —— ',
-              '(全区最高 High + 全区最低 Low) ÷ 2，绝不仅看单根母烛！'),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMantraLine(BuildContext context, String title, String desc) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
-      child: RichText(
-        text: TextSpan(
-          style: TextStyle(
-              fontSize: 11.5,
-              height: 1.4,
-              color: Theme.of(context).brightness == Brightness.dark
-                  ? Colors.white70
-                  : const Color(0xFF431407)),
-          children: [
-            TextSpan(
-                text: title,
-                style: const TextStyle(fontWeight: FontWeight.bold)),
-            TextSpan(text: desc),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBlueprintCard(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: 12, bottom: 6),
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-          color: Theme.of(context).brightness == Brightness.dark
-              ? const Color(0xFF1E293B)
-              : Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-              color: Theme.of(context).dividerColor.withOpacity(0.2)),
-          boxShadow: [
-            BoxShadow(
-              color: Theme.of(context).shadowColor.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            )
-          ]),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            children: [
-              const Text('📐', style: TextStyle(fontSize: 16)),
-              const SizedBox(width: 8),
-              const Expanded(
-                child: Text('吞没结构与黄金口袋解剖蓝图',
-                    style:
-                        TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFDCFCE7),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: const Text('多重 K 线形态区',
-                    style: TextStyle(
-                        fontSize: 10,
-                        color: Color(0xFF166534),
-                        fontWeight: FontWeight.bold)),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            '黄金口袋 50% 模式：全区极值画网，回踩入场将止损精准压缩',
-            style: TextStyle(
-                fontSize: 11,
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.white60
-                    : Colors.grey.shade700),
-          ),
-          const SizedBox(height: 16),
-          Container(
-            height: 160,
-            decoration: BoxDecoration(
-              color: Theme.of(context).brightness == Brightness.dark
-                  ? const Color(0xFF0F172A)
-                  : const Color(0xFFF8FAFC),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                  color: Theme.of(context).dividerColor.withOpacity(0.1)),
-            ),
-            child: Stack(
-              children: [
-                // Top Line (Candle High)
-                Positioned(
-                  top: 25,
-                  left: 130,
-                  right: 20,
-                  child: Row(
-                    children: [
-                      const Expanded(child: _DashedLine(color: Colors.grey)),
-                      const SizedBox(width: 8),
-                      Text('全区最高价 High',
-                          style: TextStyle(
-                              fontSize: 10,
-                              color: Theme.of(context).brightness ==
-                                      Brightness.dark
-                                  ? Colors.grey.shade400
-                                  : Colors.grey.shade600)),
-                    ],
-                  ),
-                ),
-                // Middle Line (Entry 50%)
-                Positioned(
-                  top: 80,
-                  left: 130,
-                  right: 20,
-                  child: Row(
-                    children: [
-                      const Expanded(
-                          child: _DashedLine(color: Color(0xFFF59E0B))),
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 2),
-                        decoration: BoxDecoration(
-                            color: const Color(0xFF22C55E),
-                            borderRadius: BorderRadius.circular(4)),
-                        child: const Text('Entry / 50%',
-                            style: TextStyle(
-                                fontSize: 10,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold)),
-                      ),
-                    ],
-                  ),
-                ),
-                // Bottom Line (Candle Low)
-                Positioned(
-                  bottom: 35,
-                  left: 130,
-                  right: 20,
-                  child: Row(
-                    children: [
-                      const Expanded(child: _DashedLine(color: Colors.grey)),
-                      const SizedBox(width: 8),
-                      Text('全区最低价 Low',
-                          style: TextStyle(
-                              fontSize: 10,
-                              color: Theme.of(context).brightness ==
-                                      Brightness.dark
-                                  ? Colors.grey.shade400
-                                  : Colors.grey.shade600)),
-                    ],
-                  ),
-                ),
-                // Stop Loss Line
-                Positioned(
-                  bottom: 15,
-                  left: 130,
-                  right: 20,
-                  child: Row(
-                    children: [
-                      const Expanded(
-                          child: _DashedLine(color: Color(0xFFEF4444))),
-                      const SizedBox(width: 8),
-                      const Text('Stop Loss (-10p)',
-                          style: TextStyle(
-                              fontSize: 10,
-                              color: Color(0xFFEF4444),
-                              fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-                ),
-
-                // Candle 1 (Bearish, Highest Wick)
-                Positioned(
-                  bottom: 45,
-                  left: 20,
-                  child: Column(
-                    children: [
-                      Container(
-                          width: 1.5,
-                          height: 45,
-                          color: const Color(0xFFEF4444)),
-                      Container(
-                          width: 10,
-                          height: 35,
-                          color: const Color(0xFFEF4444)),
-                      Container(
-                          width: 1.5,
-                          height: 10,
-                          color: const Color(0xFFEF4444)),
-                    ],
-                  ),
-                ),
-                // Candle 2 (Bearish, Lowest Wick)
-                Positioned(
-                  bottom: 35,
-                  left: 45,
-                  child: Column(
-                    children: [
-                      Container(
-                          width: 1.5,
-                          height: 10,
-                          color: const Color(0xFFEF4444)),
-                      Container(
-                          width: 10,
-                          height: 20,
-                          color: const Color(0xFFEF4444)),
-                      Container(
-                          width: 1.5,
-                          height: 40,
-                          color: const Color(0xFFEF4444)),
-                    ],
-                  ),
-                ),
-                // Candle 3 (Bullish, Huge Engulfing)
-                Positioned(
-                  bottom: 45,
-                  left: 70,
-                  child: Column(
-                    children: [
-                      Container(
-                          width: 1.5,
-                          height: 10,
-                          color: const Color(0xFF22C55E)),
-                      Container(
-                          width: 12,
-                          height: 65,
-                          color: const Color(0xFF22C55E)), // engulfs the bodies
-                      Container(
-                          width: 1.5,
-                          height: 15,
-                          color: const Color(0xFF22C55E)),
-                    ],
-                  ),
-                ),
-                // Candle 4 (Bullish, Small)
-                Positioned(
-                  bottom: 80,
-                  left: 95,
-                  child: Column(
-                    children: [
-                      Container(
-                          width: 1.5,
-                          height: 15,
-                          color: const Color(0xFF22C55E)),
-                      Container(
-                          width: 10,
-                          height: 20,
-                          color: const Color(0xFF22C55E)),
-                      Container(
-                          width: 1.5,
-                          height: 10,
-                          color: const Color(0xFF22C55E)),
-                    ],
-                  ),
-                ),
-                // Candle 5 (Bullish, Small)
-                Positioned(
-                  bottom: 60,
-                  left: 120,
-                  child: Column(
-                    children: [
-                      Container(
-                          width: 1.5,
-                          height: 10,
-                          color: const Color(0xFF22C55E)),
-                      Container(
-                          width: 10,
-                          height: 15,
-                          color: const Color(0xFF22C55E)),
-                      Container(
-                          width: 1.5,
-                          height: 15,
-                          color: const Color(0xFF22C55E)),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 // -------------------------------------------------------------
