@@ -2798,11 +2798,11 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
             ],
           ),
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 10),
         // Timeframe & Buy/Sell Toggle & Atlas Button
         Wrap(
           spacing: 12,
-          runSpacing: 6,
+          runSpacing: 10,
           crossAxisAlignment: WrapCrossAlignment.center,
           alignment: WrapAlignment.spaceBetween,
           children: [
@@ -2856,10 +2856,10 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
           ],
         ),
 
-        const SizedBox(height: 6),
+        const SizedBox(height: 8),
         // 当前选中品种高阶信息标牌
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
             color: currentPairInfo.isCore
                 ? const Color(0xFFFEF3C7).withOpacity(0.45)
@@ -2948,7 +2948,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
           children: displayedPairs.map((p) => _buildPairChipV2(p)).toList(),
         ),
 
-        const SizedBox(height: 8),
+        const SizedBox(height: 10),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -4144,7 +4144,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
     return GestureDetector(
       onTap: () => _selectWatchlistPair(p),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
         decoration: BoxDecoration(
           color: isSelected
               ? (p.isCore ? const Color(0xFFFEF3C7) : (p.isGold ? const Color(0xFFFDE68A) : const Color(0xFFDBEAFE)))
