@@ -3677,11 +3677,9 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
               children: [
                 Expanded(
                   flex: 5,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: leftChildren,
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: leftChildren,
                   ),
                 ),
                 const SizedBox(width: 12),
