@@ -6732,7 +6732,7 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
                     Expanded(
                       flex: 52,
                       child: Container(
-                        height: 120,
+                        height: isDesktop ? 120 : 168,
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           color: isDark
