@@ -6715,7 +6715,7 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('💡 概率论破局真相',
+                            Text('💡 概率论破局真相',
                                 style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold,
@@ -6723,7 +6723,7 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
                                         ? const Color(0xFFFCD34D)
                                         : const Color(0xFFB45309))),
                             const SizedBox(height: 6),
-                            const Text(
+                            Text(
                               '传统单轨交易最致命的心态痛点是浮盈 1.5R 却侧漏翻车扫损。而 DT 双轨战法通过 Trade 1 提前落袋保本 + Trade 2 零风险奔跑，将最大回撤显著压缩，从数学概率底层消灭爆仓！',
                               style: TextStyle(
                                   fontSize: 11,
