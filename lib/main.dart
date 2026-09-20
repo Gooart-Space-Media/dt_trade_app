@@ -2579,8 +2579,8 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
               ),
       ),
       const SizedBox(height: 12),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      Wrap(
+        alignment: WrapAlignment.spaceBetween, runSpacing: 6,
         children: [
           Text(
               isGoldMode
@@ -2768,8 +2768,8 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
             ),
 
       // 动态变速箱风控档位
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      Wrap(
+        alignment: WrapAlignment.spaceBetween, runSpacing: 6,
         children: [
           const Text('变速箱风控红线 (Risk %)',
               style: TextStyle(
@@ -4161,8 +4161,10 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Wrap(
+                    alignment: WrapAlignment.spaceBetween,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    runSpacing: 8,
                     children: [
                       const Text('🎯 黄金口袋 (Fib 50%~61.8% 绝杀狙击位)',
                           style: TextStyle(
@@ -4267,8 +4269,10 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
               padding: const EdgeInsets.all(10),
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  Wrap(
+                    alignment: WrapAlignment.spaceBetween,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    runSpacing: 8,
                     children: [
                       const Text('🚀 突破挂单入场 (含10pips假突破缓冲)',
                           style: TextStyle(
@@ -4363,8 +4367,10 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
             padding: const EdgeInsets.all(14),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  runSpacing: 8,
                   children: [
                     Text(
                       '💰 ${isDualTrack ? "双轨" : "单轨"}联动推荐手数 (本金 \$${userBalance.toStringAsFixed(0)} · 风控 $userRisk%)',
@@ -4383,8 +4389,10 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                   ],
                 ),
                 const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                Wrap(
+                  alignment: WrapAlignment.spaceAround,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  runSpacing: 12,
                   children: [
                     if (isDualTrack) ...[
                       Column(
@@ -4464,8 +4472,10 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  runSpacing: 8,
                   children: [
                     const Row(
                       children: [
@@ -4568,8 +4578,10 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  runSpacing: 8,
                   children: [
                     const Row(
                       children: [
@@ -4686,8 +4698,10 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  runSpacing: 8,
                   children: [
                     Row(
                       children: [
@@ -4900,8 +4914,9 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                runSpacing: 6,
                 children: [
                   Row(
                     children: [
@@ -4958,8 +4973,9 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                         color:
                             Theme.of(context).dividerColor.withOpacity(0.15)),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  child: Wrap(
+                    alignment: WrapAlignment.spaceAround,
+                    runSpacing: 6,
                     children: [
                       _buildStatCol('总挂单', '${_savedPlans.length}',
                           const Color(0xFFF59E0B)),
@@ -5075,8 +5091,9 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
               const Text('当价格跑赢 1:1 后，或者进入下一交易日，将止损移至前一日极值外加缓冲：',
                   style: TextStyle(fontSize: 11, color: Colors.grey)),
               const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                runSpacing: 6,
                 children: [
                   Text('做多防守 (昨日最低 - 15pips):',
                       style: const TextStyle(
@@ -5094,8 +5111,9 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                 ],
               ),
               const SizedBox(height: 4),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                runSpacing: 6,
                 children: [
                   Text('做空防守 (昨日最高 + 15pips):',
                       style: const TextStyle(
@@ -5562,8 +5580,9 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            runSpacing: 6,
             children: [
               Row(
                 children: [
@@ -5637,8 +5656,9 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
             ],
           ),
           const SizedBox(height: 4),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            runSpacing: 6,
             children: [
               Text('入场: ${item['entry']}',
                   style: const TextStyle(
@@ -5658,8 +5678,9 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
             ],
           ),
           const SizedBox(height: 4),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            runSpacing: 6,
             children: [
               Text(
                   (item['isDual'] ?? true)
@@ -5955,8 +5976,9 @@ $tscfSummary$checklistNote⚠️ 纪律红线：Set & Forget！挂单后绝不�
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                runSpacing: 6,
                 children: [
                   Expanded(
                     child: Text(title,
