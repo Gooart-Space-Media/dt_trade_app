@@ -1831,7 +1831,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
     final leftChildren = <Widget>[
         // Account Mode (XM Standard vs Micro)
         Container(
-          padding: const EdgeInsets.all(4),
+          padding: const EdgeInsets.all(2),
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(12),
@@ -1847,7 +1847,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
                     _saveParam('calc_is_micro', false);
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    padding: const EdgeInsets.symmetric(vertical: 6),
                     decoration: BoxDecoration(
                       color: !isMicroMode ? const Color(0xFFF59E0B) : Colors.transparent,
                       borderRadius: BorderRadius.circular(8),
@@ -1866,7 +1866,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
                     _saveParam('calc_is_micro', true);
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    padding: const EdgeInsets.symmetric(vertical: 6),
                     decoration: BoxDecoration(
                       color: isMicroMode ? const Color(0xFF059669) : Colors.transparent,
                       borderRadius: BorderRadius.circular(8),
@@ -2014,7 +2014,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
                     _saveParam('calc_risk', r);
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    padding: const EdgeInsets.symmetric(vertical: 6),
                     decoration: BoxDecoration(
                       color: selected ? (isGoldMode ? const Color(0xFFFEF3C7) : const Color(0xFFEFF6FF)) : Colors.transparent,
                       borderRadius: BorderRadius.circular(20),
@@ -2748,7 +2748,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
     final leftChildren = <Widget>[
         // 模式切换：突破挂单 vs 黄金口袋 Fib vs 极值突破
         Container(
-          padding: const EdgeInsets.all(4),
+          padding: const EdgeInsets.all(2),
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(12),
@@ -2760,7 +2760,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                 child: GestureDetector(
                   onTap: () { HapticFeedback.selectionClick(); setState(() { entryMode = 1; _saveState('tp_mode', 1); }); },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    padding: const EdgeInsets.symmetric(vertical: 6),
                     decoration: BoxDecoration(
                       color: entryMode == 1 ? const Color(0xFFD97706) : Colors.transparent,
                       borderRadius: BorderRadius.circular(8),
@@ -2773,7 +2773,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                 child: GestureDetector(
                   onTap: () { HapticFeedback.selectionClick(); setState(() { entryMode = 0; _saveState('tp_mode', 0); }); },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    padding: const EdgeInsets.symmetric(vertical: 6),
                     decoration: BoxDecoration(
                       color: entryMode == 0 ? const Color(0xFFF59E0B) : Colors.transparent,
                       borderRadius: BorderRadius.circular(8),
@@ -2786,7 +2786,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                 child: GestureDetector(
                   onTap: () { HapticFeedback.selectionClick(); setState(() { entryMode = 2; _saveState('tp_mode', 2); }); },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    padding: const EdgeInsets.symmetric(vertical: 6),
                     decoration: BoxDecoration(
                       color: entryMode == 2 ? const Color(0xFF9333EA) : Colors.transparent,
                       borderRadius: BorderRadius.circular(8),
@@ -2798,11 +2798,11 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
             ],
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 8),
         // Timeframe & Buy/Sell Toggle & Atlas Button
         Wrap(
           spacing: 12,
-          runSpacing: 12,
+          runSpacing: 6,
           crossAxisAlignment: WrapCrossAlignment.center,
           alignment: WrapAlignment.spaceBetween,
           children: [
@@ -2856,10 +2856,10 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
           ],
         ),
 
-        const SizedBox(height: 10),
+        const SizedBox(height: 6),
         // 当前选中品种高阶信息标牌
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
             color: currentPairInfo.isCore
                 ? const Color(0xFFFEF3C7).withOpacity(0.45)
@@ -2948,7 +2948,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
           children: displayedPairs.map((p) => _buildPairChipV2(p)).toList(),
         ),
 
-        const SizedBox(height: 12),
+        const SizedBox(height: 8),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -4144,7 +4144,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
     return GestureDetector(
       onTap: () => _selectWatchlistPair(p),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
           color: isSelected
               ? (p.isCore ? const Color(0xFFFEF3C7) : (p.isGold ? const Color(0xFFFDE68A) : const Color(0xFFDBEAFE)))
