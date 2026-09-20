@@ -1782,6 +1782,8 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
 
   Widget _buildTierButton(String title, String subtitle, String pairs, {double? width}) {
     bool active = activePair == title;
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
+    
     return GestureDetector(
       onTap: () {
         HapticFeedback.selectionClick();
@@ -1797,19 +1799,24 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
         margin: const EdgeInsets.only(right: 6, bottom: 6),
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
         decoration: BoxDecoration(
-          color: active ? const Color(0xFFFEF3C7) : Colors.transparent,
-          border: Border.all(color: active ? const Color(0xFFF59E0B) : Colors.grey.shade300),
+          color: active 
+              ? (isDark ? const Color(0xFFF59E0B).withOpacity(0.2) : const Color(0xFFFEF3C7)) 
+              : Colors.transparent,
+          border: Border.all(
+              color: active 
+                  ? const Color(0xFFF59E0B) 
+                  : Theme.of(context).dividerColor.withOpacity(0.3)),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(title, style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: active ? const Color(0xFFD97706) : Colors.blueGrey)),
+            Text(title, style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: active ? const Color(0xFFF59E0B) : (isDark ? Colors.grey.shade300 : Colors.blueGrey))),
             const SizedBox(height: 2),
-            Text(subtitle, style: TextStyle(fontSize: 9, color: active ? const Color(0xFFD97706).withOpacity(0.8) : Colors.grey)),
+            Text(subtitle, style: TextStyle(fontSize: 9, color: active ? const Color(0xFFF59E0B).withOpacity(0.8) : (isDark ? Colors.grey.shade500 : Colors.grey))),
             const SizedBox(height: 8),
-            Text(pairs.replaceAll('\n', ' '), style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: active ? const Color(0xFFD97706) : Colors.grey.shade600)),
+            Text(pairs.replaceAll('\n', ' '), style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: active ? const Color(0xFFF59E0B) : (isDark ? Colors.grey.shade400 : Colors.grey.shade600))),
           ],
         ),
       ),
