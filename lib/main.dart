@@ -2552,7 +2552,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
                           width: null)),
                   Expanded(
                       child: _buildTierButton(
-                          '👑 独立品种', '美黄金 (0.1$ = 1Pip)', 'XAUUSD',
+                          '👑 独立品种', '美黄金 (0.1\$ = 1Pip)', 'XAUUSD',
                           width: null)),
                 ],
               )
@@ -2572,7 +2572,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
                         width: 200),
                     _buildTierButton('⚠️ 第四梯队', '点值溢价 (警惕微超)', 'USDCHF, EURGBP',
                         width: 200),
-                    _buildTierButton('👑 独立品种', '美黄金 (0.1$ = 1Pip)', 'XAUUSD',
+                    _buildTierButton('👑 独立品种', '美黄金 (0.1\$ = 1Pip)', 'XAUUSD',
                         width: 160),
                   ],
                 ),
@@ -2584,7 +2584,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
         children: [
           Text(
               isGoldMode
-                  ? '黄金点值: 0.1$ 波动 = 1 Pip'
+                  ? '黄金点值: 0.1\$ 波动 = 1 Pip'
                   : '外汇点值: 0.01手 ≈ \$0.10/Pip',
               style: const TextStyle(
                   fontSize: 11,
