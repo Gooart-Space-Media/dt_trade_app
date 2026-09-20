@@ -6291,7 +6291,7 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
               icon: Icons.insights,
               title: '蒙特卡洛 12 个月复利与走势演练',
               desc: '用客观概率打破赌徒侥幸心理。模拟连续12个月后资金曲线，直观感受风控红线的威力和回撤规律。',
-              color: const Color(0xFFE11D48),
+              color: const Color(0xFFF59E0B), // 统一品牌金色
               isDesktop: isDesktop,
             ),
             const SizedBox(height: 12),
@@ -6533,7 +6533,7 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
                 child: Row(
                   children: [
                     const Icon(Icons.compare_arrows,
-                        color: Colors.blueAccent, size: 20),
+                        color: const Color(0xFF64748B), size: 20),
                     const SizedBox(width: 8),
                     const Expanded(
                         child: Text('双轨分仓 vs 传统单轨 12个月实战对比',
@@ -6557,18 +6557,18 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                color: Colors.blueAccent.withOpacity(0.08),
+                color: const Color(0xFF64748B).withOpacity(0.08),
                 child: Row(
                   children: [
                     const Icon(Icons.check_circle,
-                        color: Colors.blueAccent, size: 16),
+                        color: const Color(0xFF64748B), size: 16),
                     const SizedBox(width: 6),
                     Expanded(
                       child: Text(
                         '演练生效参数：单笔总风控 ${riskPct.toStringAsFixed(0)}% (\$${riskAmount.toStringAsFixed(0)}) - DT双轨拆分为 2x${(riskPct / 2).toStringAsFixed(1)}% (各\$${(riskAmount / 2).toStringAsFixed(0)}) · 初始本金 \$${startBal.toStringAsFixed(0)} (≈ RM ${(startBal * 4.5).toStringAsFixed(0)})',
                         style: const TextStyle(
                             fontSize: 12,
-                            color: Colors.blueAccent,
+                            color: const Color(0xFF64748B),
                             fontWeight: FontWeight.w600),
                       ),
                     ),
@@ -6611,7 +6611,7 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
                               drawdown: simResult!['stDrawdown'],
                               blowRate: simResult!['stBlowRate'],
                               maxStreak: simResult!['stMaxStreak'],
-                              color: const Color(0xFF8B5CF6),
+                              color: const Color(0xFF64748B),
                               isBlownUp: simResult!['stBlownUp'],
                               isDark: isDark,
                             ),
@@ -6647,7 +6647,7 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
                             drawdown: simResult!['stDrawdown'],
                             blowRate: simResult!['stBlowRate'],
                             maxStreak: simResult!['stMaxStreak'],
-                            color: const Color(0xFF8B5CF6),
+                            color: const Color(0xFF64748B),
                             isBlownUp: simResult!['stBlownUp'],
                             isDark: isDark,
                           ),
@@ -6687,7 +6687,7 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
                                 fontWeight: FontWeight.bold))),
                     _buildLegend(const Color(0xFF10B981), '双轨分仓'),
                     const SizedBox(width: 12),
-                    _buildLegend(const Color(0xFF8B5CF6), '传统单轨'),
+                    _buildLegend(const Color(0xFF64748B), '传统单轨'),
                   ],
                 ),
               ),
@@ -6703,9 +6703,14 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 8),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFEEF2FF),
+                          color: isDark
+                              ? const Color(0xFF1E293B)
+                              : const Color(0xFFFFFBEB),
                           borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: const Color(0xFFC7D2FE)),
+                          border: Border.all(
+                              color: isDark
+                                  ? const Color(0xFF334155)
+                                  : const Color(0xFFFDE68A)),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -6714,13 +6719,17 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
                                 style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold,
-                                    color: Color(0xFF312E81))),
+                                    color: isDark
+                                        ? const Color(0xFFFCD34D)
+                                        : const Color(0xFFB45309))),
                             const SizedBox(height: 6),
                             const Text(
                               '传统单轨交易最致命的心态痛点是浮盈 1.5R 却侧漏翻车扫损。而 DT 双轨战法通过 Trade 1 提前落袋保本 + Trade 2 零风险奔跑，将最大回撤显著压缩，从数学概率底层消灭爆仓！',
                               style: TextStyle(
                                   fontSize: 11,
-                                  color: Color(0xFF312E81),
+                                  color: isDark
+                                      ? const Color(0xFFFCD34D)
+                                      : const Color(0xFFB45309),
                                   height: 1.5),
                             ),
                           ],
@@ -7202,7 +7211,7 @@ class DualEquityCurvePainter extends CustomPainter {
 
     drawLine(
         stPoints,
-        stBlownUp ? const Color(0xFFEF4444) : const Color(0xFF8B5CF6),
+        stBlownUp ? const Color(0xFFEF4444) : const Color(0xFF64748B),
         stBlownUp);
     drawLine(
         dtPoints,
