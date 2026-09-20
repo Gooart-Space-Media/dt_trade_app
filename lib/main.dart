@@ -2948,8 +2948,6 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
           children: displayedPairs.map((p) => _buildPairChipV2(p)).toList(),
         ),
 
-        _buildMantraCard(context),
-
         const SizedBox(height: 12),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -3002,13 +3000,13 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
           ],
         ),
         
-        _buildBlueprintCard(context),
-        
         const SizedBox(height: 16),
 
     ];
 
     final rightChildren = <Widget>[
+        _buildMantraCard(context),
+        _buildBlueprintCard(context),
         if (hasData) ...[
           if (entryMode == 1) ...[
             // 黄金口袋 Fib 5618 狙击结果
