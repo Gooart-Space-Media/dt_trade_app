@@ -299,10 +299,9 @@ class _MainScreenState extends State<MainScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Wrap(
-                      alignment: WrapAlignment.spaceBetween,
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      runSpacing: 4,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Expanded(
                           child: Row(
@@ -6096,9 +6095,8 @@ $tscfSummary$checklistNote⚠️ 纪律红线：Set & Forget！挂单后绝不�
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Wrap(
-                alignment: WrapAlignment.spaceBetween,
-                runSpacing: 6,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: Text(title,
@@ -7134,7 +7132,9 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
   }
 
   Widget _statItem(String label, String value, Color valueColor) {
-    return Wrap(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
       alignment: WrapAlignment.spaceBetween,
       crossAxisAlignment: WrapCrossAlignment.center,
       runSpacing: 4,
@@ -7150,7 +7150,9 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
   }
 
   Widget _row(String label, String value, Color vColor) {
-    return Wrap(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
       alignment: WrapAlignment.spaceBetween,
       crossAxisAlignment: WrapCrossAlignment.center,
       runSpacing: 4,
