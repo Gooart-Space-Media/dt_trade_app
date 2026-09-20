@@ -6831,7 +6831,8 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
                                         fontSize: 11,
                                         fontWeight: FontWeight.bold,
                                         color: textColor)),
-                                Row(
+                                Wrap(
+                                  crossAxisAlignment: WrapCrossAlignment.center,
                                   children: [
                                     Text(textStr,
                                         style: TextStyle(
@@ -7056,29 +7057,40 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
       required String desc,
       required Color color}) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
         color: color.withOpacity(0.08),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(color: color.withOpacity(0.2)),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 20, color: color),
+          Padding(
+            padding: const EdgeInsets.only(top: 2.0),
+            child: Icon(icon, size: 20, color: color),
+          ),
           const SizedBox(width: 8),
-          Text(title,
-              style: TextStyle(
-                  fontSize: 13, fontWeight: FontWeight.bold, color: color)),
-          if (desc.isNotEmpty) ...[
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(desc,
-                  style: TextStyle(
-                      fontSize: 11,
-                      color: color.withOpacity(0.85),
-                      height: 1.3)),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title,
+                    style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: color)),
+                if (desc.isNotEmpty) ...[
+                  const SizedBox(height: 4),
+                  Text(desc,
+                      style: TextStyle(
+                          fontSize: 11,
+                          color: color.withOpacity(0.85),
+                          height: 1.3)),
+                ],
+              ],
             ),
-          ],
+          ),
         ],
       ),
     );
