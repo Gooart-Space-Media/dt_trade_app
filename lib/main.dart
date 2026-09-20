@@ -304,6 +304,7 @@ class _MainScreenState extends State<MainScreen> {
                       children: [
                         Expanded(
                           child: Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(emoji, style: const TextStyle(fontSize: 18)),
                               const SizedBox(width: 8),
@@ -1081,6 +1082,7 @@ void showWatchlistAtlasDialog(BuildContext context,
               runSpacing: 4,
               children: [
                 const Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(Icons.radar_rounded,
                         color: Color(0xFFF59E0B), size: 22),
@@ -1496,6 +1498,7 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
                         style: TextStyle(
                             fontSize: 12, fontWeight: FontWeight.bold)),
                     Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         TextButton.icon(
                           style: TextButton.styleFrom(
@@ -4034,6 +4037,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                 children: [
                   Row(
                     mainAxisSize: MainAxisSize.min,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
                         '${currentPairInfo.symbol} (${currentPairInfo.chineseName})',
@@ -4496,6 +4500,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                   runSpacing: 8,
                   children: [
                     const Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(Icons.shield_outlined,
                             size: 18, color: Color(0xFF059669)),
@@ -4602,6 +4607,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                   runSpacing: 8,
                   children: [
                     const Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(Icons.radar_rounded,
                             size: 18, color: Color(0xFFF59E0B)),
@@ -4722,6 +4728,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                   runSpacing: 8,
                   children: [
                     Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(
                             _allChecked
@@ -4937,6 +4944,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                 runSpacing: 6,
                 children: [
                   Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       const Icon(Icons.menu_book_rounded,
                           size: 18, color: Color(0xFFF59E0B)),
@@ -5603,6 +5611,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
             runSpacing: 6,
             children: [
               Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
                     padding:
