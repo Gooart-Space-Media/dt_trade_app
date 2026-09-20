@@ -4037,7 +4037,6 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                 children: [
                   Row(
                     mainAxisSize: MainAxisSize.min,
-                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
                         '${currentPairInfo.symbol} (${currentPairInfo.chineseName})',
