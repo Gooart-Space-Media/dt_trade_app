@@ -43,7 +43,7 @@ jobs:
           path: build/app/outputs/flutter-apk/app-release.apk
 
   build_windows:
-    name: Build Windows Exe
+    name: Build Windows Installer
     runs-on: windows-latest
     steps:
       - name: Checkout Code
@@ -60,14 +60,14 @@ jobs:
       - name: Build Windows
         run: flutter build windows --release
 
-      - name: Zip Windows Build
-        run: Compress-Archive -Path build\windows\x64\runner\Release\* -DestinationPath dt_trade_app_windows.zip
+      - name: Build Installer with Inno Setup
+        run: iscc installer.iss
 
-      - name: Upload Windows Artifact
+      - name: Upload Installer Artifact
         uses: actions/upload-artifact@v4
         with:
           name: release-windows
-          path: dt_trade_app_windows.zip
+          path: dt_trade_app_setup.exe
 
   create_release:
     name: Create GitHub Release
@@ -82,7 +82,7 @@ jobs:
         with:
           name: release-apk
 
-      - name: Download Windows Zip
+      - name: Download Windows Installer
         uses: actions/download-artifact@v4
         with:
           name: release-windows
@@ -95,10 +95,18 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v1.0.0-${{ env.date }}
-          name: "Latest Auto-Build (v1.0.0-${{ env.date }})"
-          body: "🚀 自动编译的最新版本。\n\n- **Android**: 下载 `app-release.apk` 并在手机上安装。\n- **Windows**: 下载 `dt_trade_app_windows.zip`，解压后双击 `.exe` 文件运行。"
+          name: "双轨风控大师 Pro (v1.0.0-${{ env.date }})"
+          body: |
+            🚀 自动编译的最新版本
+
+            ## 📱 Android
+            下载 `app-release.apk`，传到手机上安装即可。
+
+            ## 💻 Windows
+            下载 `dt_trade_app_setup.exe`，双击运行安装程序，按向导安装。
+            安装后会自动在桌面创建快捷方式。
           files: |
             app-release.apk
-            dt_trade_app_windows.zip
+            dt_trade_app_setup.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
