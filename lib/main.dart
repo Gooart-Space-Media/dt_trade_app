@@ -297,8 +297,10 @@ class _MainScreenState extends State<MainScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Wrap(
+                      alignment: WrapAlignment.spaceBetween,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      runSpacing: 4,
                       children: [
                         Expanded(
                           child: Row(
@@ -360,8 +362,10 @@ class _MainScreenState extends State<MainScreen> {
                       ],
                     ),
                     const SizedBox(height: 12),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Wrap(
+                      alignment: WrapAlignment.spaceBetween,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      runSpacing: 4,
                       children: [
                         Text(subLeft,
                             style: const TextStyle(
@@ -1071,8 +1075,10 @@ void showWatchlistAtlasDialog(BuildContext context,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              runSpacing: 4,
               children: [
                 const Row(
                   children: [
@@ -1420,8 +1426,10 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                runSpacing: 4,
                 children: [
                   const Text('🚫 坚决规避的毒药品种 (The Avoid List)',
                       style: TextStyle(
@@ -1479,8 +1487,10 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
             child: ListView(
               padding: const EdgeInsets.all(10),
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  runSpacing: 4,
                   children: [
                     const Text('🛡️ 多单并行防呆与自审',
                         style: TextStyle(
@@ -2316,8 +2326,10 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Wrap(
+                          alignment: WrapAlignment.spaceBetween,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          runSpacing: 4,
                           children: [
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -2580,7 +2592,8 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
       ),
       const SizedBox(height: 12),
       Wrap(
-        alignment: WrapAlignment.spaceBetween, runSpacing: 6,
+        alignment: WrapAlignment.spaceBetween,
+        runSpacing: 6,
         children: [
           Text(
               isGoldMode
@@ -2633,8 +2646,10 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Wrap(
+                        alignment: WrapAlignment.spaceBetween,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        runSpacing: 4,
                         children: [
                           const Text('汇率 (MYR)',
                               style: TextStyle(
@@ -2715,8 +2730,10 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          Wrap(
+                            alignment: WrapAlignment.spaceBetween,
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            runSpacing: 4,
                             children: [
                               const Text('汇率',
                                   style: TextStyle(
@@ -2769,7 +2786,8 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
 
       // 动态变速箱风控档位
       Wrap(
-        alignment: WrapAlignment.spaceBetween, runSpacing: 6,
+        alignment: WrapAlignment.spaceBetween,
+        runSpacing: 6,
         children: [
           const Text('变速箱风控红线 (Risk %)',
               style: TextStyle(
@@ -6767,8 +6785,10 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
                               border: Border.all(color: borderColor)),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            child: Wrap(
+                              alignment: WrapAlignment.spaceBetween,
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              runSpacing: 4,
                               children: [
                                 Text('月',
                                     style: TextStyle(
@@ -6965,8 +6985,10 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
   }
 
   Widget _statItem(String label, String value, Color valueColor) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Wrap(
+      alignment: WrapAlignment.spaceBetween,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      runSpacing: 4,
       children: [
         Flexible(
             child: Text(label,
@@ -6979,8 +7001,10 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
   }
 
   Widget _row(String label, String value, Color vColor) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Wrap(
+      alignment: WrapAlignment.spaceBetween,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      runSpacing: 4,
       children: [
         Text(label, style: const TextStyle(fontSize: 10, color: Colors.grey)),
         Text(value,
