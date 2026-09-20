@@ -50,7 +50,11 @@ class _EngulfingMasterAppState extends State<EngulfingMasterApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: '双轨风控大师 Pro · 吞没战法指挥部',
-      builder: (context, child) => MediaQuery(data: MediaQuery.of(context).copyWith(textScaler: const TextScaler.linear(1.12)), child: child!),      debugShowCheckedModeBanner: false,
+      builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: const TextScaler.linear(1.12)),
+          child: child!),
+      debugShowCheckedModeBanner: false,
       themeMode: _themeMode,
       theme: ThemeData(
         useMaterial3: true,
@@ -84,7 +88,8 @@ class _EngulfingMasterAppState extends State<EngulfingMasterApp> {
           ),
         ),
       ),
-      home: MainScreen(toggleTheme: _toggleTheme, isDark: _themeMode == ThemeMode.dark),
+      home: MainScreen(
+          toggleTheme: _toggleTheme, isDark: _themeMode == ThemeMode.dark),
     );
   }
 }
@@ -93,7 +98,8 @@ class MainScreen extends StatefulWidget {
   final VoidCallback toggleTheme;
   final bool isDark;
 
-  const MainScreen({super.key, required this.toggleTheme, required this.isDark});
+  const MainScreen(
+      {super.key, required this.toggleTheme, required this.isDark});
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -204,21 +210,26 @@ class _MainScreenState extends State<MainScreen> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setModalState) {
             // Get current time
-            final now = DateTime.now().toUtc().add(const Duration(hours: 8)); // MYT is UTC+8
+            final now = DateTime.now()
+                .toUtc()
+                .add(const Duration(hours: 8)); // MYT is UTC+8
             final h = now.hour;
             final m = now.minute;
             final totalMinutes = h * 60 + m;
 
             // Helper to determine status and countdown
-            Map<String, dynamic> getSessionData(int startH, int startM, int endH, int endM, bool crossesMidnight) {
+            Map<String, dynamic> getSessionData(int startH, int startM,
+                int endH, int endM, bool crossesMidnight) {
               int startTotal = startH * 60 + startM;
               int endTotal = endH * 60 + endM;
-              
+
               bool isActive = false;
               if (crossesMidnight) {
-                isActive = totalMinutes >= startTotal || totalMinutes < endTotal;
+                isActive =
+                    totalMinutes >= startTotal || totalMinutes < endTotal;
               } else {
-                isActive = totalMinutes >= startTotal && totalMinutes < endTotal;
+                isActive =
+                    totalMinutes >= startTotal && totalMinutes < endTotal;
               }
 
               String countdown = '';
@@ -238,7 +249,7 @@ class _MainScreenState extends State<MainScreen> {
                 int dm = diff % 60;
                 countdown = '距开盘还有 ${dh}h${dm.toString().padLeft(2, '0')}m';
               }
-              
+
               return {
                 'active': isActive,
                 'countdown': countdown,
@@ -247,11 +258,20 @@ class _MainScreenState extends State<MainScreen> {
 
             final sydney = getSessionData(5, 0, 14, 0, false);
             final tokyo = getSessionData(8, 0, 17, 0, false);
-            final london = getSessionData(15, 0, 0, 0, true); // 15:00 to 24:00 (00:00)
+            final london =
+                getSessionData(15, 0, 0, 0, true); // 15:00 to 24:00 (00:00)
             final newYork = getSessionData(20, 0, 5, 0, true);
-            final overlap = getSessionData(20, 30, 0, 0, true); // 20:30 to 24:00
+            final overlap =
+                getSessionData(20, 30, 0, 0, true); // 20:30 to 24:00
 
-            Widget buildCard(String title, String emoji, String timeRange, String subLeft, String desc, List<String> chips, Map<String, dynamic> data) {
+            Widget buildCard(
+                String title,
+                String emoji,
+                String timeRange,
+                String subLeft,
+                String desc,
+                List<String> chips,
+                Map<String, dynamic> data) {
               bool active = data['active'];
               return Container(
                 margin: const EdgeInsets.only(bottom: 12),
@@ -260,10 +280,19 @@ class _MainScreenState extends State<MainScreen> {
                   color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: active ? const Color(0xFFF59E0B) : Theme.of(context).dividerColor.withOpacity(0.2),
+                    color: active
+                        ? const Color(0xFFF59E0B)
+                        : Theme.of(context).dividerColor.withOpacity(0.2),
                     width: active ? 1.5 : 1.0,
                   ),
-                  boxShadow: active ? [BoxShadow(color: const Color(0xFFF59E0B).withOpacity(0.1), blurRadius: 8, spreadRadius: 1)] : [],
+                  boxShadow: active
+                      ? [
+                          BoxShadow(
+                              color: const Color(0xFFF59E0B).withOpacity(0.1),
+                              blurRadius: 8,
+                              spreadRadius: 1)
+                        ]
+                      : [],
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -278,12 +307,17 @@ class _MainScreenState extends State<MainScreen> {
                               const SizedBox(width: 8),
                               Expanded(
                                 child: Text.rich(
-                                  TextSpan(
-                                    children: [
-                                      TextSpan(text: title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-                                      TextSpan(text: '  $timeRange', style: const TextStyle(fontSize: 11, color: Colors.grey)),
-                                    ]
-                                  ),
+                                  TextSpan(children: [
+                                    TextSpan(
+                                        text: title,
+                                        style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(
+                                        text: '  $timeRange',
+                                        style: const TextStyle(
+                                            fontSize: 11, color: Colors.grey)),
+                                  ]),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
@@ -291,9 +325,12 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            color: active ? const Color(0xFF16A34A).withOpacity(0.1) : Colors.grey.withOpacity(0.1),
+                            color: active
+                                ? const Color(0xFF16A34A).withOpacity(0.1)
+                                : Colors.grey.withOpacity(0.1),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Row(
@@ -304,11 +341,19 @@ class _MainScreenState extends State<MainScreen> {
                                 height: 8,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: active ? const Color(0xFF16A34A) : Colors.grey,
+                                  color: active
+                                      ? const Color(0xFF16A34A)
+                                      : Colors.grey,
                                 ),
                               ),
                               const SizedBox(width: 6),
-                              Text(active ? '交易中' : '休盘中', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: active ? const Color(0xFF16A34A) : Colors.grey)),
+                              Text(active ? '交易中' : '休盘中',
+                                  style: TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.bold,
+                                      color: active
+                                          ? const Color(0xFF16A34A)
+                                          : Colors.grey)),
                             ],
                           ),
                         ),
@@ -318,28 +363,46 @@ class _MainScreenState extends State<MainScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(subLeft, style: const TextStyle(fontSize: 11, color: Colors.grey)),
-                        Text(data['countdown'], style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: active ? const Color(0xFFD97706) : Colors.grey)),
+                        Text(subLeft,
+                            style: const TextStyle(
+                                fontSize: 11, color: Colors.grey)),
+                        Text(data['countdown'],
+                            style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                color: active
+                                    ? const Color(0xFFD97706)
+                                    : Colors.grey)),
                       ],
                     ),
                     const SizedBox(height: 8),
-                    Text(desc, style: const TextStyle(fontSize: 12, height: 1.4)),
+                    Text(desc,
+                        style: const TextStyle(fontSize: 12, height: 1.4)),
                     const SizedBox(height: 12),
                     Row(
                       children: [
-                        const Text('推荐品种: ', style: TextStyle(fontSize: 10, color: Colors.grey)),
+                        const Text('推荐品种: ',
+                            style: TextStyle(fontSize: 10, color: Colors.grey)),
                         Expanded(
                           child: Wrap(
                             spacing: 6,
                             runSpacing: 6,
-                            children: chips.map((c) => Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey.withOpacity(0.3)),
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: Text(c, style: const TextStyle(fontSize: 10, color: Colors.grey)),
-                            )).toList(),
+                            children: chips
+                                .map((c) => Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 6, vertical: 2),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color:
+                                                Colors.grey.withOpacity(0.3)),
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: Text(c,
+                                          style: const TextStyle(
+                                              fontSize: 10,
+                                              color: Colors.grey)),
+                                    ))
+                                .toList(),
                           ),
                         ),
                       ],
@@ -353,7 +416,8 @@ class _MainScreenState extends State<MainScreen> {
               height: MediaQuery.of(context).size.height * 0.85,
               decoration: BoxDecoration(
                 color: Theme.of(context).scaffoldBackgroundColor,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(20)),
               ),
               child: Column(
                 children: [
@@ -374,22 +438,29 @@ class _MainScreenState extends State<MainScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
                       children: [
-                        const Icon(Icons.radar_rounded, color: Color(0xFFF59E0B), size: 20),
+                        const Icon(Icons.radar_rounded,
+                            color: Color(0xFFF59E0B), size: 20),
                         const SizedBox(width: 8),
                         const Expanded(
                           child: Text(
                             '全球四大外汇盘口实时时钟与伦纽重叠雷达',
-                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.bold),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
                             color: const Color(0xFFEFF6FF),
                             borderRadius: BorderRadius.circular(4),
                           ),
-                          child: const Text('MYT (GMT+8)', style: TextStyle(fontSize: 10, color: Color(0xFFF59E0B), fontWeight: FontWeight.bold)),
+                          child: const Text('MYT (GMT+8)',
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  color: Color(0xFFF59E0B),
+                                  fontWeight: FontWeight.bold)),
                         ),
                       ],
                     ),
@@ -398,48 +469,86 @@ class _MainScreenState extends State<MainScreen> {
                     padding: EdgeInsets.fromLTRB(20, 8, 20, 12),
                     child: Text(
                       '根据 Notion 货币对最佳时段研究，严格在活跃流动性窗口做单，杜绝垃圾时段噪音损耗：',
-                      style: TextStyle(fontSize: 11, color: Colors.grey, height: 1.4),
+                      style: TextStyle(
+                          fontSize: 11, color: Colors.grey, height: 1.4),
                     ),
                   ),
-                  Divider(height: 1, color: Theme.of(context).dividerColor.withOpacity(0.1)),
+                  Divider(
+                      height: 1,
+                      color: Theme.of(context).dividerColor.withOpacity(0.1)),
                   // List
                   Expanded(
                     child: ListView(
                       padding: const EdgeInsets.all(16),
                       children: [
                         buildCard(
-                          '悉尼盘 (Sydney)', '🌏', '05:00 - 14:00',
+                          '悉尼盘 (Sydney)',
+                          '🌏',
+                          '05:00 - 14:00',
                           '悉尼 / 惠灵顿',
                           '全天最早开市，澳纽商品直盘与兄弟交叉盘平缓启动，波动偏温和',
                           ['AUDUSD 澳美', 'AUDNZD 澳纽', 'NZDUSD 纽美'],
                           sydney,
                         ),
                         buildCard(
-                          '东京/亚洲盘 (Tokyo)', '🗾', '08:00 - 17:00',
+                          '东京/亚洲盘 (Tokyo)',
+                          '🗾',
+                          '08:00 - 17:00',
                           '东京 / 香港 / 新加坡',
                           '日元利差交易核心主场，中国宏观数据多在此刻公布，常奠定全天底色',
-                          ['USDJPY 美日', 'EURJPY 欧日', 'GBPJPY 镑日', 'AUDJPY 澳日', 'AUDUSD 澳美'],
+                          [
+                            'USDJPY 美日',
+                            'EURJPY 欧日',
+                            'GBPJPY 镑日',
+                            'AUDJPY 澳日',
+                            'AUDUSD 澳美'
+                          ],
                           tokyo,
                         ),
                         buildCard(
-                          '伦敦盘 (London)', '🏰', '15:00 - 00:00',
+                          '伦敦盘 (London)',
+                          '🏰',
+                          '15:00 - 00:00',
                           '伦敦 / 法兰克福',
                           '欧洲大资金疯狂涌入，全球外汇成交中枢，突破形态首波引爆期',
-                          ['EURUSD 欧美', 'GBPUSD 镑美', 'EURJPY 欧日', 'GBPJPY 镑日', 'EURGBP 欧镑'],
+                          [
+                            'EURUSD 欧美',
+                            'GBPUSD 镑美',
+                            'EURJPY 欧日',
+                            'GBPJPY 镑日',
+                            'EURGBP 欧镑'
+                          ],
                           london,
                         ),
                         buildCard(
-                          '纽约盘 (New York)', '🗽', '20:00 - 05:00',
+                          '纽约盘 (New York)',
+                          '🗽',
+                          '20:00 - 05:00',
                           '纽约 / 多伦多',
                           '美联储与大宗商品主导，非农/CPI/利率决议重磅数据多在美盘爆发',
-                          ['EURUSD 欧美', 'GBPUSD 镑美', 'USDCAD 美加', 'USDJPY 美日', 'XAUUSD 现货黄金'],
+                          [
+                            'EURUSD 欧美',
+                            'GBPUSD 镑美',
+                            'USDCAD 美加',
+                            'USDJPY 美日',
+                            'XAUUSD 现货黄金'
+                          ],
                           newYork,
                         ),
                         buildCard(
-                          '伦纽黄金重叠期 (Overlap)', '🔥', '20:30 - 00:00',
+                          '伦纽黄金重叠期 (Overlap)',
+                          '🔥',
+                          '20:30 - 00:00',
                           '伦敦 + 纽约 双核共振',
                           '全天波动与流动性巅峰！7大核心直盘与现货黄金全面爆发，触碰 1:1 TP1 止盈并推保本的关键时段',
-                          ['EURUSD 欧美', 'GBPUSD 镑美', 'USDJPY 美日', 'USDCAD 美加', 'XAUUSD 现货黄金', 'GBPJPY 镑日'],
+                          [
+                            'EURUSD 欧美',
+                            'GBPUSD 镑美',
+                            'USDJPY 美日',
+                            'USDCAD 美加',
+                            'XAUUSD 现货黄金',
+                            'GBPJPY 镑日'
+                          ],
                           overlap,
                         ),
                         const SizedBox(height: 20),
@@ -457,7 +566,8 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget build(BuildContext context) {
     final session = _getSessionInfo();
-    final timeStr = "${_myTime.hour.toString().padLeft(2, '0')}:${_myTime.minute.toString().padLeft(2, '0')}";
+    final timeStr =
+        "${_myTime.hour.toString().padLeft(2, '0')}:${_myTime.minute.toString().padLeft(2, '0')}";
 
     return Scaffold(
       appBar: AppBar(
@@ -465,10 +575,12 @@ class _MainScreenState extends State<MainScreen> {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(6),
-              child: Image.asset('assets/logo.png', width: 26, height: 26, fit: BoxFit.cover),
+              child: Image.asset('assets/logo.png',
+                  width: 26, height: 26, fit: BoxFit.cover),
             ),
             const SizedBox(width: 8),
-            const Text('双轨风控大师 Pro', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            const Text('双轨风控大师 Pro',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           ],
         ),
         actions: [
@@ -481,7 +593,9 @@ class _MainScreenState extends State<MainScreen> {
             },
           ),
           IconButton(
-            icon: Icon(widget.isDark ? Icons.light_mode_rounded : Icons.dark_mode_rounded),
+            icon: Icon(widget.isDark
+                ? Icons.light_mode_rounded
+                : Icons.dark_mode_rounded),
             tooltip: '切换明暗模式',
             onPressed: () {
               HapticFeedback.lightImpact();
@@ -502,35 +616,67 @@ class _MainScreenState extends State<MainScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
                 color: (session['color'] as Color).withOpacity(0.08),
-                border: Border(bottom: BorderSide(color: (session['color'] as Color).withOpacity(0.2))),
+                border: Border(
+                    bottom: BorderSide(
+                        color: (session['color'] as Color).withOpacity(0.2))),
               ),
               child: Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
                       color: session['color'] as Color,
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    child: Text('MY ${timeStr}', style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.bold)),
+                    child: Text('MY ${timeStr}',
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold)),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: LayoutBuilder(
                       builder: (context, constraints) {
                         final topRowChildren = [
-                          Text(session['status'] as String, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Theme.of(context).brightness == Brightness.dark && (session['color'] as Color == const Color(0xFF475569) || session['color'] as Color == const Color(0xFF64748B)) ? Colors.white70 : session['color'] as Color)),
+                          Text(session['status'] as String,
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).brightness ==
+                                              Brightness.dark &&
+                                          (session['color'] as Color ==
+                                                  const Color(0xFF475569) ||
+                                              session['color'] as Color ==
+                                                  const Color(0xFF64748B))
+                                      ? Colors.white70
+                                      : session['color'] as Color)),
                           const SizedBox(width: 6),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 1),
                             decoration: BoxDecoration(
-                              color: (session['color'] as Color).withOpacity(0.12),
+                              color:
+                                  (session['color'] as Color).withOpacity(0.12),
                               borderRadius: BorderRadius.circular(4),
-                              border: Border.all(color: (session['color'] as Color).withOpacity(0.25)),
+                              border: Border.all(
+                                  color: (session['color'] as Color)
+                                      .withOpacity(0.25)),
                             ),
                             child: Text(
                               session['countdown'] as String,
-                              style: TextStyle(fontSize: 9, fontWeight: FontWeight.w700, color: Theme.of(context).brightness == Brightness.dark && (session['color'] as Color == const Color(0xFF475569) || session['color'] as Color == const Color(0xFF64748B)) ? Colors.white70 : session['color'] as Color),
+                              style: TextStyle(
+                                  fontSize: 9,
+                                  fontWeight: FontWeight.w700,
+                                  color: Theme.of(context).brightness ==
+                                              Brightness.dark &&
+                                          (session['color'] as Color ==
+                                                  const Color(0xFF475569) ||
+                                              session['color'] as Color ==
+                                                  const Color(0xFF64748B))
+                                      ? Colors.white70
+                                      : session['color'] as Color),
                             ),
                           ),
                         ];
@@ -541,7 +687,20 @@ class _MainScreenState extends State<MainScreen> {
                               ...topRowChildren,
                               const SizedBox(width: 12),
                               Expanded(
-                                child: Text(session['desc'] as String, style: TextStyle(fontSize: 10, color: Theme.of(context).brightness == Brightness.dark && (session['color'] as Color == const Color(0xFF475569) || session['color'] as Color == const Color(0xFF64748B)) ? Colors.white60 : (session['color'] as Color).withOpacity(0.85)), overflow: TextOverflow.ellipsis),
+                                child: Text(session['desc'] as String,
+                                    style: TextStyle(
+                                        fontSize: 10,
+                                        color: Theme.of(context).brightness ==
+                                                    Brightness.dark &&
+                                                (session['color'] as Color ==
+                                                        const Color(
+                                                            0xFF475569) ||
+                                                    session['color'] as Color ==
+                                                        const Color(0xFF64748B))
+                                            ? Colors.white60
+                                            : (session['color'] as Color)
+                                                .withOpacity(0.85)),
+                                    overflow: TextOverflow.ellipsis),
                               ),
                             ],
                           );
@@ -551,7 +710,19 @@ class _MainScreenState extends State<MainScreen> {
                             children: [
                               Row(children: topRowChildren),
                               const SizedBox(height: 2),
-                              Text(session['desc'] as String, style: TextStyle(fontSize: 10, color: Theme.of(context).brightness == Brightness.dark && (session['color'] as Color == const Color(0xFF475569) || session['color'] as Color == const Color(0xFF64748B)) ? Colors.white60 : (session['color'] as Color).withOpacity(0.85)), overflow: TextOverflow.ellipsis),
+                              Text(session['desc'] as String,
+                                  style: TextStyle(
+                                      fontSize: 10,
+                                      color: Theme.of(context).brightness ==
+                                                  Brightness.dark &&
+                                              (session['color'] as Color ==
+                                                      const Color(0xFF475569) ||
+                                                  session['color'] as Color ==
+                                                      const Color(0xFF64748B))
+                                          ? Colors.white60
+                                          : (session['color'] as Color)
+                                              .withOpacity(0.85)),
+                                  overflow: TextOverflow.ellipsis),
                             ],
                           );
                         }
@@ -559,7 +730,9 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  Icon(Icons.chevron_right, size: 16, color: (session['color'] as Color).withOpacity(0.5)),
+                  Icon(Icons.chevron_right,
+                      size: 16,
+                      color: (session['color'] as Color).withOpacity(0.5)),
                 ],
               ),
             ),
@@ -573,7 +746,9 @@ class _MainScreenState extends State<MainScreen> {
         ],
       ),
       bottomNavigationBar: NavigationBar(
-        backgroundColor: Theme.of(context).brightness == Brightness.dark ? const Color(0xFF1E293B) : Colors.white,
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? const Color(0xFF1E293B)
+            : Colors.white,
         surfaceTintColor: Colors.transparent,
         selectedIndex: _currentIndex,
         onDestinationSelected: (idx) {
@@ -624,7 +799,9 @@ void copyToClipboard(BuildContext context, String text, String label) {
           const Icon(Icons.check_circle, color: Color(0xFF10B981), size: 18),
           const SizedBox(width: 8),
           Expanded(
-            child: Text('已复制 $label: $text (直接粘贴至 MT4/MT5)', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+            child: Text('已复制 $label: $text (直接粘贴至 MT4/MT5)',
+                style:
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -875,15 +1052,18 @@ WatchlistPair getWatchlistPair(String symbol) {
   );
 }
 
-void showWatchlistAtlasDialog(BuildContext context, {ValueChanged<WatchlistPair>? onSelect}) {
+void showWatchlistAtlasDialog(BuildContext context,
+    {ValueChanged<WatchlistPair>? onSelect}) {
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
-    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+    shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
     builder: (ctx) {
       final coreList = kWatchlistPairs.where((p) => p.isCore).toList();
       final minorList = kWatchlistPairs.where((p) => p.isMinor).toList();
-      final goldList = kWatchlistPairs.where((p) => p.category == 'observed').toList();
+      final goldList =
+          kWatchlistPairs.where((p) => p.category == 'observed').toList();
 
       return Container(
         padding: const EdgeInsets.all(20),
@@ -896,12 +1076,17 @@ void showWatchlistAtlasDialog(BuildContext context, {ValueChanged<WatchlistPair>
               children: [
                 const Row(
                   children: [
-                    Icon(Icons.radar_rounded, color: Color(0xFFF59E0B), size: 22),
+                    Icon(Icons.radar_rounded,
+                        color: Color(0xFFF59E0B), size: 22),
                     SizedBox(width: 8),
-                    Text('🎯 16 大监控货币对全景图鉴', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    Text('🎯 16 大监控货币对全景图鉴',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
                   ],
                 ),
-                IconButton(icon: const Icon(Icons.close), onPressed: () => Navigator.pop(ctx)),
+                IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Navigator.pop(ctx)),
               ],
             ),
             const SizedBox(height: 4),
@@ -915,7 +1100,8 @@ void showWatchlistAtlasDialog(BuildContext context, {ValueChanged<WatchlistPair>
                 children: [
                   // ⭐ 7 大核心货币对
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     decoration: BoxDecoration(
                       color: const Color(0xFFFEF3C7),
                       borderRadius: BorderRadius.circular(8),
@@ -923,19 +1109,29 @@ void showWatchlistAtlasDialog(BuildContext context, {ValueChanged<WatchlistPair>
                     ),
                     child: const Row(
                       children: [
-                        Text('⭐ 7 大核心货币对 (Core Pairs)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Color(0xFFB45309))),
+                        Text('⭐ 7 大核心货币对 (Core Pairs)',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                                color: Color(0xFFB45309))),
                         Spacer(),
-                        Text('新手 90% 时间待在此处', style: TextStyle(fontSize: 10.5, color: Color(0xFF92400E), fontWeight: FontWeight.w600)),
+                        Text('新手 90% 时间待在此处',
+                            style: TextStyle(
+                                fontSize: 10.5,
+                                color: Color(0xFF92400E),
+                                fontWeight: FontWeight.w600)),
                       ],
                     ),
                   ),
                   const SizedBox(height: 8),
-                  ...coreList.map((p) => _buildPairDetailTile(ctx, p, onSelect)),
+                  ...coreList
+                      .map((p) => _buildPairDetailTile(ctx, p, onSelect)),
                   const SizedBox(height: 16),
 
                   // 🔹 9 大次要货币对
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     decoration: BoxDecoration(
                       color: const Color(0xFFEFF6FF),
                       borderRadius: BorderRadius.circular(8),
@@ -943,19 +1139,29 @@ void showWatchlistAtlasDialog(BuildContext context, {ValueChanged<WatchlistPair>
                     ),
                     child: const Row(
                       children: [
-                        Text('🔹 9 大次要货币对 (Minor Pairs)', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Color(0xFF1D4ED8))),
+                        Text('🔹 9 大次要货币对 (Minor Pairs)',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                                color: Color(0xFF1D4ED8))),
                         Spacer(),
-                        Text('趋势极强交叉盘 · 补充信号', style: TextStyle(fontSize: 10.5, color: Color(0xFF1E40AF), fontWeight: FontWeight.w600)),
+                        Text('趋势极强交叉盘 · 补充信号',
+                            style: TextStyle(
+                                fontSize: 10.5,
+                                color: Color(0xFF1E40AF),
+                                fontWeight: FontWeight.w600)),
                       ],
                     ),
                   ),
                   const SizedBox(height: 8),
-                  ...minorList.map((p) => _buildPairDetailTile(ctx, p, onSelect)),
+                  ...minorList
+                      .map((p) => _buildPairDetailTile(ctx, p, onSelect)),
                   const SizedBox(height: 16),
 
                   // 🥇 独立观察品种
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     decoration: BoxDecoration(
                       color: const Color(0xFFFFFBEB),
                       borderRadius: BorderRadius.circular(8),
@@ -963,14 +1169,23 @@ void showWatchlistAtlasDialog(BuildContext context, {ValueChanged<WatchlistPair>
                     ),
                     child: const Row(
                       children: [
-                        Text('🥇 独立观察大宗商品', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Color(0xFF92400E))),
+                        Text('🥇 独立观察大宗商品',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                                color: Color(0xFF92400E))),
                         Spacer(),
-                        Text('高波动 · 仅限微型/大资金', style: TextStyle(fontSize: 10.5, color: Color(0xFF78350F), fontWeight: FontWeight.w600)),
+                        Text('高波动 · 仅限微型/大资金',
+                            style: TextStyle(
+                                fontSize: 10.5,
+                                color: Color(0xFF78350F),
+                                fontWeight: FontWeight.w600)),
                       ],
                     ),
                   ),
                   const SizedBox(height: 8),
-                  ...goldList.map((p) => _buildPairDetailTile(ctx, p, onSelect)),
+                  ...goldList
+                      .map((p) => _buildPairDetailTile(ctx, p, onSelect)),
                 ],
               ),
             ),
@@ -981,7 +1196,8 @@ void showWatchlistAtlasDialog(BuildContext context, {ValueChanged<WatchlistPair>
   );
 }
 
-Widget _buildPairDetailTile(BuildContext context, WatchlistPair p, ValueChanged<WatchlistPair>? onSelect) {
+Widget _buildPairDetailTile(BuildContext context, WatchlistPair p,
+    ValueChanged<WatchlistPair>? onSelect) {
   return Card(
     margin: const EdgeInsets.only(bottom: 8),
     elevation: 0,
@@ -1006,7 +1222,9 @@ Widget _buildPairDetailTile(BuildContext context, WatchlistPair p, ValueChanged<
               decoration: BoxDecoration(
                 color: p.isCore
                     ? const Color(0xFFFEF3C7)
-                    : (p.isGold ? const Color(0xFFFDE68A) : const Color(0xFFEFF6FF)),
+                    : (p.isGold
+                        ? const Color(0xFFFDE68A)
+                        : const Color(0xFFEFF6FF)),
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Text(
@@ -1016,7 +1234,9 @@ Widget _buildPairDetailTile(BuildContext context, WatchlistPair p, ValueChanged<
                   fontWeight: FontWeight.bold,
                   color: p.isCore
                       ? const Color(0xFFB45309)
-                      : (p.isGold ? const Color(0xFF92400E) : const Color(0xFF1D4ED8)),
+                      : (p.isGold
+                          ? const Color(0xFF92400E)
+                          : const Color(0xFF1D4ED8)),
                 ),
               ),
             ),
@@ -1027,21 +1247,33 @@ Widget _buildPairDetailTile(BuildContext context, WatchlistPair p, ValueChanged<
                 children: [
                   Row(
                     children: [
-                      Text(p.symbol, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                      Text(p.symbol,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 13)),
                       const SizedBox(width: 6),
-                      Text('(${p.chineseName})', style: const TextStyle(fontSize: 11, color: Colors.grey)),
+                      Text('(${p.chineseName})',
+                          style: const TextStyle(
+                              fontSize: 11, color: Colors.grey)),
                       const SizedBox(height: 6),
-                      Text(p.session, style: const TextStyle(fontSize: 10, color: Colors.grey)),
+                      Text(p.session,
+                          style: const TextStyle(
+                              fontSize: 10, color: Colors.grey)),
                     ],
                   ),
                   const SizedBox(height: 3),
-                  Text(p.feature, style: TextStyle(fontSize: 11, color: Theme.of(context).brightness == Brightness.dark ? Colors.white60 : const Color(0xFF475569))),
+                  Text(p.feature,
+                      style: TextStyle(
+                          fontSize: 11,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white60
+                              : const Color(0xFF475569))),
                 ],
               ),
             ),
             if (onSelect != null) ...[
               const SizedBox(width: 8),
-              const Icon(Icons.arrow_forward_ios_rounded, size: 12, color: Colors.grey),
+              const Icon(Icons.arrow_forward_ios_rounded,
+                  size: 12, color: Colors.grey),
             ],
           ],
         ),
@@ -1061,9 +1293,14 @@ class OverlapCheckerPage extends StatefulWidget {
 }
 
 class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
-  final List<String> corePairs = kWatchlistPairs.where((p) => p.isCore).map((p) => p.symbol).toList();
-  final List<String> minorPairs = kWatchlistPairs.where((p) => p.isMinor).map((p) => p.symbol).toList();
-  final List<String> observedPairs = kWatchlistPairs.where((p) => p.category == 'observed').map((p) => p.symbol).toList();
+  final List<String> corePairs =
+      kWatchlistPairs.where((p) => p.isCore).map((p) => p.symbol).toList();
+  final List<String> minorPairs =
+      kWatchlistPairs.where((p) => p.isMinor).map((p) => p.symbol).toList();
+  final List<String> observedPairs = kWatchlistPairs
+      .where((p) => p.category == 'observed')
+      .map((p) => p.symbol)
+      .toList();
 
   String? s1;
   String? s2;
@@ -1073,7 +1310,6 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
   String dir2 = '多';
   String dir3 = '多';
   List<bool> checklist = [false, false, false, false];
-
 
   @override
   void initState() {
@@ -1090,7 +1326,9 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
       dir1 = prefs.getString('ol_d1') ?? '多';
       dir2 = prefs.getString('ol_d2') ?? '多';
       dir3 = prefs.getString('ol_d3') ?? '多';
-      for(int i=0; i<4; i++) { checklist[i] = prefs.getString('ol_chk_${i}') == 'true'; }
+      for (int i = 0; i < 4; i++) {
+        checklist[i] = prefs.getString('ol_chk_${i}') == 'true';
+      }
     });
   }
 
@@ -1102,7 +1340,6 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
       await prefs.setString(key, value);
     }
   }
-
 
   bool isConflict(String pair, List<String?> selectedOthers) {
     String base = pair.substring(0, 3);
@@ -1134,17 +1371,28 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
       final p = t['pair'] as String;
       final isBuy = t['dir'] == '多';
 
-      if (p == 'EURUSD' || p == 'GBPUSD' || p == 'AUDUSD' || p == 'NZDUSD' || p == 'XAUUSD') {
-        if (isBuy) usdShortCount++; else usdLongCount++;
+      if (p == 'EURUSD' ||
+          p == 'GBPUSD' ||
+          p == 'AUDUSD' ||
+          p == 'NZDUSD' ||
+          p == 'XAUUSD') {
+        if (isBuy)
+          usdShortCount++;
+        else
+          usdLongCount++;
       } else if (p == 'USDJPY' || p == 'USDCAD' || p == 'USDCHF') {
-        if (isBuy) usdLongCount++; else usdShortCount++;
+        if (isBuy)
+          usdLongCount++;
+        else
+          usdShortCount++;
       }
     }
 
     if (usdShortCount >= 3) {
       return {
         'hasRisk': true,
-        'msg': '⚠️ 危险重叠！当前 3 笔交易全部在单向【做空美元 (Short USD)】！属于同质化单向敞口，若非农/CPI数据强劲，将遭遇 6% 连环爆仓回撤！建议拆解或换交叉盘。'
+        'msg':
+            '⚠️ 危险重叠！当前 3 笔交易全部在单向【做空美元 (Short USD)】！属于同质化单向敞口，若非农/CPI数据强劲，将遭遇 6% 连环爆仓回撤！建议拆解或换交叉盘。'
       };
     } else if (usdLongCount >= 3) {
       return {
@@ -1163,7 +1411,8 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (ctx) {
         return Container(
           padding: const EdgeInsets.all(20),
@@ -1174,20 +1423,39 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('🚫 坚决规避的毒药品种 (The Avoid List)', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFFDC2626))),
-                  IconButton(icon: const Icon(Icons.close), onPressed: () => Navigator.pop(ctx)),
+                  const Text('🚫 坚决规避的毒药品种 (The Avoid List)',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFFDC2626))),
+                  IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () => Navigator.pop(ctx)),
                 ],
               ),
               const SizedBox(height: 10),
-              const Text('以下四类品种在实战中看似有机会，实则暗藏点差与政策陷阱，强烈建议拉黑跳过：', style: TextStyle(fontSize: 12, color: Colors.grey)),
+              const Text('以下四类品种在实战中看似有机会，实则暗藏点差与政策陷阱，强烈建议拉黑跳过：',
+                  style: TextStyle(fontSize: 12, color: Colors.grey)),
               const Divider(height: 20),
               Expanded(
                 child: ListView(
                   children: const [
-                    _AvoidCard(title: '1. 联系汇率挂钩类 (画直线)', pairs: 'EURDKK, USDHKD, EURHKD, USDDKK, GBPDKK', reason: '受央行强行挂钩制度约束，K线基本为水平直线，日波动甚至小于点差，毫无交易价值。'),
-                    _AvoidCard(title: '2. 高息吃人断崖类 (点差过宽)', pairs: 'USDTRY, EURTRY, USDZAR, EURZAR, USDMXN', reason: '新兴市场货币恶性贬值，看似单边躺赚，但隔夜利息极其昂贵且极易发生政策跳空，利润全被磨光。'),
-                    _AvoidCard(title: '3. 极低流动性类 (严重滑点)', pairs: 'GBPSEK, GBPNOK, CHFSGD, NZDSGD, GBPSGD', reason: '挂单成交极不活跃，止损往往无法在预设点位成交，遭遇极端滑点击穿账户。'),
-                    _AvoidCard(title: '4. 恶劣交叉盘规避', pairs: 'GBPNZD', reason: '虽然日均波幅极大，但点差同样极其昂贵，盈利空间往往刚好抵消高额交易成本。'),
+                    _AvoidCard(
+                        title: '1. 联系汇率挂钩类 (画直线)',
+                        pairs: 'EURDKK, USDHKD, EURHKD, USDDKK, GBPDKK',
+                        reason: '受央行强行挂钩制度约束，K线基本为水平直线，日波动甚至小于点差，毫无交易价值。'),
+                    _AvoidCard(
+                        title: '2. 高息吃人断崖类 (点差过宽)',
+                        pairs: 'USDTRY, EURTRY, USDZAR, EURZAR, USDMXN',
+                        reason: '新兴市场货币恶性贬值，看似单边躺赚，但隔夜利息极其昂贵且极易发生政策跳空，利润全被磨光。'),
+                    _AvoidCard(
+                        title: '3. 极低流动性类 (严重滑点)',
+                        pairs: 'GBPSEK, GBPNOK, CHFSGD, NZDSGD, GBPSGD',
+                        reason: '挂单成交极不活跃，止损往往无法在预设点位成交，遭遇极端滑点击穿账户。'),
+                    _AvoidCard(
+                        title: '4. 恶劣交叉盘规避',
+                        pairs: 'GBPNZD',
+                        reason: '虽然日均波幅极大，但点差同样极其昂贵，盈利空间往往刚好抵消高额交易成本。'),
                   ],
                 ),
               ),
@@ -1206,157 +1474,312 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
     final audit = _auditCorrelation();
 
     return Center(
-      child: Container(
-        constraints: BoxConstraints(maxWidth: isDesktop ? 1200 : 750),
-        child: ListView(
-          padding: const EdgeInsets.all(10),
-          children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text('🛡️ 多单并行防呆与自审', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-            Row(
+        child: Container(
+            constraints: BoxConstraints(maxWidth: isDesktop ? 1200 : 750),
+            child: ListView(
+              padding: const EdgeInsets.all(10),
               children: [
-                TextButton.icon(
-                  style: TextButton.styleFrom(visualDensity: VisualDensity.compact, padding: const EdgeInsets.symmetric(horizontal: 6)),
-                  onPressed: () => showWatchlistAtlasDialog(context),
-                  icon: const Icon(Icons.menu_book_rounded, size: 15, color: Color(0xFFF59E0B)),
-                  label: const Text('16品种图鉴', style: TextStyle(fontSize: 12, color: Color(0xFFF59E0B), fontWeight: FontWeight.bold)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('🛡️ 多单并行防呆与自审',
+                        style: TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.bold)),
+                    Row(
+                      children: [
+                        TextButton.icon(
+                          style: TextButton.styleFrom(
+                              visualDensity: VisualDensity.compact,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 6)),
+                          onPressed: () => showWatchlistAtlasDialog(context),
+                          icon: const Icon(Icons.menu_book_rounded,
+                              size: 15, color: Color(0xFFF59E0B)),
+                          label: const Text('16品种图鉴',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFFF59E0B),
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                        TextButton.icon(
+                          style: TextButton.styleFrom(
+                              visualDensity: VisualDensity.compact,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 6)),
+                          onPressed: _showAvoidListDialog,
+                          icon: const Icon(Icons.warning_amber_rounded,
+                              size: 15, color: Colors.red),
+                          label: const Text('毒药黑名单',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                TextButton.icon(
-                  style: TextButton.styleFrom(visualDensity: VisualDensity.compact, padding: const EdgeInsets.symmetric(horizontal: 6)),
-                  onPressed: _showAvoidListDialog,
-                  icon: const Icon(Icons.warning_amber_rounded, size: 15, color: Colors.red),
-                  label: const Text('毒药黑名单', style: TextStyle(fontSize: 12, color: Colors.red, fontWeight: FontWeight.bold)),
+                Container(
+                  margin: const EdgeInsets.symmetric(vertical: 6),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                        color: Theme.of(context).dividerColor.withOpacity(0.2)),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.stars_rounded,
+                          size: 16, color: Color(0xFFD97706)),
+                      const SizedBox(width: 6),
+                      const Expanded(
+                        child: Text(
+                          '规范选项：⭐ 7大核心货币对 (极低点差) + 🔹 9大次要交叉盘',
+                          style: TextStyle(
+                              fontSize: 11, fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () => showWatchlistAtlasDialog(context),
+                        child: const Text('详解 >',
+                            style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFFF59E0B))),
+                      ),
+                    ],
+                  ),
                 ),
+                const SizedBox(height: 4),
+                if (isDesktop)
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                          child: _buildDropdownRow(
+                              '交易 1 (首选主线)', s1, dir1, allPairs, [], (p) {
+                        setState(() {
+                          s1 = p;
+                          s2 = null;
+                          s3 = null;
+                        });
+                        _saveState('ol_s1', p);
+                        _saveState('ol_s2', null);
+                        _saveState('ol_s3', null);
+                      }, (d) {
+                        setState(() => dir1 = d);
+                        _saveState('ol_d1', d);
+                      })),
+                      const SizedBox(width: 12),
+                      Expanded(
+                          child: _buildDropdownRow(
+                              '交易 2 (独立隔离)', s2, dir2, allPairs, [s1], (p) {
+                        setState(() {
+                          s2 = p;
+                          s3 = null;
+                        });
+                        _saveState('ol_s2', p);
+                        _saveState('ol_s3', null);
+                      }, (d) {
+                        setState(() => dir2 = d);
+                        _saveState('ol_d2', d);
+                      })),
+                      const SizedBox(width: 12),
+                      Expanded(
+                          child: _buildDropdownRow(
+                              '交易 3 (独立隔离)', s3, dir3, allPairs, [s1, s2], (p) {
+                        setState(() => s3 = p);
+                        _saveState('ol_s3', p);
+                      }, (d) {
+                        setState(() => dir3 = d);
+                        _saveState('ol_d3', d);
+                      })),
+                    ],
+                  )
+                else
+                  Column(
+                    children: [
+                      _buildDropdownRow('交易 1 (首选主线)', s1, dir1, allPairs, [],
+                          (p) {
+                        setState(() {
+                          s1 = p;
+                          s2 = null;
+                          s3 = null;
+                        });
+                        _saveState('ol_s1', p);
+                        _saveState('ol_s2', null);
+                        _saveState('ol_s3', null);
+                      }, (d) {
+                        setState(() => dir1 = d);
+                        _saveState('ol_d1', d);
+                      }),
+                      const SizedBox(height: 10),
+                      _buildDropdownRow('交易 2 (独立隔离)', s2, dir2, allPairs, [s1],
+                          (p) {
+                        setState(() {
+                          s2 = p;
+                          s3 = null;
+                        });
+                        _saveState('ol_s2', p);
+                        _saveState('ol_s3', null);
+                      }, (d) {
+                        setState(() => dir2 = d);
+                        _saveState('ol_d2', d);
+                      }),
+                      const SizedBox(height: 10),
+                      _buildDropdownRow(
+                          '交易 3 (独立隔离)', s3, dir3, allPairs, [s1, s2], (p) {
+                        setState(() => s3 = p);
+                        _saveState('ol_s3', p);
+                      }, (d) {
+                        setState(() => dir3 = d);
+                        _saveState('ol_d3', d);
+                      }),
+                    ],
+                  ),
+                const SizedBox(height: 16),
+
+                // 晨间 10 秒单向敞口自审雷达卡片
+                Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: (audit['hasRisk'] as bool)
+                        ? (Theme.of(context).brightness == Brightness.dark
+                            ? const Color(0xFF450a0a)
+                            : const Color(0xFFFEF2F2))
+                        : (Theme.of(context).brightness == Brightness.dark
+                            ? const Color(0xFF022c22)
+                            : const Color(0xFFF0FDF4)),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(
+                        color: (audit['hasRisk'] as bool)
+                            ? (Theme.of(context).brightness == Brightness.dark
+                                ? const Color(0xFF7f1d1d)
+                                : const Color(0xFFFECACA))
+                            : (Theme.of(context).brightness == Brightness.dark
+                                ? const Color(0xFF14532d)
+                                : const Color(0xFFBBF7D0))),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                              (audit['hasRisk'] as bool)
+                                  ? Icons.warning_rounded
+                                  : Icons.radar_rounded,
+                              size: 18,
+                              color: (audit['hasRisk'] as bool)
+                                  ? Colors.red
+                                  : (Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? const Color(0xFF4ade80)
+                                      : const Color(0xFF15803D))),
+                          const SizedBox(width: 6),
+                          Text(
+                              (audit['hasRisk'] as bool)
+                                  ? '晨间自审预警：同质化过度曝险'
+                                  : '晨间 10 秒风控自审雷达',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: (audit['hasRisk'] as bool)
+                                      ? Colors.red
+                                      : (Theme.of(context).brightness ==
+                                              Brightness.dark
+                                          ? const Color(0xFF4ade80)
+                                          : const Color(0xFF15803D)))),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      Text(audit['msg'] as String,
+                          style: TextStyle(
+                              fontSize: 11,
+                              height: 1.4,
+                              color: (audit['hasRisk'] as bool)
+                                  ? (Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? const Color(0xFFfca5a5)
+                                      : const Color(0xFF991B1B))
+                                  : (Theme.of(context).brightness ==
+                                          Brightness.dark
+                                      ? const Color(0xFF86efac)
+                                      : const Color(0xFF166534)))),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  children: [
+                    Icon(Icons.fact_check_rounded,
+                        size: 18,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white60
+                            : const Color(0xFF475569)),
+                    const SizedBox(width: 8),
+                    Text('飞行员起飞前：最后 10 秒防呆自检',
+                        style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.bold,
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                    ? Colors.white70
+                                    : const Color(0xFF334155))),
+                    const Spacer(),
+                    if (checklist.every((e) => e))
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 3),
+                        decoration: BoxDecoration(
+                            color: const Color(0xFF22C55E),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: const Text('准许执行 (CLEAR TO ENGAGE)',
+                            style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white)),
+                      )
+                  ],
+                ),
+                const SizedBox(height: 12),
+                if (isDesktop)
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: [
+                            _buildChecklistItem(0),
+                            _buildChecklistItem(1),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            _buildChecklistItem(2),
+                            _buildChecklistItem(3),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                else
+                  Column(
+                    children: [
+                      _buildChecklistItem(0),
+                      _buildChecklistItem(1),
+                      _buildChecklistItem(2),
+                      _buildChecklistItem(3),
+                    ],
+                  ),
               ],
-            ),
-          ],
-        ),
-        Container(
-          margin: const EdgeInsets.symmetric(vertical: 6),
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.2)),
-          ),
-          child: Row(
-            children: [
-              const Icon(Icons.stars_rounded, size: 16, color: Color(0xFFD97706)),
-              const SizedBox(width: 6),
-              const Expanded(
-                child: Text(
-                  '规范选项：⭐ 7大核心货币对 (极低点差) + 🔹 9大次要交叉盘',
-                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
-                ),
-              ),
-              InkWell(
-                onTap: () => showWatchlistAtlasDialog(context),
-                child: const Text('详解 >', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFFF59E0B))),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 4),
-        if (isDesktop)
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(child: _buildDropdownRow('交易 1 (首选主线)', s1, dir1, allPairs, [], (p) { setState(() { s1 = p; s2 = null; s3 = null; }); _saveState('ol_s1', p); _saveState('ol_s2', null); _saveState('ol_s3', null); }, (d) { setState(() => dir1 = d); _saveState('ol_d1', d); })),
-              const SizedBox(width: 12),
-              Expanded(child: _buildDropdownRow('交易 2 (独立隔离)', s2, dir2, allPairs, [s1], (p) { setState(() { s2 = p; s3 = null; }); _saveState('ol_s2', p); _saveState('ol_s3', null); }, (d) { setState(() => dir2 = d); _saveState('ol_d2', d); })),
-              const SizedBox(width: 12),
-              Expanded(child: _buildDropdownRow('交易 3 (独立隔离)', s3, dir3, allPairs, [s1, s2], (p) { setState(() => s3 = p); _saveState('ol_s3', p); }, (d) { setState(() => dir3 = d); _saveState('ol_d3', d); })),
-            ],
-          )
-        else
-          Column(
-            children: [
-              _buildDropdownRow('交易 1 (首选主线)', s1, dir1, allPairs, [], (p) { setState(() { s1 = p; s2 = null; s3 = null; }); _saveState('ol_s1', p); _saveState('ol_s2', null); _saveState('ol_s3', null); }, (d) { setState(() => dir1 = d); _saveState('ol_d1', d); }),
-              const SizedBox(height: 10),
-              _buildDropdownRow('交易 2 (独立隔离)', s2, dir2, allPairs, [s1], (p) { setState(() { s2 = p; s3 = null; }); _saveState('ol_s2', p); _saveState('ol_s3', null); }, (d) { setState(() => dir2 = d); _saveState('ol_d2', d); }),
-              const SizedBox(height: 10),
-              _buildDropdownRow('交易 3 (独立隔离)', s3, dir3, allPairs, [s1, s2], (p) { setState(() => s3 = p); _saveState('ol_s3', p); }, (d) { setState(() => dir3 = d); _saveState('ol_d3', d); }),
-            ],
-          ),
-        const SizedBox(height: 16),
-
-        // 晨间 10 秒单向敞口自审雷达卡片
-        Container(
-          padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: (audit['hasRisk'] as bool) ? (Theme.of(context).brightness == Brightness.dark ? const Color(0xFF450a0a) : const Color(0xFFFEF2F2)) : (Theme.of(context).brightness == Brightness.dark ? const Color(0xFF022c22) : const Color(0xFFF0FDF4)),
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: (audit['hasRisk'] as bool) ? (Theme.of(context).brightness == Brightness.dark ? const Color(0xFF7f1d1d) : const Color(0xFFFECACA)) : (Theme.of(context).brightness == Brightness.dark ? const Color(0xFF14532d) : const Color(0xFFBBF7D0))),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Icon((audit['hasRisk'] as bool) ? Icons.warning_rounded : Icons.radar_rounded, size: 18, color: (audit['hasRisk'] as bool) ? Colors.red : (Theme.of(context).brightness == Brightness.dark ? const Color(0xFF4ade80) : const Color(0xFF15803D))),
-                  const SizedBox(width: 6),
-                  Text((audit['hasRisk'] as bool) ? '晨间自审预警：同质化过度曝险' : '晨间 10 秒风控自审雷达', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: (audit['hasRisk'] as bool) ? Colors.red : (Theme.of(context).brightness == Brightness.dark ? const Color(0xFF4ade80) : const Color(0xFF15803D)))),
-                ],
-              ),
-              const SizedBox(height: 4),
-              Text(audit['msg'] as String, style: TextStyle(fontSize: 11, height: 1.4, color: (audit['hasRisk'] as bool) ? (Theme.of(context).brightness == Brightness.dark ? const Color(0xFFfca5a5) : const Color(0xFF991B1B)) : (Theme.of(context).brightness == Brightness.dark ? const Color(0xFF86efac) : const Color(0xFF166534)))),
-            ],
-          ),
-        ),
-        const SizedBox(height: 24),
-        Row(
-          children: [
-            Icon(Icons.fact_check_rounded, size: 18, color: Theme.of(context).brightness == Brightness.dark ? Colors.white60 : const Color(0xFF475569)),
-            const SizedBox(width: 8),
-            Text('飞行员起飞前：最后 10 秒防呆自检', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Theme.of(context).brightness == Brightness.dark ? Colors.white70 : const Color(0xFF334155))),
-            const Spacer(),
-            if (checklist.every((e) => e))
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                decoration: BoxDecoration(color: const Color(0xFF22C55E), borderRadius: BorderRadius.circular(20)),
-                child: const Text('准许执行 (CLEAR TO ENGAGE)', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white)),
-              )
-          ],
-        ),
-        const SizedBox(height: 12),
-        if (isDesktop)
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    _buildChecklistItem(0),
-                    _buildChecklistItem(1),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  children: [
-                    _buildChecklistItem(2),
-                    _buildChecklistItem(3),
-                  ],
-                ),
-              ),
-            ],
-          )
-        else
-          Column(
-            children: [
-              _buildChecklistItem(0),
-              _buildChecklistItem(1),
-              _buildChecklistItem(2),
-              _buildChecklistItem(3),
-            ],
-          ),
-      ],
-    )));
+            )));
   }
-
 
   Widget _buildChecklistItem(int index) {
     final titles = [
@@ -1369,29 +1792,51 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
     return GestureDetector(
       onTap: () {
         HapticFeedback.selectionClick();
-        setState(() => checklist[index] = !checklist[index]); _saveState('ol_chk_${index}', checklist[index] ? 'true' : 'false');
+        setState(() => checklist[index] = !checklist[index]);
+        _saveState('ol_chk_${index}', checklist[index] ? 'true' : 'false');
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
         decoration: BoxDecoration(
-          color: isChecked ? (Theme.of(context).brightness == Brightness.dark ? const Color(0xFF022C22) : const Color(0xFFF0FDF4)) : Theme.of(context).cardColor,
+          color: isChecked
+              ? (Theme.of(context).brightness == Brightness.dark
+                  ? const Color(0xFF022C22)
+                  : const Color(0xFFF0FDF4))
+              : Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: isChecked ? const Color(0xFF4ADE80) : Theme.of(context).dividerColor.withOpacity(0.2)),
-          boxShadow: isChecked ? [BoxShadow(color: const Color(0xFF4ADE80).withOpacity(0.2), blurRadius: 8, offset: const Offset(0, 2))] : [],
+          border: Border.all(
+              color: isChecked
+                  ? const Color(0xFF4ADE80)
+                  : Theme.of(context).dividerColor.withOpacity(0.2)),
+          boxShadow: isChecked
+              ? [
+                  BoxShadow(
+                      color: const Color(0xFF4ADE80).withOpacity(0.2),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2))
+                ]
+              : [],
         ),
         child: Row(
           children: [
             AnimatedContainer(
               duration: const Duration(milliseconds: 200),
-              width: 20, height: 20,
+              width: 20,
+              height: 20,
               decoration: BoxDecoration(
                 color: isChecked ? const Color(0xFF22C55E) : Colors.transparent,
                 borderRadius: BorderRadius.circular(6),
-                border: Border.all(color: isChecked ? const Color(0xFF22C55E) : Colors.grey.shade400, width: 2),
+                border: Border.all(
+                    color: isChecked
+                        ? const Color(0xFF22C55E)
+                        : Colors.grey.shade400,
+                    width: 2),
               ),
-              child: isChecked ? const Icon(Icons.check, size: 14, color: Colors.white) : null,
+              child: isChecked
+                  ? const Icon(Icons.check, size: 14, color: Colors.white)
+                  : null,
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -1400,7 +1845,13 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: isChecked ? FontWeight.bold : FontWeight.w500,
-                  color: isChecked ? (Theme.of(context).brightness == Brightness.dark ? const Color(0xFF86EFAC) : const Color(0xFF166534)) : (Theme.of(context).brightness == Brightness.dark ? Colors.white70 : const Color(0xFF475569)),
+                  color: isChecked
+                      ? (Theme.of(context).brightness == Brightness.dark
+                          ? const Color(0xFF86EFAC)
+                          : const Color(0xFF166534))
+                      : (Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white70
+                          : const Color(0xFF475569)),
                   decoration: isChecked ? TextDecoration.lineThrough : null,
                 ),
               ),
@@ -1411,14 +1862,23 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
     );
   }
 
-
-  Widget _buildDropdownRow(String label, String? current, String dir, List<String> list, List<String?> others, ValueChanged<String?> onPairChanged, ValueChanged<String> onDirChanged) {
+  Widget _buildDropdownRow(
+      String label,
+      String? current,
+      String dir,
+      List<String> list,
+      List<String?> others,
+      ValueChanged<String?> onPairChanged,
+      ValueChanged<String> onDirChanged) {
     return Card(
-      color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFF1E293B) : Colors.white,
+      color: Theme.of(context).brightness == Brightness.dark
+          ? const Color(0xFF1E293B)
+          : Colors.white,
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(14),
-        side: BorderSide(color: Theme.of(context).dividerColor.withOpacity(0.2)),
+        side:
+            BorderSide(color: Theme.of(context).dividerColor.withOpacity(0.2)),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
@@ -1428,7 +1888,11 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(label, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.grey)),
+                  Text(label,
+                      style: const TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey)),
                   DropdownButton<String>(
                     isExpanded: true,
                     underline: const SizedBox(),
@@ -1443,11 +1907,14 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1.5),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 4, vertical: 1.5),
                                 decoration: BoxDecoration(
                                   color: pair.isCore
                                       ? const Color(0xFFFEF3C7)
-                                      : (pair.isGold ? const Color(0xFFFDE68A) : const Color(0xFFEFF6FF)),
+                                      : (pair.isGold
+                                          ? const Color(0xFFFDE68A)
+                                          : const Color(0xFFEFF6FF)),
                                   borderRadius: BorderRadius.circular(4),
                                 ),
                                 child: Text(
@@ -1457,14 +1924,21 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
                                     fontWeight: FontWeight.bold,
                                     color: pair.isCore
                                         ? const Color(0xFFB45309)
-                                        : (pair.isGold ? const Color(0xFF92400E) : const Color(0xFF1D4ED8)),
+                                        : (pair.isGold
+                                            ? const Color(0xFF92400E)
+                                            : const Color(0xFF1D4ED8)),
                                   ),
                                 ),
                               ),
                               const SizedBox(width: 5),
-                              Text(pair.symbol, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                              Text(pair.symbol,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12)),
                               const SizedBox(width: 3),
-                              Text('(${pair.chineseName})', style: const TextStyle(fontSize: 10, color: Colors.grey)),
+                              Text('(${pair.chineseName})',
+                                  style: const TextStyle(
+                                      fontSize: 10, color: Colors.grey)),
                             ],
                           ),
                         );
@@ -1479,19 +1953,26 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
                         child: Row(
                           children: [
                             if (conflict) ...[
-                              Text('🚫 $pairSymbol (关联货币冲突)', style: const TextStyle(color: Colors.grey, fontSize: 11)),
+                              Text('🚫 $pairSymbol (关联货币冲突)',
+                                  style: const TextStyle(
+                                      color: Colors.grey, fontSize: 11)),
                             ] else ...[
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1.5),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 5, vertical: 1.5),
                                 decoration: BoxDecoration(
                                   color: pair.isCore
                                       ? const Color(0xFFFEF3C7)
-                                      : (pair.isGold ? const Color(0xFFFDE68A) : const Color(0xFFEFF6FF)),
+                                      : (pair.isGold
+                                          ? const Color(0xFFFDE68A)
+                                          : const Color(0xFFEFF6FF)),
                                   borderRadius: BorderRadius.circular(4),
                                   border: Border.all(
                                     color: pair.isCore
                                         ? const Color(0xFFF59E0B)
-                                        : (pair.isGold ? const Color(0xFFD97706) : const Color(0xFF60A5FA)),
+                                        : (pair.isGold
+                                            ? const Color(0xFFD97706)
+                                            : const Color(0xFF60A5FA)),
                                     width: 0.5,
                                   ),
                                 ),
@@ -1502,14 +1983,21 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
                                     fontWeight: FontWeight.bold,
                                     color: pair.isCore
                                         ? const Color(0xFFB45309)
-                                        : (pair.isGold ? const Color(0xFF92400E) : const Color(0xFF1D4ED8)),
+                                        : (pair.isGold
+                                            ? const Color(0xFF92400E)
+                                            : const Color(0xFF1D4ED8)),
                                   ),
                                 ),
                               ),
                               const SizedBox(width: 6),
-                              Text(pair.symbol, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                              Text(pair.symbol,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13)),
                               const SizedBox(width: 4),
-                              Text('(${pair.chineseName})', style: const TextStyle(fontSize: 11, color: Colors.grey)),
+                              Text('(${pair.chineseName})',
+                                  style: const TextStyle(
+                                      fontSize: 11, color: Colors.grey)),
                             ],
                           ],
                         ),
@@ -1526,14 +2014,20 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
               borderRadius: BorderRadius.circular(8),
               constraints: const BoxConstraints(minWidth: 36, minHeight: 28),
               selectedColor: Colors.white,
-              fillColor: dir == '多' ? const Color(0xFF16A34A) : const Color(0xFFDC2626),
+              fillColor: dir == '多'
+                  ? const Color(0xFF16A34A)
+                  : const Color(0xFFDC2626),
               onPressed: (index) {
                 HapticFeedback.lightImpact();
                 onDirChanged(index == 0 ? '多' : '空');
               },
               children: const [
-                Text('多', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                Text('空', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                Text('多',
+                    style:
+                        TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                Text('空',
+                    style:
+                        TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
               ],
             ),
           ],
@@ -1548,22 +2042,37 @@ class _AvoidCard extends StatelessWidget {
   final String pairs;
   final String reason;
 
-  const _AvoidCard({required this.title, required this.pairs, required this.reason});
+  const _AvoidCard(
+      {required this.title, required this.pairs, required this.reason});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-      decoration: BoxDecoration(color: const Color(0xFFFEF2F2), borderRadius: BorderRadius.circular(10), border: Border.all(color: const Color(0xFFFECACA))),
+      decoration: BoxDecoration(
+          color: const Color(0xFFFEF2F2),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: const Color(0xFFFECACA))),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: Color(0xFFB91C1C))),
+          Text(title,
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 13,
+                  color: Color(0xFFB91C1C))),
           const SizedBox(height: 4),
-          Text(pairs, style: const TextStyle(fontWeight: FontWeight.w900, fontFamily: 'monospace', fontSize: 12, color: Color(0xFF7F1D1D))),
+          Text(pairs,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w900,
+                  fontFamily: 'monospace',
+                  fontSize: 12,
+                  color: Color(0xFF7F1D1D))),
           const SizedBox(height: 4),
-          Text(reason, style: const TextStyle(fontSize: 11, color: Color(0xFF991B1B), height: 1.3)),
+          Text(reason,
+              style: const TextStyle(
+                  fontSize: 11, color: Color(0xFF991B1B), height: 1.3)),
         ],
       ),
     );
@@ -1622,14 +2131,16 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
     if (value is double) await prefs.setDouble(key, value);
     if (value is int) await prefs.setInt(key, value);
     if (value is bool) await prefs.setBool(key, value);
-      if (value is String) await prefs.setString(key, value);
+    if (value is String) await prefs.setString(key, value);
   }
 
   Future<void> _fetchLiveExchangeRate() async {
     setState(() => isFetchingRate = true);
     HapticFeedback.lightImpact();
     try {
-      final response = await http.get(Uri.parse('https://open.er-api.com/v6/latest/USD')).timeout(const Duration(seconds: 6));
+      final response = await http
+          .get(Uri.parse('https://open.er-api.com/v6/latest/USD'))
+          .timeout(const Duration(seconds: 6));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         if (data['rates'] != null && data['rates']['MYR'] != null) {
@@ -1641,7 +2152,8 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
           _saveParam('calc_rate', rate);
         }
       }
-    } catch (_) {} finally {
+    } catch (_) {
+    } finally {
       if (mounted) setState(() => isFetchingRate = false);
     }
   }
@@ -1706,18 +2218,73 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (ctx) {
         final tableData = [
-          {'bal': 500, 'rm': 2250, 'risk': 10, 's50': '0.02 手 (0.01+0.01)', 's80': '🚫 不可用 (超标)'},
-          {'bal': 800, 'rm': 3600, 'risk': 16, 's50': '0.02 手 (0.01+0.01)', 's80': '0.02 手 (0.01+0.01)'},
-          {'bal': 1000, 'rm': 4500, 'risk': 20, 's50': '0.04 手 (0.02+0.02)', 's80': '0.02 手 (0.01+0.01)'},
-          {'bal': 1500, 'rm': 6750, 'risk': 30, 's50': '0.06 手 (0.03+0.03)', 's80': '0.02 手 (0.01+0.01)'},
-          {'bal': 1600, 'rm': 7200, 'risk': 32, 's50': '0.06 手 (0.03+0.03)', 's80': '0.04 手 (0.02+0.02)'},
-          {'bal': 2000, 'rm': 9000, 'risk': 40, 's50': '0.08 手 (0.04+0.04)', 's80': '0.04 手 (0.02+0.02)'},
-          {'bal': 2400, 'rm': 10800, 'risk': 48, 's50': '0.08 手 (0.04+0.04)', 's80': '0.06 手 (0.03+0.03)'},
-          {'bal': 3000, 'rm': 13500, 'risk': 60, 's50': '0.12 手 (0.06+0.06)', 's80': '0.06 手 (0.03+0.03)'},
-          {'bal': 3200, 'rm': 14400, 'risk': 64, 's50': '0.12 手 (0.06+0.06)', 's80': '0.08 手 (0.04+0.04)'},
+          {
+            'bal': 500,
+            'rm': 2250,
+            'risk': 10,
+            's50': '0.02 手 (0.01+0.01)',
+            's80': '🚫 不可用 (超标)'
+          },
+          {
+            'bal': 800,
+            'rm': 3600,
+            'risk': 16,
+            's50': '0.02 手 (0.01+0.01)',
+            's80': '0.02 手 (0.01+0.01)'
+          },
+          {
+            'bal': 1000,
+            'rm': 4500,
+            'risk': 20,
+            's50': '0.04 手 (0.02+0.02)',
+            's80': '0.02 手 (0.01+0.01)'
+          },
+          {
+            'bal': 1500,
+            'rm': 6750,
+            'risk': 30,
+            's50': '0.06 手 (0.03+0.03)',
+            's80': '0.02 手 (0.01+0.01)'
+          },
+          {
+            'bal': 1600,
+            'rm': 7200,
+            'risk': 32,
+            's50': '0.06 手 (0.03+0.03)',
+            's80': '0.04 手 (0.02+0.02)'
+          },
+          {
+            'bal': 2000,
+            'rm': 9000,
+            'risk': 40,
+            's50': '0.08 手 (0.04+0.04)',
+            's80': '0.04 手 (0.02+0.02)'
+          },
+          {
+            'bal': 2400,
+            'rm': 10800,
+            'risk': 48,
+            's50': '0.08 手 (0.04+0.04)',
+            's80': '0.06 手 (0.03+0.03)'
+          },
+          {
+            'bal': 3000,
+            'rm': 13500,
+            'risk': 60,
+            's50': '0.12 手 (0.06+0.06)',
+            's80': '0.06 手 (0.03+0.03)'
+          },
+          {
+            'bal': 3200,
+            'rm': 14400,
+            'risk': 64,
+            's50': '0.12 手 (0.06+0.06)',
+            's80': '0.08 手 (0.04+0.04)'
+          },
         ];
 
         return Container(
@@ -1726,9 +2293,11 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('🧮 500 - 3,200 美元双轨最大手数对照表', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              const Text('🧮 500 - 3,200 美元双轨最大手数对照表',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               const SizedBox(height: 4),
-              const Text('点击任意行可直接快速载入该资金配置 (总手数恒为偶数，保证 2 x 1% 完美平分)：', style: TextStyle(fontSize: 11, color: Colors.grey)),
+              const Text('点击任意行可直接快速载入该资金配置 (总手数恒为偶数，保证 2 x 1% 完美平分)：',
+                  style: TextStyle(fontSize: 11, color: Colors.grey)),
               const Divider(height: 20),
               Expanded(
                 child: ListView.separated(
@@ -1753,15 +2322,32 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('\$${row['bal']} (RM ${row['rm']})', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                                Text('2% 红线: \$${row['risk']}', style: const TextStyle(fontSize: 11, color: Color(0xFF059669), fontWeight: FontWeight.bold)),
+                                Text('\$${row['bal']} (RM ${row['rm']})',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 13)),
+                                Text('2% 红线: \$${row['risk']}',
+                                    style: const TextStyle(
+                                        fontSize: 11,
+                                        color: Color(0xFF059669),
+                                        fontWeight: FontWeight.bold)),
                               ],
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Text('50pips: ${row['s50']}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFFF59E0B))),
-                                Text('80pips: ${row['s80']}', style: TextStyle(fontSize: 11, color: (row['s80'] as String).contains('不可用') ? Colors.red : Colors.grey)),
+                                Text('50pips: ${row['s50']}',
+                                    style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFFF59E0B))),
+                                Text('80pips: ${row['s80']}',
+                                    style: TextStyle(
+                                        fontSize: 11,
+                                        color: (row['s80'] as String)
+                                                .contains('不可用')
+                                            ? Colors.red
+                                            : Colors.grey)),
                               ],
                             ),
                           ],
@@ -1779,11 +2365,11 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
   }
 
   @override
-
-  Widget _buildTierButton(String title, String subtitle, String pairs, {double? width}) {
+  Widget _buildTierButton(String title, String subtitle, String pairs,
+      {double? width}) {
     bool active = activePair == title;
     bool isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     return GestureDetector(
       onTap: () {
         HapticFeedback.selectionClick();
@@ -1799,12 +2385,14 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
         margin: const EdgeInsets.only(right: 6, bottom: 6),
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
         decoration: BoxDecoration(
-          color: active 
-              ? (isDark ? const Color(0xFFF59E0B).withOpacity(0.2) : const Color(0xFFFEF3C7)) 
+          color: active
+              ? (isDark
+                  ? const Color(0xFFF59E0B).withOpacity(0.2)
+                  : const Color(0xFFFEF3C7))
               : Colors.transparent,
           border: Border.all(
-              color: active 
-                  ? const Color(0xFFF59E0B) 
+              color: active
+                  ? const Color(0xFFF59E0B)
                   : Theme.of(context).dividerColor.withOpacity(0.3)),
           borderRadius: BorderRadius.circular(10),
         ),
@@ -1812,11 +2400,30 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(title, style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: active ? const Color(0xFFF59E0B) : (isDark ? Colors.grey.shade300 : Colors.blueGrey))),
+            Text(title,
+                style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                    color: active
+                        ? const Color(0xFFF59E0B)
+                        : (isDark ? Colors.grey.shade300 : Colors.blueGrey))),
             const SizedBox(height: 2),
-            Text(subtitle, style: TextStyle(fontSize: 9, color: active ? const Color(0xFFF59E0B).withOpacity(0.8) : (isDark ? Colors.grey.shade500 : Colors.grey))),
+            Text(subtitle,
+                style: TextStyle(
+                    fontSize: 9,
+                    color: active
+                        ? const Color(0xFFF59E0B).withOpacity(0.8)
+                        : (isDark ? Colors.grey.shade500 : Colors.grey))),
             const SizedBox(height: 8),
-            Text(pairs.replaceAll('\n', ' '), style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: active ? const Color(0xFFF59E0B) : (isDark ? Colors.grey.shade400 : Colors.grey.shade600))),
+            Text(pairs.replaceAll('\n', ' '),
+                style: TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w600,
+                    color: active
+                        ? const Color(0xFFF59E0B)
+                        : (isDark
+                            ? Colors.grey.shade400
+                            : Colors.grey.shade600))),
           ],
         ),
       ),
@@ -1826,321 +2433,559 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
   Widget build(BuildContext context) {
     double riskAmt = balance * (riskPct / 100);
     double riskAmtRM = riskAmt * rate;
-    double rawLots = (slPips > 0) ? riskAmt / (slPips * (isMicroMode ? 0.1 : 10)) : 0;
+    double rawLots =
+        (slPips > 0) ? riskAmt / (slPips * (isMicroMode ? 0.1 : 10)) : 0;
     int rawMicro = (rawLots * 100).floor();
     if (rawMicro % 2 != 0) rawMicro -= 1;
     double finalLots = rawMicro / 100;
-    bool isInsufficient = isMicroMode ? (finalLots < 0.02 * 100) : (finalLots < 0.02);
+    bool isInsufficient =
+        isMicroMode ? (finalLots < 0.02 * 100) : (finalLots < 0.02);
 
     final fightIq = _getFightIqDiagnosis(slPips);
     bool isDesktop = MediaQuery.of(context).size.width > 800;
 
     final leftChildren = <Widget>[
-        // Account Mode (XM Standard vs Micro)
-        Container(
-          padding: const EdgeInsets.all(2),
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.2)),
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    HapticFeedback.selectionClick();
-                    setState(() => isMicroMode = false);
-                    _saveParam('calc_is_micro', false);
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                    decoration: BoxDecoration(
-                      color: !isMicroMode ? const Color(0xFFF59E0B) : Colors.transparent,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(
-                      child: Text('🏢 XM 标准/Ultra Low (1手=100k)', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: !isMicroMode ? Colors.white : Colors.grey)),
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    HapticFeedback.selectionClick();
-                    setState(() => isMicroMode = true);
-                    _saveParam('calc_is_micro', true);
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                    decoration: BoxDecoration(
-                      color: isMicroMode ? const Color(0xFF059669) : Colors.transparent,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(
-                      child: Text('🔬 XM Micro 微型 (1手=1k)', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: isMicroMode ? Colors.white : Colors.grey)),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+      // Account Mode (XM Standard vs Micro)
+      Container(
+        padding: const EdgeInsets.all(2),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+              color: Theme.of(context).dividerColor.withOpacity(0.2)),
         ),
-        const SizedBox(height: 4),
-        Row(
+        child: Row(
           children: [
-            const Text('点值梯队联动 (自动载入 ATR 止损基准): ', style: TextStyle(fontSize: 11, color: Colors.grey)),
-            Text('当前: ' + activePair, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFFD97706))),
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  setState(() => isMicroMode = false);
+                  _saveParam('calc_is_micro', false);
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  decoration: BoxDecoration(
+                    color: !isMicroMode
+                        ? const Color(0xFFF59E0B)
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Center(
+                    child: Text('🏢 XM 标准/Ultra Low (1手=100k)',
+                        style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: !isMicroMode ? Colors.white : Colors.grey)),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  setState(() => isMicroMode = true);
+                  _saveParam('calc_is_micro', true);
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  decoration: BoxDecoration(
+                    color: isMicroMode
+                        ? const Color(0xFF059669)
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Center(
+                    child: Text('🔬 XM Micro 微型 (1手=1k)',
+                        style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: isMicroMode ? Colors.white : Colors.grey)),
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
-        const SizedBox(height: 8),
-        Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.2)),
-          ),
-          child: isDesktop
-              ? Row(
+      ),
+      const SizedBox(height: 4),
+      Row(
+        children: [
+          const Text('点值梯队联动 (自动载入 ATR 止损基准): ',
+              style: TextStyle(fontSize: 11, color: Colors.grey)),
+          Text('当前: ' + activePair,
+              style: const TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFFD97706))),
+        ],
+      ),
+      const SizedBox(height: 8),
+      Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+              color: Theme.of(context).dividerColor.withOpacity(0.2)),
+        ),
+        child: isDesktop
+            ? Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                      child: _buildTierButton('🥇 第一梯队', '绝对恒定 (\$0.10)',
+                          'EURUSD, GBPUSD, AUDUSD, NZDUSD',
+                          width: null)),
+                  Expanded(
+                      child: _buildTierButton('🛡️ 第二梯队', '超级防御 (~\$0.06)',
+                          'USDJPY, EURJPY, GBPJPY, AUDJPY, CADJPY, AUDNZD',
+                          width: null)),
+                  Expanded(
+                      child: _buildTierButton(
+                          '📉 第三梯队', '安全打折 (~\$0.07)', 'USDCAD, AUDCAD, EURCAD',
+                          width: null)),
+                  Expanded(
+                      child: _buildTierButton(
+                          '⚠️ 第四梯队', '点值溢价 (警惕微超)', 'USDCHF, EURGBP',
+                          width: null)),
+                  Expanded(
+                      child: _buildTierButton(
+                          '👑 独立品种', '美黄金 (0.1\$ = 1Pip)', 'XAUUSD',
+                          width: null)),
+                ],
+              )
+            : SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(child: _buildTierButton('🥇 第一梯队', '绝对恒定 (\$0.10)', 'EURUSD, GBPUSD, AUDUSD, NZDUSD', width: null)),
-                    Expanded(child: _buildTierButton('🛡️ 第二梯队', '超级防御 (~\$0.06)', 'USDJPY, EURJPY, GBPJPY, AUDJPY, CADJPY, AUDNZD', width: null)),
-                    Expanded(child: _buildTierButton('📉 第三梯队', '安全打折 (~\$0.07)', 'USDCAD, AUDCAD, EURCAD', width: null)),
-                    Expanded(child: _buildTierButton('⚠️ 第四梯队', '点值溢价 (警惕微超)', 'USDCHF, EURGBP', width: null)),
-                    Expanded(child: _buildTierButton('👑 独立品种', '美黄金 (0.1\$ = 1Pip)', 'XAUUSD', width: null)),
-                  ],
-                )
-              : Wrap(
-                  children: [
-                    _buildTierButton('🥇 第一梯队', '绝对恒定 (\$0.10)', 'EURUSD, GBPUSD, AUDUSD, NZDUSD', width: 250),
-                    _buildTierButton('🛡️ 第二梯队', '超级防御 (~\$0.06)', 'USDJPY, EURJPY, GBPJPY, AUDJPY, CADJPY, AUDNZD', width: 250),
-                    _buildTierButton('📉 第三梯队', '安全打折 (~\$0.07)', 'USDCAD, AUDCAD, EURCAD', width: 250),
-                    _buildTierButton('⚠️ 第四梯队', '点值溢价 (警惕微超)', 'USDCHF, EURGBP', width: 250),
-                    _buildTierButton('👑 独立品种', '美黄金 (0.1\$ = 1Pip)', 'XAUUSD', width: 250),
-                  ],
-                ),
-        ),
-        const SizedBox(height: 12),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(isGoldMode ? '黄金点值: 0.1\$ 波动 = 1 Pip' : '外汇点值: 0.01手 ≈ \$0.10/Pip', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.grey)),
-            InkWell(
-              onTap: _showStandardLotsTable,
-              child: const Text('📊 打开手数对照表', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFFF59E0B))),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 1,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildInput('账户本金 (USD)', _balCtrl, (v) {
-                    setState(() => balance = double.tryParse(v) ?? 0);
-                    _saveParam('calc_balance', balance);
-                  }),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4, top: 4),
-                    child: Text('≈ RM ${(balance * rate).toStringAsFixed(2)}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF059669))),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              flex: 1,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('汇率 (MYR)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
-                      GestureDetector(
-                        onTap: isFetchingRate ? null : _fetchLiveExchangeRate,
-                        child: Text(isFetchingRate ? '刷新中..' : '🔄 实时', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFFF59E0B))),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  TextFormField(
-                    controller: _rateCtrl,
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                    decoration: InputDecoration(
-                      filled: true,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                    ),
-                    onChanged: (v) {
-                      setState(() => rate = double.tryParse(v) ?? 4.5);
-                      _saveParam('calc_rate', rate);
-                    },
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              flex: 1,
-              child: _buildInput(isGoldMode ? '形态止损 (0.1\$ = 1 Pip)' : '形态止损空间 (Pips)', _slCtrl, (v) {
-                setState(() => slPips = double.tryParse(v) ?? 0);
-                _saveParam('calc_sl', slPips);
-              }),
-            ),
-          ],
-        ),
-
-        // 动态变速箱风控档位
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text('变速箱风控红线 (Risk %)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
-            Text(balance <= 2000 ? '🔥 激进翻倍档 (\$500~\$2k)' : '🛡️ 稳健巡航档 (>\$2k)', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: balance <= 2000 ? const Color(0xFFD97706) : const Color(0xFFF59E0B))),
-          ],
-        ),
-        const SizedBox(height: 8),
-        Row(
-          children: [2, 3, 4].map((r) {
-            bool selected = riskPct == r;
-            return Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: GestureDetector(
-                  onTap: () {
-                    HapticFeedback.lightImpact();
-                    setState(() => riskPct = r);
-                    _saveParam('calc_risk', r);
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                    decoration: BoxDecoration(
-                      color: selected ? (isGoldMode ? const Color(0xFFFEF3C7) : const Color(0xFFEFF6FF)) : Colors.transparent,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: selected ? (isGoldMode ? const Color(0xFFD97706) : const Color(0xFF3B82F6)) : Theme.of(context).dividerColor.withOpacity(0.4)),
-                    ),
-                    child: Center(
-                      child: Text('$r% ${r == 2 ? "(巡航)" : r == 3 ? "(激进)" : "(极限)"}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11, color: selected ? (isGoldMode ? const Color(0xFF92400E) : const Color(0xFF1E40AF)) : Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7))),
-                    ),
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
-        ),
-        const SizedBox(height: 10),
-
-        ];
-
-    final rightChildren = <Widget>[
-        // XM 账户规格与选型指南 (点击弹出)
-        GestureDetector(
-          onTap: () {
-            showDialog(
-              context: context,
-              builder: (ctx) => AlertDialog(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                title: Row(
-                  children: const [
-                    Icon(Icons.account_balance, size: 18, color: Color(0xFFF59E0B)),
-                    SizedBox(width: 8),
-                    Expanded(child: Text('XM 账户规格与选型指南', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold))),
+                    _buildTierButton('🥇 第一梯队', '绝对恒定 (\$0.10)',
+                        'EURUSD, GBPUSD, AUDUSD, NZDUSD',
+                        width: 220),
+                    _buildTierButton('🛡️ 第二梯队', '超级防御 (~\$0.06)',
+                        'USDJPY, EURJPY, GBPJPY, AUDJPY, CADJPY, AUDNZD',
+                        width: 240),
+                    _buildTierButton(
+                        '📉 第三梯队', '安全打折 (~\$0.07)', 'USDCAD, AUDCAD, EURCAD',
+                        width: 200),
+                    _buildTierButton('⚠️ 第四梯队', '点值溢价 (警惕微超)', 'USDCHF, EURGBP',
+                        width: 200),
+                    _buildTierButton('👑 独立品种', '美黄金 (0.1\$ = 1Pip)', 'XAUUSD',
+                        width: 160),
                   ],
                 ),
-                content: SingleChildScrollView(
+              ),
+      ),
+      const SizedBox(height: 12),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+              isGoldMode
+                  ? '黄金点值: 0.1\$ 波动 = 1 Pip'
+                  : '外汇点值: 0.01手 ≈ \$0.10/Pip',
+              style: const TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey)),
+          InkWell(
+            onTap: _showStandardLotsTable,
+            child: const Text('📊 打开手数对照表',
+                style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFF59E0B))),
+          ),
+        ],
+      ),
+      const SizedBox(height: 8),
+
+      isDesktop
+          ? Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 1,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFF59E0B).withOpacity(0.08),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Text('源自《XM 券商大马区硬核评测指南》：选对账户类型是小资金交易员生存的第一道风控防线！', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF1E40AF), height: 1.4)),
+                      _buildInput('账户本金 (USD)', _balCtrl, (v) {
+                        setState(() => balance = double.tryParse(v) ?? 0);
+                        _saveParam('calc_balance', balance);
+                      }),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 4, top: 4),
+                        child: Text(
+                            '≈ RM \${(balance * rate).toStringAsFixed(2)}',
+                            style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF059669))),
                       ),
-                      const SizedBox(height: 14),
-                      const Text('1. Standard 标准账户 (适合资金 >= \$500)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFFD97706))),
-                      const SizedBox(height: 6),
-                      const Text('• 1 手 = 100,000 合约，点值 ≈ \$10/pip，最小交易 0.01 手 (\$0.10/pip)。\n• 双轨分仓底线：必须开出 0.02 手 (0.01 + 0.01)。若本金仅 \$100，开 0.02 手止损 50p 风险高达 \$10 (10%)，直接违反 2% 铁律！', style: TextStyle(fontSize: 11, color: Colors.grey, height: 1.5)),
-                      const SizedBox(height: 14),
-                      const Text('2. Micro 微型账户 (适合资金 \$50 ~ \$300 · 强烈推荐)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF059669))),
-                      const SizedBox(height: 6),
-                      const Text('• 1 手 = 1,000 合约 (标准手的 1/100)，点值 ≈ \$0.10/pip，最小交易 0.01 micro手。\n• 破局解法：\$100 本金 2% 风险仅 \$2。在微型账户中可精准开出 0.40 Micro手，完美拆成 0.20 + 0.20 手执行 2x1% 双轨！', style: TextStyle(fontSize: 11, color: Colors.grey, height: 1.5)),
-                      const SizedBox(height: 14),
-                      const Text('3. 杠杆 (1:888 / 1:1000) 认知真相', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF7C3AED))),
-                      const SizedBox(height: 6),
-                      const Text('• 杠杆只决定保证金占用，不决定交易盈亏！盈亏只由【手数】与【止损点数】决定。\n• 坚守本终端计算的严格双轨手数，高杠杆不仅不会爆仓，反能大幅降低保证金被占用的压力。', style: TextStyle(fontSize: 11, color: Colors.grey, height: 1.5)),
                     ],
                   ),
                 ),
-                actions: [
-                  TextButton(
-                    onPressed: () => Navigator.pop(ctx),
-                    child: const Text('知晓铁律', style: TextStyle(fontWeight: FontWeight.bold)),
+                const SizedBox(width: 10),
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('汇率 (MYR)',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey)),
+                          GestureDetector(
+                            onTap:
+                                isFetchingRate ? null : _fetchLiveExchangeRate,
+                            child: Text(isFetchingRate ? '刷新中..' : '🔄 实时',
+                                style: const TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFFF59E0B))),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      TextFormField(
+                        controller: _rateCtrl,
+                        keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true),
+                        decoration: InputDecoration(
+                          filled: true,
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 12),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                        ),
+                        onChanged: (v) {
+                          setState(() => rate = double.tryParse(v) ?? 4.5);
+                          _saveParam('calc_rate', rate);
+                        },
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            );
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.2)),
-            ),
-            child: Row(
-              children: const [
-                Icon(Icons.account_balance, size: 14, color: Color(0xFFF59E0B)),
-                SizedBox(width: 6),
-                Expanded(child: Text('XM 账户规格与选型指南', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold))),
-                Icon(Icons.arrow_forward_ios, size: 12, color: Colors.grey),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  flex: 1,
+                  child: _buildInput(
+                      isGoldMode ? '形态止损 (0.1\\\$ = 1 Pip)' : '形态止损空间 (Pips)',
+                      _slCtrl, (v) {
+                    setState(() => slPips = double.tryParse(v) ?? 0);
+                    _saveParam('calc_sl', slPips);
+                  }),
+                ),
+              ],
+            )
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildInput('账户本金 (USD)', _balCtrl, (v) {
+                            setState(() => balance = double.tryParse(v) ?? 0);
+                            _saveParam('calc_balance', balance);
+                          }),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 4, top: 4),
+                            child: Text(
+                                '≈ RM \${(balance * rate).toStringAsFixed(2)}',
+                                style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF059669))),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text('汇率',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey)),
+                              GestureDetector(
+                                onTap: isFetchingRate
+                                    ? null
+                                    : _fetchLiveExchangeRate,
+                                child: Text(isFetchingRate ? '刷新..' : '🔄 实时',
+                                    style: const TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFFF59E0B))),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 4),
+                          TextFormField(
+                            controller: _rateCtrl,
+                            keyboardType: const TextInputType.numberWithOptions(
+                                decimal: true),
+                            decoration: InputDecoration(
+                              filled: true,
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 12),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12)),
+                            ),
+                            onChanged: (v) {
+                              setState(() => rate = double.tryParse(v) ?? 4.5);
+                              _saveParam('calc_rate', rate);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                _buildInput(
+                    isGoldMode ? '形态止损 (0.1\\\$ = 1 Pip)' : '形态止损空间 (Pips)',
+                    _slCtrl, (v) {
+                  setState(() => slPips = double.tryParse(v) ?? 0);
+                  _saveParam('calc_sl', slPips);
+                }),
               ],
             ),
-          ),
-        ),
-        const SizedBox(height: 10),
 
+      // 动态变速箱风控档位
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text('变速箱风控红线 (Risk %)',
+              style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey)),
+          Text(balance <= 2000 ? '🔥 激进翻倍档 (\$500~\$2k)' : '🛡️ 稳健巡航档 (>\$2k)',
+              style: TextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                  color: balance <= 2000
+                      ? const Color(0xFFD97706)
+                      : const Color(0xFFF59E0B))),
+        ],
+      ),
+      const SizedBox(height: 8),
+      Row(
+        children: [2, 3, 4].map((r) {
+          bool selected = riskPct == r;
+          return Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: GestureDetector(
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  setState(() => riskPct = r);
+                  _saveParam('calc_risk', r);
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  decoration: BoxDecoration(
+                    color: selected
+                        ? (isGoldMode
+                            ? const Color(0xFFFEF3C7)
+                            : const Color(0xFFEFF6FF))
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                        color: selected
+                            ? (isGoldMode
+                                ? const Color(0xFFD97706)
+                                : const Color(0xFF3B82F6))
+                            : Theme.of(context).dividerColor.withOpacity(0.4)),
+                  ),
+                  child: Center(
+                    child: Text(
+                        '$r% ${r == 2 ? "(巡航)" : r == 3 ? "(激进)" : "(极限)"}',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 11,
+                            color: selected
+                                ? (isGoldMode
+                                    ? const Color(0xFF92400E)
+                                    : const Color(0xFF1E40AF))
+                                : Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.color
+                                    ?.withOpacity(0.7))),
+                  ),
+                ),
+              ),
+            ),
+          );
+        }).toList(),
+      ),
+      const SizedBox(height: 10),
+    ];
 
-        // Fight IQ 物理级蜡烛诊断横幅
-        Container(
-          padding: const EdgeInsets.all(12),
+    final rightChildren = <Widget>[
+      // XM 账户规格与选型指南 (点击弹出)
+      GestureDetector(
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16)),
+              title: Row(
+                children: const [
+                  Icon(Icons.account_balance,
+                      size: 18, color: Color(0xFFF59E0B)),
+                  SizedBox(width: 8),
+                  Expanded(
+                      child: Text('XM 账户规格与选型指南',
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold))),
+                ],
+              ),
+              content: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF59E0B).withOpacity(0.08),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Text(
+                          '源自《XM 券商大马区硬核评测指南》：选对账户类型是小资金交易员生存的第一道风控防线！',
+                          style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF1E40AF),
+                              height: 1.4)),
+                    ),
+                    const SizedBox(height: 14),
+                    const Text('1. Standard 标准账户 (适合资金 >= \$500)',
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFFD97706))),
+                    const SizedBox(height: 6),
+                    const Text(
+                        '• 1 手 = 100,000 合约，点值 ≈ \$10/pip，最小交易 0.01 手 (\$0.10/pip)。\n• 双轨分仓底线：必须开出 0.02 手 (0.01 + 0.01)。若本金仅 \$100，开 0.02 手止损 50p 风险高达 \$10 (10%)，直接违反 2% 铁律！',
+                        style: TextStyle(
+                            fontSize: 11, color: Colors.grey, height: 1.5)),
+                    const SizedBox(height: 14),
+                    const Text('2. Micro 微型账户 (适合资金 \$50 ~ \$300 · 强烈推荐)',
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF059669))),
+                    const SizedBox(height: 6),
+                    const Text(
+                        '• 1 手 = 1,000 合约 (标准手的 1/100)，点值 ≈ \$0.10/pip，最小交易 0.01 micro手。\n• 破局解法：\$100 本金 2% 风险仅 \$2。在微型账户中可精准开出 0.40 Micro手，完美拆成 0.20 + 0.20 手执行 2x1% 双轨！',
+                        style: TextStyle(
+                            fontSize: 11, color: Colors.grey, height: 1.5)),
+                    const SizedBox(height: 14),
+                    const Text('3. 杠杆 (1:888 / 1:1000) 认知真相',
+                        style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF7C3AED))),
+                    const SizedBox(height: 6),
+                    const Text(
+                        '• 杠杆只决定保证金占用，不决定交易盈亏！盈亏只由【手数】与【止损点数】决定。\n• 坚守本终端计算的严格双轨手数，高杠杆不仅不会爆仓，反能大幅降低保证金被占用的压力。',
+                        style: TextStyle(
+                            fontSize: 11, color: Colors.grey, height: 1.5)),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(ctx),
+                  child: const Text('知晓铁律',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+              ],
+            ),
+          );
+        },
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           decoration: BoxDecoration(
-            color: (fightIq['color'] as Color).withOpacity(0.08),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: (fightIq['color'] as Color).withOpacity(0.2)),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+                color: Theme.of(context).dividerColor.withOpacity(0.2)),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(fightIq['status'] as String, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: fightIq['color'] as Color)),
-              const SizedBox(height: 2),
-              Text(fightIq['desc'] as String, style: TextStyle(fontSize: 11, color: (fightIq['color'] as Color).withOpacity(0.85), height: 1.3)),
+          child: Row(
+            children: const [
+              Icon(Icons.account_balance, size: 14, color: Color(0xFFF59E0B)),
+              SizedBox(width: 6),
+              Expanded(
+                  child: Text('XM 账户规格与选型指南',
+                      style: TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.bold))),
+              Icon(Icons.arrow_forward_ios, size: 12, color: Colors.grey),
             ],
           ),
         ),
-        const SizedBox(height: 12),
+      ),
+      const SizedBox(height: 10),
 
-        // 结果卡片
-        Card(
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18),
-            side: BorderSide(color: Theme.of(context).dividerColor.withOpacity(0.2)),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
+      // Fight IQ 物理级蜡烛诊断横幅
+      Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: (fightIq['color'] as Color).withOpacity(0.08),
+          borderRadius: BorderRadius.circular(12),
+          border:
+              Border.all(color: (fightIq['color'] as Color).withOpacity(0.2)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(fightIq['status'] as String,
+                style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: fightIq['color'] as Color)),
+            const SizedBox(height: 2),
+            Text(fightIq['desc'] as String,
+                style: TextStyle(
+                    fontSize: 11,
+                    color: (fightIq['color'] as Color).withOpacity(0.85),
+                    height: 1.3)),
+          ],
+        ),
+      ),
+      const SizedBox(height: 12),
+
+      // 结果卡片
+      Card(
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18),
+          side: BorderSide(
+              color: Theme.of(context).dividerColor.withOpacity(0.2)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
               isDesktop
                   ? Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -2150,36 +2995,82 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text('本次亏损上限 (风险金额)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
+                              const Text('本次亏损上限 (风险金额)',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey)),
                               const SizedBox(height: 6),
-                              FittedBox(fit: BoxFit.scaleDown, child: Text('\$''${riskAmt.toStringAsFixed(2)}', style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w900))),
-                              Text('≈ RM ${riskAmtRM.toStringAsFixed(2)}', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Color(0xFF059669))),
+                              FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                      '\$' '${riskAmt.toStringAsFixed(2)}',
+                                      style: const TextStyle(
+                                          fontSize: 34,
+                                          fontWeight: FontWeight.w900))),
+                              Text('≈ RM ${riskAmtRM.toStringAsFixed(2)}',
+                                  style: const TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF059669))),
                             ],
                           ),
                         ),
-                        Container(width: 1, height: 80, color: Theme.of(context).dividerColor.withOpacity(0.2), margin: const EdgeInsets.symmetric(horizontal: 10)),
+                        Container(
+                            width: 1,
+                            height: 80,
+                            color:
+                                Theme.of(context).dividerColor.withOpacity(0.2),
+                            margin: const EdgeInsets.symmetric(horizontal: 10)),
                         Expanded(
                           flex: 1,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text('执行双轨总手数 (恒为偶数)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
+                              const Text('执行双轨总手数 (恒为偶数)',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey)),
                               const SizedBox(height: 6),
                               if (isInsufficient) ...[
-                                const Text('🚫 资金不足以挂双单', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.red)),
+                                const Text('🚫 资金不足以挂双单',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.red)),
                                 const SizedBox(height: 4),
-                                Text('理论需: ${rawLots.toStringAsFixed(3)} 手\n(强烈建议转 Micro 微型)', textAlign: TextAlign.center, style: const TextStyle(fontSize: 11, color: Colors.red)),
+                                Text(
+                                    '理论需: ${rawLots.toStringAsFixed(3)} 手\n(强烈建议转 Micro 微型)',
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                        fontSize: 11, color: Colors.red)),
                               ] else ...[
-                                FittedBox(fit: BoxFit.scaleDown, child: Text('${finalLots.toStringAsFixed(2)} 手', style: TextStyle(fontSize: 34, fontWeight: FontWeight.w900, color: isGoldMode ? const Color(0xFFD97706) : const Color(0xFFF59E0B)))),
+                                FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Text(
+                                        '${finalLots.toStringAsFixed(2)} 手',
+                                        style: TextStyle(
+                                            fontSize: 34,
+                                            fontWeight: FontWeight.w900,
+                                            color: isGoldMode
+                                                ? const Color(0xFFD97706)
+                                                : const Color(0xFFF59E0B)))),
                                 const SizedBox(height: 8),
                                 Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 4),
                                   decoration: BoxDecoration(
                                     color: Theme.of(context).cardColor,
                                     borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(color: Colors.grey.withOpacity(0.3)),
+                                    border: Border.all(
+                                        color: Colors.grey.withOpacity(0.3)),
                                   ),
-                                  child: Text('实操双单：A单 ${(finalLots / 2).toStringAsFixed(2)}手 ➕ B单 ${(finalLots / 2).toStringAsFixed(2)}手', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11)),
+                                  child: Text(
+                                      '实操双单：A单 ${(finalLots / 2).toStringAsFixed(2)}手 ➕ B单 ${(finalLots / 2).toStringAsFixed(2)}手',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 11)),
                                 ),
                               ],
                             ],
@@ -2189,88 +3080,155 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
                     )
                   : Column(
                       children: [
-                        const Text('本次亏损上限 (风险金额)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
+                        const Text('本次亏损上限 (风险金额)',
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey)),
                         const SizedBox(height: 4),
-                        Text('\$''${riskAmt.toStringAsFixed(2)}', style: const TextStyle(fontSize: 30, fontWeight: FontWeight.w900)),
-                        Text('≈ RM ${riskAmtRM.toStringAsFixed(2)}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF059669))),
+                        Text('\$' '${riskAmt.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                                fontSize: 30, fontWeight: FontWeight.w900)),
+                        Text('≈ RM ${riskAmtRM.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF059669))),
                         const Divider(height: 30),
-                        const Text('执行双轨总手数 (恒为偶数)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
+                        const Text('执行双轨总手数 (恒为偶数)',
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey)),
                         const SizedBox(height: 4),
                         if (isInsufficient) ...[
-                          const Text('🚫 资金不足以挂双单', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.red)),
+                          const Text('🚫 资金不足以挂双单',
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red)),
                           const SizedBox(height: 4),
-                          Text('理论需: ${rawLots.toStringAsFixed(3)} 手 (强烈建议转 Micro 微型账户执行)', style: const TextStyle(fontSize: 12, color: Colors.red)),
+                          Text(
+                              '理论需: ${rawLots.toStringAsFixed(3)} 手 (强烈建议转 Micro 微型账户执行)',
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.red)),
                         ] else ...[
-                          Text('${finalLots.toStringAsFixed(2)} 手', style: TextStyle(fontSize: 36, fontWeight: FontWeight.w900, color: isGoldMode ? const Color(0xFFD97706) : const Color(0xFFF59E0B))),
+                          Text('${finalLots.toStringAsFixed(2)} 手',
+                              style: TextStyle(
+                                  fontSize: 36,
+                                  fontWeight: FontWeight.w900,
+                                  color: isGoldMode
+                                      ? const Color(0xFFD97706)
+                                      : const Color(0xFFF59E0B))),
                           const SizedBox(height: 10),
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 4),
                             decoration: BoxDecoration(
                               color: Theme.of(context).cardColor,
                               borderRadius: BorderRadius.circular(20),
-                              border: Border.all(color: Colors.grey.withOpacity(0.3)),
+                              border: Border.all(
+                                  color: Colors.grey.withOpacity(0.3)),
                             ),
-                            child: Text('实操双单：A单 ${(finalLots / 2).toStringAsFixed(2)} 手 ➕ B单 ${(finalLots / 2).toStringAsFixed(2)} 手', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                            child: Text(
+                                '实操双单：A单 ${(finalLots / 2).toStringAsFixed(2)} 手 ➕ B单 ${(finalLots / 2).toStringAsFixed(2)} 手',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 13)),
                           ),
                         ],
                       ],
                     ),
-                  ],
-            ),
+            ],
           ),
         ),
+      ),
 
-        const SizedBox(height: 14),
+      const SizedBox(height: 14),
 
-        // 500-3200 标准速查表卡片 (来自 Notion 核心战法)
-        Card(
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-            side: BorderSide(color: Theme.of(context).dividerColor.withOpacity(0.2)),
-          ),
-          child: Theme(
-            data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-            child: ExpansionTile(
-              initiallyExpanded: false,
-              leading: const Icon(Icons.table_chart_rounded, color: Color(0xFFF59E0B), size: 20),
-              title: const Text('📖 资金阶梯标准速查表 (50 Pips 止损基准)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-              childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              children: [
-                const Text('基准条件：止损 50 Pips，单笔风险 2%，双轨 1%+1% 分仓', style: TextStyle(fontSize: 11, color: Colors.grey)),
-                const SizedBox(height: 8),
-                Table(
-                  border: TableBorder.all(color: Theme.of(context).dividerColor.withOpacity(0.2), borderRadius: BorderRadius.circular(8)),
-                  columnWidths: const {
-                    0: FlexColumnWidth(1.2),
-                    1: FlexColumnWidth(1.1),
-                    2: FlexColumnWidth(1.6),
-                    3: FlexColumnWidth(1.6),
-                  },
-                  children: [
-                    TableRow(
-                      decoration: BoxDecoration(color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[800] : const Color(0xFFF1F5F9)),
-                      children: const [
-                        Padding(padding: EdgeInsets.all(6), child: Text('本金', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold), textAlign: TextAlign.center)),
-                        Padding(padding: EdgeInsets.all(6), child: Text('2%风险', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold), textAlign: TextAlign.center)),
-                        Padding(padding: EdgeInsets.all(6), child: Text('标准双单', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold), textAlign: TextAlign.center)),
-                        Padding(padding: EdgeInsets.all(6), child: Text('微型双单(Micro)', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold), textAlign: TextAlign.center)),
-                      ],
-                    ),
-                    _buildTableRow('\$500', '\$10', '0.01 + 0.01', '0.10 + 0.10 (优)'),
-                    _buildTableRow('\$1,000', '\$20', '0.02 + 0.02', '0.20 + 0.20'),
-                    _buildTableRow('\$1,500', '\$30', '0.03 + 0.03', '0.30 + 0.30'),
-                    _buildTableRow('\$2,000', '\$40', '0.04 + 0.04', '0.40 + 0.40'),
-                    _buildTableRow('\$3,200', '\$64', '0.06 + 0.06', '0.64 + 0.64'),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                const Text('💡 提示：\$500 资金在标准账户下无法拆出 0.005 手，因此强烈建议 \$500 资金开设 Micro 微型账户以执行标准 1%+1% 分仓。', style: TextStyle(fontSize: 10, color: Colors.grey)),
-              ],
-            ),
+      // 500-3200 标准速查表卡片 (来自 Notion 核心战法)
+      Card(
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(
+              color: Theme.of(context).dividerColor.withOpacity(0.2)),
+        ),
+        child: Theme(
+          data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+          child: ExpansionTile(
+            initiallyExpanded: false,
+            leading: const Icon(Icons.table_chart_rounded,
+                color: Color(0xFFF59E0B), size: 20),
+            title: const Text('📖 资金阶梯标准速查表 (50 Pips 止损基准)',
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+            childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            children: [
+              const Text('基准条件：止损 50 Pips，单笔风险 2%，双轨 1%+1% 分仓',
+                  style: TextStyle(fontSize: 11, color: Colors.grey)),
+              const SizedBox(height: 8),
+              Table(
+                border: TableBorder.all(
+                    color: Theme.of(context).dividerColor.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(8)),
+                columnWidths: const {
+                  0: FlexColumnWidth(1.2),
+                  1: FlexColumnWidth(1.1),
+                  2: FlexColumnWidth(1.6),
+                  3: FlexColumnWidth(1.6),
+                },
+                children: [
+                  TableRow(
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.grey[800]
+                            : const Color(0xFFF1F5F9)),
+                    children: const [
+                      Padding(
+                          padding: EdgeInsets.all(6),
+                          child: Text('本金',
+                              style: TextStyle(
+                                  fontSize: 10, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center)),
+                      Padding(
+                          padding: EdgeInsets.all(6),
+                          child: Text('2%风险',
+                              style: TextStyle(
+                                  fontSize: 10, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center)),
+                      Padding(
+                          padding: EdgeInsets.all(6),
+                          child: Text('标准双单',
+                              style: TextStyle(
+                                  fontSize: 10, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center)),
+                      Padding(
+                          padding: EdgeInsets.all(6),
+                          child: Text('微型双单(Micro)',
+                              style: TextStyle(
+                                  fontSize: 10, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center)),
+                    ],
+                  ),
+                  _buildTableRow(
+                      '\$500', '\$10', '0.01 + 0.01', '0.10 + 0.10 (优)'),
+                  _buildTableRow(
+                      '\$1,000', '\$20', '0.02 + 0.02', '0.20 + 0.20'),
+                  _buildTableRow(
+                      '\$1,500', '\$30', '0.03 + 0.03', '0.30 + 0.30'),
+                  _buildTableRow(
+                      '\$2,000', '\$40', '0.04 + 0.04', '0.40 + 0.40'),
+                  _buildTableRow(
+                      '\$3,200', '\$64', '0.06 + 0.06', '0.64 + 0.64'),
+                ],
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                  '💡 提示：\$500 资金在标准账户下无法拆出 0.005 手，因此强烈建议 \$500 资金开设 Micro 微型账户以执行标准 1%+1% 分仓。',
+                  style: TextStyle(fontSize: 10, color: Colors.grey)),
+            ],
           ),
         ),
-
+      ),
     ];
 
     if (isDesktop) {
@@ -2316,26 +3274,50 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
   TableRow _buildTableRow(String col1, String col2, String col3, String col4) {
     return TableRow(
       children: [
-        Padding(padding: const EdgeInsets.all(6), child: Text(col1, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w600), textAlign: TextAlign.center)),
-        Padding(padding: const EdgeInsets.all(6), child: Text(col2, style: const TextStyle(fontSize: 10, color: Colors.red), textAlign: TextAlign.center)),
-        Padding(padding: const EdgeInsets.all(6), child: Text(col3, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFFF59E0B)), textAlign: TextAlign.center)),
-        Padding(padding: const EdgeInsets.all(6), child: Text(col4, style: const TextStyle(fontSize: 10, color: Color(0xFF059669)), textAlign: TextAlign.center)),
+        Padding(
+            padding: const EdgeInsets.all(6),
+            child: Text(col1,
+                style:
+                    const TextStyle(fontSize: 10, fontWeight: FontWeight.w600),
+                textAlign: TextAlign.center)),
+        Padding(
+            padding: const EdgeInsets.all(6),
+            child: Text(col2,
+                style: const TextStyle(fontSize: 10, color: Colors.red),
+                textAlign: TextAlign.center)),
+        Padding(
+            padding: const EdgeInsets.all(6),
+            child: Text(col3,
+                style: const TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFF59E0B)),
+                textAlign: TextAlign.center)),
+        Padding(
+            padding: const EdgeInsets.all(6),
+            child: Text(col4,
+                style: const TextStyle(fontSize: 10, color: Color(0xFF059669)),
+                textAlign: TextAlign.center)),
       ],
     );
   }
 
-  Widget _buildInput(String label, TextEditingController ctrl, ValueChanged<String> onChanged) {
+  Widget _buildInput(String label, TextEditingController ctrl,
+      ValueChanged<String> onChanged) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
+        Text(label,
+            style: const TextStyle(
+                fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
         const SizedBox(height: 4),
         TextFormField(
           controller: ctrl,
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
           decoration: InputDecoration(
             filled: true,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
           ),
           onChanged: onChanged,
@@ -2349,8 +3331,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
 // 3. 自动止盈报价生成器（重磅新增：黄金口袋 Fib 50%~61.8% 狙击入场模式）
 // -------------------------------------------------------------
 
-
-  class TpCalculatorPage extends StatefulWidget {
+class TpCalculatorPage extends StatefulWidget {
   const TpCalculatorPage({super.key});
 
   @override
@@ -2358,7 +3339,8 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
 }
 
 class _TpCalculatorPageState extends State<TpCalculatorPage> {
-  final TextEditingController _highCtrl = TextEditingController(text: '1.08800');
+  final TextEditingController _highCtrl =
+      TextEditingController(text: '1.08800');
   final TextEditingController _lowCtrl = TextEditingController(text: '1.08000');
 
   double? highPrice = 1.08800;
@@ -2403,7 +3385,11 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
   bool _tscfCandle = true; // C (Candlestick 形态)：D1收盘确认饱满吞没/Pin Bar拒收
   bool _tscfFib = true; // F (Fibonacci 黄金口袋)：深幅回撤踩入 50% ~ 61.8% 绝杀口袋
 
-  int get _tscfScore => (_tscfTrend ? 1 : 0) + (_tscfStructure ? 1 : 0) + (_tscfCandle ? 1 : 0) + (_tscfFib ? 1 : 0);
+  int get _tscfScore =>
+      (_tscfTrend ? 1 : 0) +
+      (_tscfStructure ? 1 : 0) +
+      (_tscfCandle ? 1 : 0) +
+      (_tscfFib ? 1 : 0);
 
   Map<String, dynamic> get _tscfRating {
     final score = _tscfScore;
@@ -2444,7 +3430,12 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
   bool _checkTwinLot = false; // 4. 双轨 1%+1% 分仓 (总风险 2%)
   bool _checkMindset = false; // 5. 坚决 Set & Forget (到 1:1 必保本)
 
-  bool get _allChecked => _checkClosed && _checkFightIq && _checkBuffer && _checkTwinLot && _checkMindset;
+  bool get _allChecked =>
+      _checkClosed &&
+      _checkFightIq &&
+      _checkBuffer &&
+      _checkTwinLot &&
+      _checkMindset;
 
   void _toggleAllChecks() {
     HapticFeedback.mediumImpact();
@@ -2459,7 +3450,6 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
   }
 
   List<Map<String, dynamic>> _savedPlans = [];
-
 
   Future<void> _loadState() async {
     final prefs = await SharedPreferences.getInstance();
@@ -2483,6 +3473,7 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
     if (value is int) await prefs.setInt(key, value);
     if (value is double) await prefs.setDouble(key, value);
   }
+
   @override
   void initState() {
     super.initState();
@@ -2509,7 +3500,8 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
         final List list = json.decode(jsonStr);
         if (mounted) {
           setState(() {
-            _savedPlans = list.map((e) => Map<String, dynamic>.from(e)).toList();
+            _savedPlans =
+                list.map((e) => Map<String, dynamic>.from(e)).toList();
           });
         }
       } catch (_) {}
@@ -2536,17 +3528,28 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
     required double beBody,
   }) {
     HapticFeedback.mediumImpact();
-    final entry = (entryMode == 1) ? fib50.toStringAsFixed(decimals) : breakoutEntry.toStringAsFixed(decimals);
-    final sl = (entryMode == 1) ? fibSl.toStringAsFixed(decimals) : breakoutSl.toStringAsFixed(decimals);
+    final entry = (entryMode == 1)
+        ? fib50.toStringAsFixed(decimals)
+        : breakoutEntry.toStringAsFixed(decimals);
+    final sl = (entryMode == 1)
+        ? fibSl.toStringAsFixed(decimals)
+        : breakoutSl.toStringAsFixed(decimals);
     final tp1 = (entryMode == 1)
-        ? (isLong ? fib50 + fib50Risk : fib50 - fib50Risk).toStringAsFixed(decimals)
-        : (isLong ? breakoutEntry + breakoutRisk : breakoutEntry - breakoutRisk).toStringAsFixed(decimals);
+        ? (isLong ? fib50 + fib50Risk : fib50 - fib50Risk)
+            .toStringAsFixed(decimals)
+        : (isLong ? breakoutEntry + breakoutRisk : breakoutEntry - breakoutRisk)
+            .toStringAsFixed(decimals);
     final tp2 = (entryMode == 1)
-        ? (isLong ? fib50 + fib50Risk * 2 : fib50 - fib50Risk * 2).toStringAsFixed(decimals)
-        : (isLong ? breakoutEntry + breakoutRisk * 2 : breakoutEntry - breakoutRisk * 2).toStringAsFixed(decimals);
+        ? (isLong ? fib50 + fib50Risk * 2 : fib50 - fib50Risk * 2)
+            .toStringAsFixed(decimals)
+        : (isLong
+                ? breakoutEntry + breakoutRisk * 2
+                : breakoutEntry - breakoutRisk * 2)
+            .toStringAsFixed(decimals);
 
     final now = DateTime.now();
-    final timeStr = '${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')} ${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
+    final timeStr =
+        '${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')} ${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}';
 
     final pairInfo = getWatchlistPair(selectedPair);
     final newPlan = {
@@ -2556,7 +3559,8 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
       'category': pairInfo.category,
       'categoryLabel': pairInfo.categoryLabel,
       'dir': isLong ? 'BUY' : 'SELL',
-      'mode': (entryMode == 1) ? '黄金口袋 50%' : (entryMode == 0 ? '常规突破' : '极值突破'),
+      'mode':
+          (entryMode == 1) ? '黄金口袋 50%' : (entryMode == 0 ? '常规突破' : '极值突破'),
       'entry': entry,
       'sl': sl,
       'tp1': tp1,
@@ -2586,9 +3590,12 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
         duration: const Duration(seconds: 2),
         content: Row(
           children: [
-            const Icon(Icons.bookmark_added_rounded, color: Colors.white, size: 18),
+            const Icon(Icons.bookmark_added_rounded,
+                color: Colors.white, size: 18),
             const SizedBox(width: 8),
-            Text('已存入今日战术计划簿 ($selectedPair ${isLong ? "BUY" : "SELL"})', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+            Text('已存入今日战术计划簿 ($selectedPair ${isLong ? "BUY" : "SELL"})',
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
           ],
         ),
       ),
@@ -2622,27 +3629,36 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
   void _exportJournalToNotionReport() {
     HapticFeedback.mediumImpact();
     final now = DateTime.now();
-    final dateStr = '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+    final dateStr =
+        '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
 
     final total = _savedPlans.length;
     final tpCount = _savedPlans.where((e) => e['status'] == '💰 全部止盈').length;
-    final beCount = _savedPlans.where((e) => e['status'] == '🎯 1:1已推保本' || e['status'] == '🛡️ 保本离场').length;
+    final beCount = _savedPlans
+        .where((e) => e['status'] == '🎯 1:1已推保本' || e['status'] == '🛡️ 保本离场')
+        .length;
     final slCount = _savedPlans.where((e) => e['status'] == '❌ 已止损').length;
-    final pendingCount = _savedPlans.where((e) => e['status'] == '⏳ 挂单中').length;
+    final pendingCount =
+        _savedPlans.where((e) => e['status'] == '⏳ 挂单中').length;
     final closed = tpCount + beCount + slCount;
-    final winRate = closed > 0 ? (((tpCount + beCount) / closed) * 100).toStringAsFixed(0) : '-';
+    final winRate = closed > 0
+        ? (((tpCount + beCount) / closed) * 100).toStringAsFixed(0)
+        : '-';
 
     final buffer = StringBuffer();
     buffer.writeln('# 📅 DT · 吞没战法实战挂单与复盘日报 ($dateStr)');
     buffer.writeln();
     buffer.writeln('## 📊 今日实战统计');
     buffer.writeln('- **总挂单数**：$total 笔 | **待触发挂单**：$pendingCount 笔');
-    buffer.writeln('- **全部止盈 (Full TP)**：$tpCount 笔 | **1:1推保本/保本离场**：$beCount 笔 | **执行止损**：$slCount 笔');
+    buffer.writeln(
+        '- **全部止盈 (Full TP)**：$tpCount 笔 | **1:1推保本/保本离场**：$beCount 笔 | **执行止损**：$slCount 笔');
     buffer.writeln('- **已结算胜率**：$winRate%');
     buffer.writeln();
     buffer.writeln('## 📝 今日详细挂单流水');
-    buffer.writeln('| 序号 | 品种代码 | 品种分级 | 方向 | 入场价 | 止损价 (点数) | 1:1保本TP | 40p保本位 | 双轨手数 | 实战状态 |');
-    buffer.writeln('| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |');
+    buffer.writeln(
+        '| 序号 | 品种代码 | 品种分级 | 方向 | 入场价 | 止损价 (点数) | 1:1保本TP | 40p保本位 | 双轨手数 | 实战状态 |');
+    buffer.writeln(
+        '| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |');
 
     for (int i = 0; i < _savedPlans.length; i++) {
       final p = _savedPlans[i];
@@ -2657,7 +3673,8 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
       final be40Val = p['be40'] ?? '-';
       final lot = p['lot'] ?? '';
       final st = p['status'] ?? '';
-      buffer.writeln('| ${i + 1} | $pair ($pairChinese) | $cat | $dir | $entry | $sl (${pips}p) | $tp1 | $be40Val | $lot + $lot 手 | $st |');
+      buffer.writeln(
+          '| ${i + 1} | $pair ($pairChinese) | $cat | $dir | $entry | $sl (${pips}p) | $tp1 | $be40Val | $lot + $lot 手 | $st |');
     }
 
     buffer.writeln();
@@ -2673,16 +3690,22 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
   Widget _buildStatCol(String label, String val, Color color) {
     return Column(
       children: [
-        Text(val, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, color: color)),
+        Text(val,
+            style: TextStyle(
+                fontSize: 12, fontWeight: FontWeight.w900, color: color)),
         const SizedBox(height: 1),
         Text(label, style: const TextStyle(fontSize: 10, color: Colors.grey)),
       ],
     );
   }
 
-  Widget _buildTscfChip(String title, String tooltip, bool selected, ValueChanged<bool> onChanged) {
+  Widget _buildTscfChip(String title, String tooltip, bool selected,
+      ValueChanged<bool> onChanged) {
     return FilterChip(
-      label: Text(title, style: TextStyle(fontSize: 11, fontWeight: selected ? FontWeight.bold : FontWeight.normal)),
+      label: Text(title,
+          style: TextStyle(
+              fontSize: 11,
+              fontWeight: selected ? FontWeight.bold : FontWeight.normal)),
       selected: selected,
       tooltip: tooltip,
       selectedColor: const Color(0xFFF59E0B).withOpacity(0.18),
@@ -2699,7 +3722,8 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
     int decimals = isGold ? 2 : ((highPrice ?? 0) > 10 ? 3 : 5);
     double pipMultiplier = isGold ? 10 : ((highPrice ?? 0) > 10 ? 100 : 10000);
 
-    bool hasData = (highPrice != null && lowPrice != null && highPrice! > lowPrice!);
+    bool hasData =
+        (highPrice != null && lowPrice != null && highPrice! > lowPrice!);
     double range = 0;
 
     // 10 pips 假突破缓冲 & 9 pips 止损缓冲
@@ -2727,7 +3751,8 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
     if (hasData) {
       range = highPrice! - lowPrice!;
       // 突破模式计算
-      breakoutEntry = isLong ? highPrice! + bufferEntry : lowPrice! - bufferEntry;
+      breakoutEntry =
+          isLong ? highPrice! + bufferEntry : lowPrice! - bufferEntry;
       breakoutSl = isLong ? lowPrice! - bufferSl : highPrice! + bufferSl;
       breakoutRisk = (breakoutEntry - breakoutSl).abs();
 
@@ -2738,790 +3763,926 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
       fib50Risk = (fib50 - fibSl).abs();
       fib618Risk = (fib618 - fibSl).abs();
 
-      currentRiskPips = (entryMode == 1) ? (fib50Risk * pipMultiplier) : (breakoutRisk * pipMultiplier);
+      currentRiskPips = (entryMode == 1)
+          ? (fib50Risk * pipMultiplier)
+          : (breakoutRisk * pipMultiplier);
       riskAmountUsd = userBalance * (userRisk / 100.0);
-      double rawTotalLots = currentRiskPips > 0 ? (riskAmountUsd / (currentRiskPips * 10.0)) : 0.0;
+      double rawTotalLots = currentRiskPips > 0
+          ? (riskAmountUsd / (currentRiskPips * 10.0))
+          : 0.0;
       tradeLot = isDualTrack ? (rawTotalLots / 2.0) : rawTotalLots;
       if (tradeLot < 0.01 && tradeLot > 0) tradeLot = 0.01;
 
       // 双重推保本点位 (Notion Part 3: 40 pips 规则 & 实体等长规则)
       double entryForBe = (entryMode == 1) ? fib50 : breakoutEntry;
-      be40 = isLong ? entryForBe + (40 / pipMultiplier) : entryForBe - (40 / pipMultiplier);
+      be40 = isLong
+          ? entryForBe + (40 / pipMultiplier)
+          : entryForBe - (40 / pipMultiplier);
       beBody = isLong ? entryForBe + range : entryForBe - range;
     }
 
     final currentPairInfo = getWatchlistPair(selectedPair);
 
     final leftChildren = <Widget>[
-        // 模式切换：突破挂单 vs 黄金口袋 Fib vs 极值突破
-        Container(
-          padding: const EdgeInsets.all(2),
-          decoration: BoxDecoration(
-            color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.2)),
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: GestureDetector(
-                  onTap: () { HapticFeedback.selectionClick(); setState(() { entryMode = 1; _saveState('tp_mode', 1); }); },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                    decoration: BoxDecoration(
-                      color: entryMode == 1 ? const Color(0xFFD97706) : Colors.transparent,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(child: Text('🎯 黄金口袋', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: entryMode == 1 ? Colors.white : Colors.grey))),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () { HapticFeedback.selectionClick(); setState(() { entryMode = 0; _saveState('tp_mode', 0); }); },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                    decoration: BoxDecoration(
-                      color: entryMode == 0 ? const Color(0xFFF59E0B) : Colors.transparent,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(child: Text('🚀 常规突破', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: entryMode == 0 ? Colors.white : Colors.grey))),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: GestureDetector(
-                  onTap: () { HapticFeedback.selectionClick(); setState(() { entryMode = 2; _saveState('tp_mode', 2); }); },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 6),
-                    decoration: BoxDecoration(
-                      color: entryMode == 2 ? const Color(0xFF9333EA) : Colors.transparent,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(child: Text('⚡ 极值突破', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: entryMode == 2 ? Colors.white : Colors.grey))),
-                  ),
-                ),
-              ),
-            ],
-          ),
+      // 模式切换：突破挂单 vs 黄金口袋 Fib vs 极值突破
+      Container(
+        padding: const EdgeInsets.all(2),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+              color: Theme.of(context).dividerColor.withOpacity(0.2)),
         ),
-        const SizedBox(height: 10),
-        // Timeframe & Buy/Sell Toggle & Atlas Button
-        Wrap(
-          spacing: 12,
-          runSpacing: 10,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          alignment: WrapAlignment.spaceBetween,
+        child: Row(
           children: [
-            // Left: Timeframe
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text('Timeframe: ', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
-                ToggleButtons(
-                  constraints: const BoxConstraints(minHeight: 32, minWidth: 42),
-                  borderRadius: BorderRadius.circular(6),
-                  isSelected: ['D1', 'H4', 'H1', 'M15'].map((t) => t == selectedTimeframe).toList(),
-                  onPressed: (idx) {
-                    HapticFeedback.selectionClick();
-                    setState(() { selectedTimeframe = ['D1', 'H4', 'H1', 'M15'][idx]; _saveState('tp_timeframe', selectedTimeframe); });
-                  },
-                  children: const [
-                    Text('D1', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-                    Text('H4', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-                    Text('H1', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-                    Text('M15', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-                  ],
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  setState(() {
+                    entryMode = 1;
+                    _saveState('tp_mode', 1);
+                  });
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  decoration: BoxDecoration(
+                    color: entryMode == 1
+                        ? const Color(0xFFD97706)
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Center(
+                      child: Text('🎯 黄金口袋',
+                          style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                              color: entryMode == 1
+                                  ? Colors.white
+                                  : Colors.grey))),
                 ),
-              ],
-            ),
-            // Middle: Buy/Sell
-            ToggleButtons(
-              isSelected: [isLong, !isLong],
-              borderRadius: BorderRadius.circular(6),
-              constraints: const BoxConstraints(minWidth: 65, minHeight: 32),
-              selectedColor: Colors.white,
-              fillColor: isLong ? const Color(0xFF16A34A) : const Color(0xFFDC2626),
-              onPressed: (idx) => setState(() => isLong = idx == 0),
-              children: const [
-                Text('做多 (BUY)', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-                Text('做空 (SELL)', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-              ],
-            ),
-            // Right: Atlas
-            OutlinedButton.icon(
-              style: OutlinedButton.styleFrom(
-                visualDensity: VisualDensity.compact,
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                side: const BorderSide(color: Color(0xFFF59E0B), width: 1.2),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
               ),
-              onPressed: () => showWatchlistAtlasDialog(context, onSelect: (p) => _selectWatchlistPair(p)),
-              icon: const Icon(Icons.menu_book_rounded, size: 14, color: Color(0xFFF59E0B)),
-              label: const Text('16品种图鉴', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFFF59E0B))),
+            ),
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  setState(() {
+                    entryMode = 0;
+                    _saveState('tp_mode', 0);
+                  });
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  decoration: BoxDecoration(
+                    color: entryMode == 0
+                        ? const Color(0xFFF59E0B)
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Center(
+                      child: Text('🚀 常规突破',
+                          style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                              color: entryMode == 0
+                                  ? Colors.white
+                                  : Colors.grey))),
+                ),
+              ),
+            ),
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  setState(() {
+                    entryMode = 2;
+                    _saveState('tp_mode', 2);
+                  });
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  decoration: BoxDecoration(
+                    color: entryMode == 2
+                        ? const Color(0xFF9333EA)
+                        : Colors.transparent,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Center(
+                      child: Text('⚡ 极值突破',
+                          style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                              color: entryMode == 2
+                                  ? Colors.white
+                                  : Colors.grey))),
+                ),
+              ),
             ),
           ],
         ),
+      ),
+      const SizedBox(height: 10),
+      // Timeframe & Buy/Sell Toggle & Atlas Button
+      Wrap(
+        spacing: 12,
+        runSpacing: 10,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        alignment: WrapAlignment.spaceBetween,
+        children: [
+          // Left: Timeframe
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text('Timeframe: ',
+                  style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey)),
+              ToggleButtons(
+                constraints: const BoxConstraints(minHeight: 32, minWidth: 42),
+                borderRadius: BorderRadius.circular(6),
+                isSelected: ['D1', 'H4', 'H1', 'M15']
+                    .map((t) => t == selectedTimeframe)
+                    .toList(),
+                onPressed: (idx) {
+                  HapticFeedback.selectionClick();
+                  setState(() {
+                    selectedTimeframe = ['D1', 'H4', 'H1', 'M15'][idx];
+                    _saveState('tp_timeframe', selectedTimeframe);
+                  });
+                },
+                children: const [
+                  Text('D1',
+                      style:
+                          TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+                  Text('H4',
+                      style:
+                          TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+                  Text('H1',
+                      style:
+                          TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+                  Text('M15',
+                      style:
+                          TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+                ],
+              ),
+            ],
+          ),
+          // Middle: Buy/Sell
+          ToggleButtons(
+            isSelected: [isLong, !isLong],
+            borderRadius: BorderRadius.circular(6),
+            constraints: const BoxConstraints(minWidth: 65, minHeight: 32),
+            selectedColor: Colors.white,
+            fillColor:
+                isLong ? const Color(0xFF16A34A) : const Color(0xFFDC2626),
+            onPressed: (idx) => setState(() => isLong = idx == 0),
+            children: const [
+              Text('做多 (BUY)',
+                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+              Text('做空 (SELL)',
+                  style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+            ],
+          ),
+          // Right: Atlas
+          OutlinedButton.icon(
+            style: OutlinedButton.styleFrom(
+              visualDensity: VisualDensity.compact,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              side: const BorderSide(color: Color(0xFFF59E0B), width: 1.2),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6)),
+            ),
+            onPressed: () => showWatchlistAtlasDialog(context,
+                onSelect: (p) => _selectWatchlistPair(p)),
+            icon: const Icon(Icons.menu_book_rounded,
+                size: 14, color: Color(0xFFF59E0B)),
+            label: const Text('16品种图鉴',
+                style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFF59E0B))),
+          ),
+        ],
+      ),
 
-        const SizedBox(height: 8),
-        // 当前选中品种高阶信息标牌
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          decoration: BoxDecoration(
+      const SizedBox(height: 8),
+      // 当前选中品种高阶信息标牌
+      Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: currentPairInfo.isCore
+              ? const Color(0xFFFEF3C7).withOpacity(0.45)
+              : (currentPairInfo.isGold
+                  ? const Color(0xFFFFFBEB)
+                  : const Color(0xFFEFF6FF).withOpacity(0.55)),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
             color: currentPairInfo.isCore
-                ? const Color(0xFFFEF3C7).withOpacity(0.45)
-                : (currentPairInfo.isGold ? const Color(0xFFFFFBEB) : const Color(0xFFEFF6FF).withOpacity(0.55)),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: currentPairInfo.isCore
-                  ? const Color(0xFFF59E0B).withOpacity(0.4)
-                  : (currentPairInfo.isGold ? const Color(0xFFD97706).withOpacity(0.4) : const Color(0xFF60A5FA).withOpacity(0.4)),
-            ),
-          ),
-          child: Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-                decoration: BoxDecoration(
-                  color: currentPairInfo.isCore
-                      ? const Color(0xFFF59E0B)
-                      : (currentPairInfo.isGold ? const Color(0xFFD97706) : const Color(0xFFF59E0B)),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: Text(
-                  currentPairInfo.categoryLabel,
-                  style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white),
-                ),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Wrap(
-                  alignment: WrapAlignment.spaceBetween,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  spacing: 8,
-                  runSpacing: 4,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          '${currentPairInfo.symbol} (${currentPairInfo.chineseName})',
-                          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(width: 6),
-                        Text(
-                          currentPairInfo.isJpy ? '· 3位报价' : (currentPairInfo.isGold ? '· 2位报价' : '· 5位报价'),
-                          style: const TextStyle(fontSize: 10, color: Colors.grey),
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          currentPairInfo.session,
-                          style: const TextStyle(fontSize: 10, color: Colors.grey),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      currentPairInfo.feature,
-                      style: TextStyle(fontSize: 11, color: Theme.of(context).brightness == Brightness.dark ? Colors.white60 : const Color(0xFF475569)),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+                ? const Color(0xFFF59E0B).withOpacity(0.4)
+                : (currentPairInfo.isGold
+                    ? const Color(0xFFD97706).withOpacity(0.4)
+                    : const Color(0xFF60A5FA).withOpacity(0.4)),
           ),
         ),
-
-        const SizedBox(height: 10),
-        // 核心与次要分类过滤标签
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              _buildCategoryFilterChip('all', '全部 (17)'),
-              const SizedBox(width: 6),
-              _buildCategoryFilterChip('core', '⭐ 核心 (7)'),
-              const SizedBox(width: 6),
-              _buildCategoryFilterChip('minor', '🔹 次要 (9)'),
-              const SizedBox(width: 6),
-              _buildCategoryFilterChip('observed', '🥇 黄金 (1)'),
-            ],
-          ),
-        ),
-        const SizedBox(height: 8),
-        // 品种自动折行展示 (Wrap)
-        Wrap(
-          spacing: 6,
-          runSpacing: 6,
-          children: displayedPairs.map((p) => _buildPairChipV2(p)).toList(),
-        ),
-
-        const SizedBox(height: 10),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextFormField(
-                    controller: _highCtrl,
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                    decoration: InputDecoration(
-                      labelText: '全区最高价 High (整片形态最高上影线顶点)',
-                      labelStyle: const TextStyle(fontSize: 11),
-                      filled: true,
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                    ),
-                    onChanged: (v) { setState(() => highPrice = double.tryParse(v)); _saveState('tp_high', v); },
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 4, top: 4),
-                    child: Text('⚠️ 注意：取全区最高影线顶点 High，绝不是看实体开/收盘价', style: TextStyle(fontSize: 10, color: Colors.grey)),
-                  )
-                ],
-              )
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+              decoration: BoxDecoration(
+                color: currentPairInfo.isCore
+                    ? const Color(0xFFF59E0B)
+                    : (currentPairInfo.isGold
+                        ? const Color(0xFFD97706)
+                        : const Color(0xFFF59E0B)),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Text(
+                currentPairInfo.categoryLabel,
+                style: const TextStyle(
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              ),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 8),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                spacing: 8,
+                runSpacing: 4,
                 children: [
-                  TextFormField(
-                    controller: _lowCtrl,
-                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                    decoration: InputDecoration(
-                      labelText: '全区最低价 Low (做多止损基准)',
-                      labelStyle: const TextStyle(fontSize: 11),
-                      filled: true,
-                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-                    ),
-                    onChanged: (v) { setState(() => lowPrice = double.tryParse(v)); _saveState('tp_low', v); },
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        '${currentPairInfo.symbol} (${currentPairInfo.chineseName})',
+                        style: const TextStyle(
+                            fontSize: 13, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        currentPairInfo.isJpy
+                            ? '· 3位报价'
+                            : (currentPairInfo.isGold ? '· 2位报价' : '· 5位报价'),
+                        style:
+                            const TextStyle(fontSize: 10, color: Colors.grey),
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        currentPairInfo.session,
+                        style:
+                            const TextStyle(fontSize: 10, color: Colors.grey),
+                      ),
+                    ],
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 4, top: 4),
-                    child: Text('⚠️ 注意：全区谁的下影线更深就填谁 (止损 = 该 Low - 缓冲)', style: TextStyle(fontSize: 10, color: Colors.grey)),
-                  )
+                  Text(
+                    currentPairInfo.feature,
+                    style: TextStyle(
+                        fontSize: 11,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white60
+                            : const Color(0xFF475569)),
+                  ),
                 ],
               ),
             ),
           ],
         ),
-        
-        const SizedBox(height: 16),
+      ),
 
+      const SizedBox(height: 10),
+      // 核心与次要分类过滤标签
+      SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            _buildCategoryFilterChip('all', '全部 (17)'),
+            const SizedBox(width: 6),
+            _buildCategoryFilterChip('core', '⭐ 核心 (7)'),
+            const SizedBox(width: 6),
+            _buildCategoryFilterChip('minor', '🔹 次要 (9)'),
+            const SizedBox(width: 6),
+            _buildCategoryFilterChip('observed', '🥇 黄金 (1)'),
+          ],
+        ),
+      ),
+      const SizedBox(height: 8),
+      // 品种自动折行展示 (Wrap)
+      Wrap(
+        spacing: 6,
+        runSpacing: 6,
+        children: displayedPairs.map((p) => _buildPairChipV2(p)).toList(),
+      ),
+
+      const SizedBox(height: 10),
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextFormField(
+                controller: _highCtrl,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+                decoration: InputDecoration(
+                  labelText: '全区最高价 High (整片形态最高上影线顶点)',
+                  labelStyle: const TextStyle(fontSize: 11),
+                  filled: true,
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12)),
+                ),
+                onChanged: (v) {
+                  setState(() => highPrice = double.tryParse(v));
+                  _saveState('tp_high', v);
+                },
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 4, top: 4),
+                child: Text('⚠️ 注意：取全区最高影线顶点 High，绝不是看实体开/收盘价',
+                    style: TextStyle(fontSize: 10, color: Colors.grey)),
+              )
+            ],
+          )),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextFormField(
+                  controller: _lowCtrl,
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  decoration: InputDecoration(
+                    labelText: '全区最低价 Low (做多止损基准)',
+                    labelStyle: const TextStyle(fontSize: 11),
+                    filled: true,
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12)),
+                  ),
+                  onChanged: (v) {
+                    setState(() => lowPrice = double.tryParse(v));
+                    _saveState('tp_low', v);
+                  },
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 4, top: 4),
+                  child: Text('⚠️ 注意：全区谁的下影线更深就填谁 (止损 = 该 Low - 缓冲)',
+                      style: TextStyle(fontSize: 10, color: Colors.grey)),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+
+      const SizedBox(height: 16),
     ];
 
     final rightChildren = <Widget>[
-        _buildMantraCard(context),
-        _buildBlueprintCard(context),
-        if (hasData) ...[
-          if (entryMode == 1) ...[
-            // 黄金口袋 Fib 5618 狙击结果
-            Card(
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18),
-                side: const BorderSide(color: Color(0xFFFDE68A)),
-              ),
-              color: const Color(0xFFFFFDF5),
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text('🎯 黄金口袋 (Fib 50%~61.8% 绝杀狙击位)', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Color(0xFFB45309))),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                          decoration: BoxDecoration(color: const Color(0xFFFEF3C7), borderRadius: BorderRadius.circular(6)),
-                          child: Text('形态总长: ${(range * pipMultiplier).toStringAsFixed(1)} Pips', style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF92400E))),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        _buildPriceCard(context, 'Fib 50% 狙击入场', fib50.toStringAsFixed(decimals), '止损仅 ${(fib50Risk * pipMultiplier).toStringAsFixed(1)} Pips (折半)', const Color(0xFFD97706)),
-                        const SizedBox(width: 8),
-                        _buildPriceCard(context, 'Fib 61.8% 绝杀入场', fib618.toStringAsFixed(decimals), '止损仅 ${(fib618Risk * pipMultiplier).toStringAsFixed(1)} Pips', const Color(0xFFB45309)),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        _buildPriceCard(context, '硬性止损位 (极值外9pips)', fibSl.toStringAsFixed(decimals), '无论在哪个回踩入场，统一此止损', const Color(0xFFDC2626)),
-                      ],
-                    ),
-                    const Divider(height: 24),
-                    const Text('💎 稳健与奔跑双目标点位 (以 50% 入场测算):', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.grey)),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        _buildPriceCard(context, 'Trade 1 (1:1 落袋)', (isLong ? fib50 + fib50Risk : fib50 - fib50Risk).toStringAsFixed(decimals), '到此立刻平仓，推保本', const Color(0xFFF59E0B)),
-                        const SizedBox(width: 8),
-                        _buildPriceCard(context, 'Trade 2 (1:2 波段)', (isLong ? fib50 + fib50Risk * 2 : fib50 - fib50Risk * 2).toStringAsFixed(decimals), '长线奔跑目标 1', const Color(0xFF059669)),
-                        const SizedBox(width: 8),
-                        _buildPriceCard(context, 'Trade 2 (1:3 暴利)', (isLong ? fib50 + fib50Risk * 3 : fib50 - fib50Risk * 3).toStringAsFixed(decimals), '日线趋势波段', const Color(0xFF15803D)),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ] else ...[
-            // 常规突破入场结果
-            Card(
-              elevation: 0,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18), side: BorderSide(color: Theme.of(context).dividerColor.withOpacity(0.2))),
-              child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text('🚀 突破挂单入场 (含10pips假突破缓冲)', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Color(0xFFF59E0B))),
-                        Text('止损空间: ${(breakoutRisk * pipMultiplier).toStringAsFixed(1)} Pips', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.grey)),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        _buildPriceCard(context, '挂单入场价 (Buy/Sell Stop)', breakoutEntry.toStringAsFixed(decimals), '极值外+10 Pips缓冲防假破', const Color(0xFFF59E0B)),
-                        const SizedBox(width: 8),
-                        _buildPriceCard(context, '止损价格 (SL)', breakoutSl.toStringAsFixed(decimals), '极值外+9 Pips缓冲', const Color(0xFFDC2626)),
-                      ],
-                    ),
-                    const Divider(height: 24),
-                    Row(
-                      children: [
-                        _buildPriceCard(context, 'Trade 1 (1:1 落袋)', (isLong ? breakoutEntry + breakoutRisk : breakoutEntry - breakoutRisk).toStringAsFixed(decimals), '落袋后立即推保本', const Color(0xFFF59E0B)),
-                        const SizedBox(width: 8),
-                        _buildPriceCard(context, 'Trade 2 (1:2 跑单)', (isLong ? breakoutEntry + breakoutRisk * 2 : breakoutEntry - breakoutRisk * 2).toStringAsFixed(decimals), '第二结构阻力', const Color(0xFF059669)),
-                        const SizedBox(width: 8),
-                        _buildPriceCard(context, 'Trade 2 (1:3 奔跑)', (isLong ? breakoutEntry + breakoutRisk * 3 : breakoutEntry - breakoutRisk * 3).toStringAsFixed(decimals), '大趋势锁定', const Color(0xFF15803D)),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-          const SizedBox(height: 10),
-          const Center(child: Text('💡 点击任意绿色/蓝色价格卡片，直接复制价格到剪贴板', style: TextStyle(fontSize: 11, color: Colors.grey))),
-
-          const SizedBox(height: 12),
-          // 联动双轨推荐手数卡片
+      _buildMantraCard(context),
+      _buildBlueprintCard(context),
+      if (hasData) ...[
+        if (entryMode == 1) ...[
+          // 黄金口袋 Fib 5618 狙击结果
           Card(
             elevation: 0,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-              side: BorderSide(color: (entryMode == 1) ? const Color(0xFFFDE68A) : const Color(0xFFBFDBFE)),
+              borderRadius: BorderRadius.circular(18),
+              side: const BorderSide(color: Color(0xFFFDE68A)),
             ),
-            color: (entryMode == 1) ? const Color(0xFFFFFDF5) : const Color(0xFFF8FAFC),
+            color: const Color(0xFFFFFDF5),
             child: Padding(
-              padding: const EdgeInsets.all(14),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '💰 ${isDualTrack ? "双轨" : "单轨"}联动推荐手数 (本金 \$${userBalance.toStringAsFixed(0)} · 风控 $userRisk%)',
-                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: (entryMode == 1) ? const Color(0xFFB45309) : const Color(0xFF1E40AF)),
-                      ),
-                      Text('单笔止损: ${currentRiskPips.toStringAsFixed(1)} Pips', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.grey)),
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      if (isDualTrack) ...[
-                        Column(
-                          children: [
-                            const Text('Trade 1 (1:1保本仓)', style: TextStyle(fontSize: 10, color: Colors.grey)),
-                            const SizedBox(height: 2),
-                            Text('${tradeLot.toStringAsFixed(2)} 手', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Color(0xFFF59E0B))),
-                          ],
-                        ),
-                        const Text('➕', style: TextStyle(fontSize: 16, color: Colors.grey)),
-                        Column(
-                          children: [
-                            const Text('Trade 2 (波段奔跑仓)', style: TextStyle(fontSize: 10, color: Colors.grey)),
-                            const SizedBox(height: 2),
-                            Text('${tradeLot.toStringAsFixed(2)} 手', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w900, color: Color(0xFF059669))),
-                          ],
-                        ),
-                      ] else ...[
-                        Column(
-                          children: [
-                            const Text('单轨全仓 (2% 风险)', style: TextStyle(fontSize: 10, color: Colors.grey)),
-                            const SizedBox(height: 2),
-                            Text('${tradeLot.toStringAsFixed(2)} 手', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Color(0xFFF59E0B))),
-                          ],
-                        ),
-                      ],
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(color: Colors.red.withOpacity(0.08), borderRadius: BorderRadius.circular(8)),
-                        child: Text('总风险 \$${riskAmountUsd.toStringAsFixed(2)}', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Colors.red)),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 12),
-          // 🛡️ 双重推保本精准测算器 (Notion Part 3 战法心法)
-          Card(
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-              side: BorderSide(color: const Color(0xFF10B981).withOpacity(0.4)),
-            ),
-            color: Theme.of(context).brightness == Brightness.dark
-                ? const Color(0xFF064E3B).withOpacity(0.18)
-                : const Color(0xFFF0FDF4),
-            child: Padding(
-              padding: const EdgeInsets.all(14),
+              padding: const EdgeInsets.all(10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Row(
-                        children: [
-                          Icon(Icons.shield_outlined, size: 18, color: Color(0xFF059669)),
-                          SizedBox(width: 6),
-                          Text(
-                            '🛡️ 双重推保本精准测算器 (Notion Part 3)',
-                            style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Color(0xFF059669)),
-                          ),
-                        ],
-                      ),
+                      const Text('🎯 黄金口袋 (Fib 50%~61.8% 绝杀狙击位)',
+                          style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFFB45309))),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF10B981).withOpacity(0.15),
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: const Text('锁定 0 风险', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF059669))),
+                            color: const Color(0xFFFEF3C7),
+                            borderRadius: BorderRadius.circular(6)),
+                        child: Text(
+                            '形态总长: ${(range * pipMultiplier).toStringAsFixed(1)} Pips',
+                            style: const TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF92400E))),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
-                  const Text(
-                    '行情到达以下任一触发位后，立即将 Trade 2 止损推至开仓价（保本），开启完全无风险奔跑模式：',
-                    style: TextStyle(fontSize: 11, color: Colors.grey),
-                  ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 12),
                   Row(
                     children: [
                       _buildPriceCard(
-                        context,
-                        '规则 A：+40 Pips 推保本位',
-                        be40.toStringAsFixed(decimals),
-                        '触碰即推保本至开仓价',
-                        const Color(0xFF059669),
-                      ),
+                          context,
+                          'Fib 50% 狙击入场',
+                          fib50.toStringAsFixed(decimals),
+                          '止损仅 ${(fib50Risk * pipMultiplier).toStringAsFixed(1)} Pips (折半)',
+                          const Color(0xFFD97706)),
                       const SizedBox(width: 8),
                       _buildPriceCard(
-                        context,
-                        '规则 B：实体等长推保本位',
-                        beBody.toStringAsFixed(decimals),
-                        '走完 ${(range * pipMultiplier).toStringAsFixed(1)}p 即推保本',
-                        const Color(0xFF0D9488),
-                      ),
+                          context,
+                          'Fib 61.8% 绝杀入场',
+                          fib618.toStringAsFixed(decimals),
+                          '止损仅 ${(fib618Risk * pipMultiplier).toStringAsFixed(1)} Pips',
+                          const Color(0xFFB45309)),
                     ],
-                  ),
-                  const SizedBox(height: 8),
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? const Color(0xFF1E293B)
-                          : const Color(0xFFE2E8F0),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: const Row(
-                      children: [
-                        Icon(Icons.directions_run_rounded, size: 14, color: Color(0xFF059669)),
-                        SizedBox(width: 6),
-                        Expanded(
-                          child: Text(
-                            '🏃 Runner 离场绝学：Trade 2 绝不手动提前平仓，死拿直到大级别 (D1) 出现反向吞没！',
-                            style: TextStyle(fontSize: 10.5, fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 12),
-          // ⚔️ T.S.C.F. 四维共振评级雷达 (Timon Weller 核心胜率诊断)
-          Card(
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-              side: BorderSide(color: (_tscfRating['color'] as Color).withOpacity(0.4)),
-            ),
-            color: Theme.of(context).brightness == Brightness.dark
-                ? (_tscfRating['color'] as Color).withOpacity(0.15)
-                : (_tscfRating['bg'] as Color),
-            child: Padding(
-              padding: const EdgeInsets.all(14),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Row(
-                        children: [
-                          Icon(Icons.radar_rounded, size: 18, color: Color(0xFFF59E0B)),
-                          SizedBox(width: 6),
-                          Text(
-                            '⚔️ T.S.C.F. 四维共振评级雷达',
-                            style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                        decoration: BoxDecoration(
-                          color: (_tscfRating['color'] as Color).withOpacity(0.18),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: (_tscfRating['color'] as Color).withOpacity(0.5)),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              _tscfRating['stars'] as String,
-                              style: TextStyle(fontSize: 11, fontWeight: FontWeight.w900, color: _tscfRating['color'] as Color),
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              _tscfRating['title'] as String,
-                              style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: _tscfRating['color'] as Color),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    _tscfRating['desc'] as String,
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      color: Theme.of(context).brightness == Brightness.dark ? Colors.white70 : const Color(0xFF334155),
-                    ),
                   ),
                   const SizedBox(height: 10),
-                  Wrap(
-                    spacing: 6,
-                    runSpacing: 6,
-                    children: [
-                      _buildTscfChip(
-                        '📈 Trend 顺势',
-                        'D1 顺应主趋势，绝不逆势摸顶摸底',
-                        _tscfTrend,
-                        (v) => setState(() => _tscfTrend = v),
-                      ),
-                      _buildTscfChip(
-                        '🧱 Structure 关键结构',
-                        '位于线图支撑/阻力海绵弹射带',
-                        _tscfStructure,
-                        (v) => setState(() => _tscfStructure = v),
-                      ),
-                      _buildTscfChip(
-                        '🕯️ Candlestick 确认形态',
-                        '日线已完整收盘，实体饱满吞没/PinBar',
-                        _tscfCandle,
-                        (v) => setState(() => _tscfCandle = v),
-                      ),
-                      _buildTscfChip(
-                        '🎯 Fib 黄金口袋',
-                        '回踩 50%~61.8% 黄金回撤位',
-                        _tscfFib,
-                        (v) => setState(() => _tscfFib = v),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 12),
-          // 🛡️ 吞没战法 · 开单前 5 项铁律自检 (Pre-Flight Checklist)
-          Card(
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-              side: BorderSide(color: _allChecked ? const Color(0xFF10B981) : Colors.amber.withOpacity(0.5)),
-            ),
-            color: _allChecked
-                ? (Theme.of(context).brightness == Brightness.dark ? const Color(0xFF064E3B).withOpacity(0.25) : const Color(0xFFF0FDF4))
-                : (Theme.of(context).brightness == Brightness.dark ? const Color(0xFF78350F).withOpacity(0.2) : const Color(0xFFFFFBEB)),
-            child: Padding(
-              padding: const EdgeInsets.all(14),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          Icon(_allChecked ? Icons.verified_rounded : Icons.security_rounded, size: 18, color: _allChecked ? const Color(0xFF059669) : const Color(0xFFD97706)),
-                          const SizedBox(width: 6),
-                          Text(
-                            '🛡️ 开单前 5 项风控铁律自检',
-                            style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: _allChecked ? const Color(0xFF059669) : const Color(0xFFB45309)),
-                          ),
-                        ],
-                      ),
-                      TextButton.icon(
-                        style: TextButton.styleFrom(visualDensity: VisualDensity.compact, padding: EdgeInsets.zero),
-                        onPressed: _toggleAllChecks,
-                        icon: Icon(_allChecked ? Icons.restart_alt_rounded : Icons.done_all_rounded, size: 15),
-                        label: Text(_allChecked ? '重置' : '全选合格', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-                      ),
+                      _buildPriceCard(
+                          context,
+                          '硬性止损位 (极值外9pips)',
+                          fibSl.toStringAsFixed(decimals),
+                          '无论在哪个回踩入场，统一此止损',
+                          const Color(0xFFDC2626)),
                     ],
                   ),
-                  const SizedBox(height: 4),
-                  _buildCheckItem('🕯️ 1. 收盘确认：D1/H4 实体已明确收线，绝不在未收盘前抢跑', _checkClosed, (v) => setState(() => _checkClosed = v ?? false)),
-                  _buildCheckItem(isGold ? '📏 2. 动能健康：极值在 150~250 Pips (\$15~\$25) 黄金区间' : '📏 2. 动能健康：极值在 50~100 Pips 黄金区间，非噪音非衰竭', _checkFightIq, (v) => setState(() => _checkFightIq = v ?? false)),
-                  _buildCheckItem(isGold ? '🛡️ 3. 双缓冲保护：入场+10p假破缓冲，止损+20p (\$2) 黄金结构缓冲' : '🛡️ 3. 双缓冲保护：入场+10pips假破缓冲，止损+9pips结构缓冲', _checkBuffer, (v) => setState(() => _checkBuffer = v ?? false)),
-                  _buildCheckItem('⚖️ 4. 双轨分仓：严格 1%+1% 挂单，单笔总风险锁定在 2% 资金红线内', _checkTwinLot, (v) => setState(() => _checkTwinLot = v ?? false)),
-                  _buildCheckItem('🧠 5. Set & Forget：挂单后绝不手动追单，到 1:1 必须保本平半仓', _checkMindset, (v) => setState(() => _checkMindset = v ?? false)),
+                  const Divider(height: 24),
+                  const Text('💎 稳健与奔跑双目标点位 (以 50% 入场测算):',
+                      style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey)),
                   const SizedBox(height: 8),
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: _allChecked ? const Color(0xFF10B981).withOpacity(0.12) : Colors.amber.withOpacity(0.12),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      _allChecked ? '✅ 铁律自审全部通过！心如止水，执行挂单！' : '⚠️ 战法铁律：请逐项自审确认，坚决杜绝冲动交易。',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: _allChecked ? const Color(0xFF047857) : const Color(0xFFB45309)),
-                    ),
+                  Row(
+                    children: [
+                      _buildPriceCard(
+                          context,
+                          'Trade 1 (1:1 落袋)',
+                          (isLong ? fib50 + fib50Risk : fib50 - fib50Risk)
+                              .toStringAsFixed(decimals),
+                          '到此立刻平仓，推保本',
+                          const Color(0xFFF59E0B)),
+                      const SizedBox(width: 8),
+                      _buildPriceCard(
+                          context,
+                          'Trade 2 (1:2 波段)',
+                          (isLong
+                                  ? fib50 + fib50Risk * 2
+                                  : fib50 - fib50Risk * 2)
+                              .toStringAsFixed(decimals),
+                          '长线奔跑目标 1',
+                          const Color(0xFF059669)),
+                      const SizedBox(width: 8),
+                      _buildPriceCard(
+                          context,
+                          'Trade 2 (1:3 暴利)',
+                          (isLong
+                                  ? fib50 + fib50Risk * 3
+                                  : fib50 - fib50Risk * 3)
+                              .toStringAsFixed(decimals),
+                          '日线趋势波段',
+                          const Color(0xFF15803D)),
+                    ],
                   ),
                 ],
               ),
             ),
-          ),
-          const SizedBox(height: 12),
-          // 双操作按钮：一键复制指令 + 存入战术计划
-          Row(
-            children: [
-              Expanded(
-                flex: 7,
-                child: FilledButton.icon(
-                  style: FilledButton.styleFrom(
-                    backgroundColor: (entryMode == 1) ? const Color(0xFFD97706) : const Color(0xFFF59E0B),
-                    padding: const EdgeInsets.symmetric(vertical: 13),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  ),
-                  onPressed: () => _copyFullTradePlan(
-                    decimals: decimals,
-                    currentRiskPips: currentRiskPips,
-                    riskAmountUsd: riskAmountUsd,
-                    tradeLot: tradeLot,
-                    fib50: fib50,
-                    fibSl: fibSl,
-                    fib50Risk: fib50Risk,
-                    breakoutEntry: breakoutEntry,
-                    breakoutSl: breakoutSl,
-                    breakoutRisk: breakoutRisk,
-                    be40: be40,
-                    beBody: beBody,
-                  ),
-                  icon: const Icon(Icons.copy_all_rounded, size: 17),
-                  label: const Text('📋 一键复制指令', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                ),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                flex: 5,
-                child: OutlinedButton.icon(
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 13),
-                    side: BorderSide(color: (entryMode == 1) ? const Color(0xFFD97706) : const Color(0xFFF59E0B), width: 1.5),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  ),
-                  onPressed: () => _addCurrentPlan(
-                    decimals: decimals,
-                    currentRiskPips: currentRiskPips,
-                    riskAmountUsd: riskAmountUsd,
-                    tradeLot: tradeLot,
-                    fib50: fib50,
-                    fibSl: fibSl,
-                    fib50Risk: fib50Risk,
-                    breakoutEntry: breakoutEntry,
-                    breakoutSl: breakoutSl,
-                    breakoutRisk: breakoutRisk,
-                    be40: be40,
-                    beBody: beBody,
-                  ),
-                  icon: const Icon(Icons.bookmark_add_rounded, size: 17),
-                  label: const Text('📌 存入今日计划', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                ),
-              ),
-            ],
           ),
         ] else ...[
-          const SizedBox(height: 16),
+          // 常规突破入场结果
           Card(
             elevation: 0,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-              side: BorderSide(color: Theme.of(context).dividerColor.withOpacity(0.2)),
-            ),
+                borderRadius: BorderRadius.circular(18),
+                side: BorderSide(
+                    color: Theme.of(context).dividerColor.withOpacity(0.2))),
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(10),
               child: Column(
                 children: [
-                  const Icon(Icons.touch_app_rounded, size: 40, color: Color(0xFFD97706)),
-                  const SizedBox(height: 10),
-                  const Text('等待输入蜡烛极值', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
-                  const SizedBox(height: 4),
-                  Text(
-                    highPrice != null && lowPrice != null && highPrice! <= lowPrice!
-                        ? '⚠️ 最高点必须大于最低点，请检查输入数值'
-                        : '请输入吞没蜡烛形态的最高价与最低价，系统将自动测算黄金口袋狙击点位或突破挂单报价。',
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('🚀 突破挂单入场 (含10pips假突破缓冲)',
+                          style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFFF59E0B))),
+                      Text(
+                          '止损空间: ${(breakoutRisk * pipMultiplier).toStringAsFixed(1)} Pips',
+                          style: const TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey)),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      _buildPriceCard(
+                          context,
+                          '挂单入场价 (Buy/Sell Stop)',
+                          breakoutEntry.toStringAsFixed(decimals),
+                          '极值外+10 Pips缓冲防假破',
+                          const Color(0xFFF59E0B)),
+                      const SizedBox(width: 8),
+                      _buildPriceCard(
+                          context,
+                          '止损价格 (SL)',
+                          breakoutSl.toStringAsFixed(decimals),
+                          '极值外+9 Pips缓冲',
+                          const Color(0xFFDC2626)),
+                    ],
+                  ),
+                  const Divider(height: 24),
+                  Row(
+                    children: [
+                      _buildPriceCard(
+                          context,
+                          'Trade 1 (1:1 落袋)',
+                          (isLong
+                                  ? breakoutEntry + breakoutRisk
+                                  : breakoutEntry - breakoutRisk)
+                              .toStringAsFixed(decimals),
+                          '落袋后立即推保本',
+                          const Color(0xFFF59E0B)),
+                      const SizedBox(width: 8),
+                      _buildPriceCard(
+                          context,
+                          'Trade 2 (1:2 跑单)',
+                          (isLong
+                                  ? breakoutEntry + breakoutRisk * 2
+                                  : breakoutEntry - breakoutRisk * 2)
+                              .toStringAsFixed(decimals),
+                          '第二结构阻力',
+                          const Color(0xFF059669)),
+                      const SizedBox(width: 8),
+                      _buildPriceCard(
+                          context,
+                          'Trade 2 (1:3 奔跑)',
+                          (isLong
+                                  ? breakoutEntry + breakoutRisk * 3
+                                  : breakoutEntry - breakoutRisk * 3)
+                              .toStringAsFixed(decimals),
+                          '大趋势锁定',
+                          const Color(0xFF15803D)),
+                    ],
                   ),
                 ],
               ),
             ),
           ),
         ],
+        const SizedBox(height: 10),
+        const Center(
+            child: Text('💡 点击任意绿色/蓝色价格卡片，直接复制价格到剪贴板',
+                style: TextStyle(fontSize: 11, color: Colors.grey))),
 
-        const SizedBox(height: 18),
-        // 📌 今日实战挂单战术簿
+        const SizedBox(height: 12),
+        // 联动双轨推荐手数卡片
         Card(
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
-            side: BorderSide(color: Theme.of(context).dividerColor.withOpacity(0.2)),
+            side: BorderSide(
+                color: (entryMode == 1)
+                    ? const Color(0xFFFDE68A)
+                    : const Color(0xFFBFDBFE)),
           ),
+          color: (entryMode == 1)
+              ? const Color(0xFFFFFDF5)
+              : const Color(0xFFF8FAFC),
           child: Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(14),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '💰 ${isDualTrack ? "双轨" : "单轨"}联动推荐手数 (本金 \$${userBalance.toStringAsFixed(0)} · 风控 $userRisk%)',
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: (entryMode == 1)
+                              ? const Color(0xFFB45309)
+                              : const Color(0xFF1E40AF)),
+                    ),
+                    Text('单笔止损: ${currentRiskPips.toStringAsFixed(1)} Pips',
+                        style: const TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey)),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    if (isDualTrack) ...[
+                      Column(
+                        children: [
+                          const Text('Trade 1 (1:1保本仓)',
+                              style:
+                                  TextStyle(fontSize: 10, color: Colors.grey)),
+                          const SizedBox(height: 2),
+                          Text('${tradeLot.toStringAsFixed(2)} 手',
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w900,
+                                  color: Color(0xFFF59E0B))),
+                        ],
+                      ),
+                      const Text('➕',
+                          style: TextStyle(fontSize: 16, color: Colors.grey)),
+                      Column(
+                        children: [
+                          const Text('Trade 2 (波段奔跑仓)',
+                              style:
+                                  TextStyle(fontSize: 10, color: Colors.grey)),
+                          const SizedBox(height: 2),
+                          Text('${tradeLot.toStringAsFixed(2)} 手',
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w900,
+                                  color: Color(0xFF059669))),
+                        ],
+                      ),
+                    ] else ...[
+                      Column(
+                        children: [
+                          const Text('单轨全仓 (2% 风险)',
+                              style:
+                                  TextStyle(fontSize: 10, color: Colors.grey)),
+                          const SizedBox(height: 2),
+                          Text('${tradeLot.toStringAsFixed(2)} 手',
+                              style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w900,
+                                  color: Color(0xFFF59E0B))),
+                        ],
+                      ),
+                    ],
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                          color: Colors.red.withOpacity(0.08),
+                          borderRadius: BorderRadius.circular(8)),
+                      child: Text('总风险 \$${riskAmountUsd.toStringAsFixed(2)}',
+                          style: const TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red)),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 12),
+        // 🛡️ 双重推保本精准测算器 (Notion Part 3 战法心法)
+        Card(
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: BorderSide(color: const Color(0xFF10B981).withOpacity(0.4)),
+          ),
+          color: Theme.of(context).brightness == Brightness.dark
+              ? const Color(0xFF064E3B).withOpacity(0.18)
+              : const Color(0xFFF0FDF4),
+          child: Padding(
+            padding: const EdgeInsets.all(14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Row(
+                      children: [
+                        Icon(Icons.shield_outlined,
+                            size: 18, color: Color(0xFF059669)),
+                        SizedBox(width: 6),
+                        Text(
+                          '🛡️ 双重推保本精准测算器 (Notion Part 3)',
+                          style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF059669)),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF10B981).withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: const Text('锁定 0 风险',
+                          style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF059669))),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                const Text(
+                  '行情到达以下任一触发位后，立即将 Trade 2 止损推至开仓价（保本），开启完全无风险奔跑模式：',
+                  style: TextStyle(fontSize: 11, color: Colors.grey),
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    _buildPriceCard(
+                      context,
+                      '规则 A：+40 Pips 推保本位',
+                      be40.toStringAsFixed(decimals),
+                      '触碰即推保本至开仓价',
+                      const Color(0xFF059669),
+                    ),
+                    const SizedBox(width: 8),
+                    _buildPriceCard(
+                      context,
+                      '规则 B：实体等长推保本位',
+                      beBody.toStringAsFixed(decimals),
+                      '走完 ${(range * pipMultiplier).toStringAsFixed(1)}p 即推保本',
+                      const Color(0xFF0D9488),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  width: double.infinity,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? const Color(0xFF1E293B)
+                        : const Color(0xFFE2E8F0),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Row(
+                    children: [
+                      Icon(Icons.directions_run_rounded,
+                          size: 14, color: Color(0xFF059669)),
+                      SizedBox(width: 6),
+                      Expanded(
+                        child: Text(
+                          '🏃 Runner 离场绝学：Trade 2 绝不手动提前平仓，死拿直到大级别 (D1) 出现反向吞没！',
+                          style: TextStyle(
+                              fontSize: 10.5, fontWeight: FontWeight.w600),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 12),
+        // ⚔️ T.S.C.F. 四维共振评级雷达 (Timon Weller 核心胜率诊断)
+        Card(
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: BorderSide(
+                color: (_tscfRating['color'] as Color).withOpacity(0.4)),
+          ),
+          color: Theme.of(context).brightness == Brightness.dark
+              ? (_tscfRating['color'] as Color).withOpacity(0.15)
+              : (_tscfRating['bg'] as Color),
+          child: Padding(
+            padding: const EdgeInsets.all(14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Row(
+                      children: [
+                        Icon(Icons.radar_rounded,
+                            size: 18, color: Color(0xFFF59E0B)),
+                        SizedBox(width: 6),
+                        Text(
+                          '⚔️ T.S.C.F. 四维共振评级雷达',
+                          style: TextStyle(
+                              fontSize: 13, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(
+                        color:
+                            (_tscfRating['color'] as Color).withOpacity(0.18),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                            color: (_tscfRating['color'] as Color)
+                                .withOpacity(0.5)),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            _tscfRating['stars'] as String,
+                            style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w900,
+                                color: _tscfRating['color'] as Color),
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            _tscfRating['title'] as String,
+                            style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                color: _tscfRating['color'] as Color),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  _tscfRating['desc'] as String,
+                  style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.white70
+                        : const Color(0xFF334155),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Wrap(
+                  spacing: 6,
+                  runSpacing: 6,
+                  children: [
+                    _buildTscfChip(
+                      '📈 Trend 顺势',
+                      'D1 顺应主趋势，绝不逆势摸顶摸底',
+                      _tscfTrend,
+                      (v) => setState(() => _tscfTrend = v),
+                    ),
+                    _buildTscfChip(
+                      '🧱 Structure 关键结构',
+                      '位于线图支撑/阻力海绵弹射带',
+                      _tscfStructure,
+                      (v) => setState(() => _tscfStructure = v),
+                    ),
+                    _buildTscfChip(
+                      '🕯️ Candlestick 确认形态',
+                      '日线已完整收盘，实体饱满吞没/PinBar',
+                      _tscfCandle,
+                      (v) => setState(() => _tscfCandle = v),
+                    ),
+                    _buildTscfChip(
+                      '🎯 Fib 黄金口袋',
+                      '回踩 50%~61.8% 黄金回撤位',
+                      _tscfFib,
+                      (v) => setState(() => _tscfFib = v),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 12),
+        // 🛡️ 吞没战法 · 开单前 5 项铁律自检 (Pre-Flight Checklist)
+        Card(
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: BorderSide(
+                color: _allChecked
+                    ? const Color(0xFF10B981)
+                    : Colors.amber.withOpacity(0.5)),
+          ),
+          color: _allChecked
+              ? (Theme.of(context).brightness == Brightness.dark
+                  ? const Color(0xFF064E3B).withOpacity(0.25)
+                  : const Color(0xFFF0FDF4))
+              : (Theme.of(context).brightness == Brightness.dark
+                  ? const Color(0xFF78350F).withOpacity(0.2)
+                  : const Color(0xFFFFFBEB)),
+          child: Padding(
+            padding: const EdgeInsets.all(14),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -3530,148 +4691,431 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                   children: [
                     Row(
                       children: [
-                        const Icon(Icons.menu_book_rounded, size: 18, color: Color(0xFFF59E0B)),
+                        Icon(
+                            _allChecked
+                                ? Icons.verified_rounded
+                                : Icons.security_rounded,
+                            size: 18,
+                            color: _allChecked
+                                ? const Color(0xFF059669)
+                                : const Color(0xFFD97706)),
                         const SizedBox(width: 6),
-                        Text('📌 今日挂单战术簿 (${_savedPlans.length} 笔)', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                    if (_savedPlans.isNotEmpty)
-                      Row(
-                        children: [
-                          FilledButton.tonalIcon(
-                            style: FilledButton.styleFrom(
-                              visualDensity: VisualDensity.compact,
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                            ),
-                            onPressed: _exportJournalToNotionReport,
-                            icon: const Icon(Icons.description_outlined, size: 14),
-                            label: const Text('📋 导出Notion日报', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-                          ),
-                          const SizedBox(width: 4),
-                          TextButton(
-                            style: TextButton.styleFrom(visualDensity: VisualDensity.compact, padding: const EdgeInsets.symmetric(horizontal: 6)),
-                            onPressed: _clearAllPlans,
-                            child: const Text('清空', style: TextStyle(fontSize: 11, color: Colors.grey)),
-                          ),
-                        ],
-                      ),
-                  ],
-                ),
-                if (_savedPlans.isNotEmpty) ...[
-                  const SizedBox(height: 12),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).brightness == Brightness.dark
-                          ? const Color(0xFF1E293B).withOpacity(0.6)
-                          : const Color(0xFFF1F5F9),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.15)),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _buildStatCol('总挂单', '${_savedPlans.length}', const Color(0xFFF59E0B)),
-                        _buildStatCol('挂单中', '${_savedPlans.where((e) => e['status'] == '⏳ 挂单中').length}', const Color(0xFFD97706)),
-                        _buildStatCol('1:1保本', '${_savedPlans.where((e) => e['status'] == '🎯 1:1已推保本' || e['status'] == '🛡️ 保本离场').length}', const Color(0xFF059669)),
-                        _buildStatCol('全止盈', '${_savedPlans.where((e) => e['status'] == '💰 全部止盈').length}', const Color(0xFF16A34A)),
-                        _buildStatCol('止损', '${_savedPlans.where((e) => e['status'] == '❌ 已止损').length}', const Color(0xFFDC2626)),
-                        _buildStatCol(
-                          '胜率',
-                          () {
-                            final tp = _savedPlans.where((e) => e['status'] == '💰 全部止盈').length;
-                            final be = _savedPlans.where((e) => e['status'] == '🎯 1:1已推保本' || e['status'] == '🛡️ 保本离场').length;
-                            final sl = _savedPlans.where((e) => e['status'] == '❌ 已止损').length;
-                            final closed = tp + be + sl;
-                            return closed > 0 ? '${(((tp + be) / closed) * 100).toStringAsFixed(0)}%' : '-';
-                          }(),
-                          const Color(0xFF7C3AED),
+                        Text(
+                          '🛡️ 开单前 5 项风控铁律自检',
+                          style: TextStyle(
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold,
+                              color: _allChecked
+                                  ? const Color(0xFF059669)
+                                  : const Color(0xFFB45309)),
                         ),
                       ],
                     ),
-                  ),
-                ],
-                const SizedBox(height: 10),
-                if (_savedPlans.isEmpty) ...[
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[850] : const Color(0xFFF1F5F9),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: const Column(
-                      children: [
-                        Icon(Icons.assignment_outlined, size: 28, color: Colors.grey),
-                        SizedBox(height: 6),
-                        Text('暂无保存的挂单计划', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey)),
-                        SizedBox(height: 2),
-                        Text('在上方测算出点位后，点击“📌 存入今日计划”即可随时追踪开单', style: TextStyle(fontSize: 10, color: Colors.grey), textAlign: TextAlign.center),
-                      ],
-                    ),
-                  ),
-                ] else ...[
-                  Column(
-                    children: _savedPlans.asMap().entries.map((entry) {
-                      int idx = entry.key;
-                      Map<String, dynamic> item = entry.value;
-                      return _buildSavedPlanItem(idx, item);
-                    }).toList(),
-                  ),
-                ],
-              ],
-            ),
-          ),
-        ),
-        
-        const SizedBox(height: 16),
-        // 机械化推保护点计算器
-        Card(
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-            side: BorderSide(color: Theme.of(context).dividerColor.withOpacity(0.3)),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(14),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Row(
-                  children: [
-                    Icon(Icons.security, size: 16, color: Color(0xFF059669)),
-                    SizedBox(width: 6),
-                    Text('机械化移动止损参考 (Trailing Stop)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF065F46))),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                const Text('当价格跑赢 1:1 后，或者进入下一交易日，将止损移至前一日极值外加缓冲：', style: TextStyle(fontSize: 11, color: Colors.grey)),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('做多防守 (昨日最低 - 15pips):', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-                    Text(
-                      hasData ? (lowPrice! - (15 / pipMultiplier)).toStringAsFixed(decimals) : '--',
-                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Color(0xFFDC2626)),
+                    TextButton.icon(
+                      style: TextButton.styleFrom(
+                          visualDensity: VisualDensity.compact,
+                          padding: EdgeInsets.zero),
+                      onPressed: _toggleAllChecks,
+                      icon: Icon(
+                          _allChecked
+                              ? Icons.restart_alt_rounded
+                              : Icons.done_all_rounded,
+                          size: 15),
+                      label: Text(_allChecked ? '重置' : '全选合格',
+                          style: const TextStyle(
+                              fontSize: 11, fontWeight: FontWeight.bold)),
                     ),
                   ],
                 ),
                 const SizedBox(height: 4),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('做空防守 (昨日最高 + 15pips):', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
-                    Text(
-                      hasData ? (highPrice! + (15 / pipMultiplier)).toStringAsFixed(decimals) : '--',
-                      style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Color(0xFF16A34A)),
-                    ),
-                  ],
+                _buildCheckItem(
+                    '🕯️ 1. 收盘确认：D1/H4 实体已明确收线，绝不在未收盘前抢跑',
+                    _checkClosed,
+                    (v) => setState(() => _checkClosed = v ?? false)),
+                _buildCheckItem(
+                    isGold
+                        ? '📏 2. 动能健康：极值在 150~250 Pips (\$15~\$25) 黄金区间'
+                        : '📏 2. 动能健康：极值在 50~100 Pips 黄金区间，非噪音非衰竭',
+                    _checkFightIq,
+                    (v) => setState(() => _checkFightIq = v ?? false)),
+                _buildCheckItem(
+                    isGold
+                        ? '🛡️ 3. 双缓冲保护：入场+10p假破缓冲，止损+20p (\$2) 黄金结构缓冲'
+                        : '🛡️ 3. 双缓冲保护：入场+10pips假破缓冲，止损+9pips结构缓冲',
+                    _checkBuffer,
+                    (v) => setState(() => _checkBuffer = v ?? false)),
+                _buildCheckItem(
+                    '⚖️ 4. 双轨分仓：严格 1%+1% 挂单，单笔总风险锁定在 2% 资金红线内',
+                    _checkTwinLot,
+                    (v) => setState(() => _checkTwinLot = v ?? false)),
+                _buildCheckItem(
+                    '🧠 5. Set & Forget：挂单后绝不手动追单，到 1:1 必须保本平半仓',
+                    _checkMindset,
+                    (v) => setState(() => _checkMindset = v ?? false)),
+                const SizedBox(height: 8),
+                Container(
+                  width: double.infinity,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: _allChecked
+                        ? const Color(0xFF10B981).withOpacity(0.12)
+                        : Colors.amber.withOpacity(0.12),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    _allChecked
+                        ? '✅ 铁律自审全部通过！心如止水，执行挂单！'
+                        : '⚠️ 战法铁律：请逐项自审确认，坚决杜绝冲动交易。',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        color: _allChecked
+                            ? const Color(0xFF047857)
+                            : const Color(0xFFB45309)),
+                  ),
                 ),
               ],
             ),
           ),
         ),
+        const SizedBox(height: 12),
+        // 双操作按钮：一键复制指令 + 存入战术计划
+        Row(
+          children: [
+            Expanded(
+              flex: 7,
+              child: FilledButton.icon(
+                style: FilledButton.styleFrom(
+                  backgroundColor: (entryMode == 1)
+                      ? const Color(0xFFD97706)
+                      : const Color(0xFFF59E0B),
+                  padding: const EdgeInsets.symmetric(vertical: 13),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
+                ),
+                onPressed: () => _copyFullTradePlan(
+                  decimals: decimals,
+                  currentRiskPips: currentRiskPips,
+                  riskAmountUsd: riskAmountUsd,
+                  tradeLot: tradeLot,
+                  fib50: fib50,
+                  fibSl: fibSl,
+                  fib50Risk: fib50Risk,
+                  breakoutEntry: breakoutEntry,
+                  breakoutSl: breakoutSl,
+                  breakoutRisk: breakoutRisk,
+                  be40: be40,
+                  beBody: beBody,
+                ),
+                icon: const Icon(Icons.copy_all_rounded, size: 17),
+                label: const Text('📋 一键复制指令',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              flex: 5,
+              child: OutlinedButton.icon(
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 13),
+                  side: BorderSide(
+                      color: (entryMode == 1)
+                          ? const Color(0xFFD97706)
+                          : const Color(0xFFF59E0B),
+                      width: 1.5),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
+                ),
+                onPressed: () => _addCurrentPlan(
+                  decimals: decimals,
+                  currentRiskPips: currentRiskPips,
+                  riskAmountUsd: riskAmountUsd,
+                  tradeLot: tradeLot,
+                  fib50: fib50,
+                  fibSl: fibSl,
+                  fib50Risk: fib50Risk,
+                  breakoutEntry: breakoutEntry,
+                  breakoutSl: breakoutSl,
+                  breakoutRisk: breakoutRisk,
+                  be40: be40,
+                  beBody: beBody,
+                ),
+                icon: const Icon(Icons.bookmark_add_rounded, size: 17),
+                label: const Text('📌 存入今日计划',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+              ),
+            ),
+          ],
+        ),
+      ] else ...[
+        const SizedBox(height: 16),
+        Card(
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: BorderSide(
+                color: Theme.of(context).dividerColor.withOpacity(0.2)),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                const Icon(Icons.touch_app_rounded,
+                    size: 40, color: Color(0xFFD97706)),
+                const SizedBox(height: 10),
+                const Text('等待输入蜡烛极值',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+                const SizedBox(height: 4),
+                Text(
+                  highPrice != null &&
+                          lowPrice != null &&
+                          highPrice! <= lowPrice!
+                      ? '⚠️ 最高点必须大于最低点，请检查输入数值'
+                      : '请输入吞没蜡烛形态的最高价与最低价，系统将自动测算黄金口袋狙击点位或突破挂单报价。',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+
+      const SizedBox(height: 18),
+      // 📌 今日实战挂单战术簿
+      Card(
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(
+              color: Theme.of(context).dividerColor.withOpacity(0.2)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(Icons.menu_book_rounded,
+                          size: 18, color: Color(0xFFF59E0B)),
+                      const SizedBox(width: 6),
+                      Text('📌 今日挂单战术簿 (${_savedPlans.length} 笔)',
+                          style: const TextStyle(
+                              fontSize: 13, fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                  if (_savedPlans.isNotEmpty)
+                    Row(
+                      children: [
+                        FilledButton.tonalIcon(
+                          style: FilledButton.styleFrom(
+                            visualDensity: VisualDensity.compact,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 6),
+                          ),
+                          onPressed: _exportJournalToNotionReport,
+                          icon:
+                              const Icon(Icons.description_outlined, size: 14),
+                          label: const Text('📋 导出Notion日报',
+                              style: TextStyle(
+                                  fontSize: 11, fontWeight: FontWeight.bold)),
+                        ),
+                        const SizedBox(width: 4),
+                        TextButton(
+                          style: TextButton.styleFrom(
+                              visualDensity: VisualDensity.compact,
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 6)),
+                          onPressed: _clearAllPlans,
+                          child: const Text('清空',
+                              style:
+                                  TextStyle(fontSize: 11, color: Colors.grey)),
+                        ),
+                      ],
+                    ),
+                ],
+              ),
+              if (_savedPlans.isNotEmpty) ...[
+                const SizedBox(height: 12),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? const Color(0xFF1E293B).withOpacity(0.6)
+                        : const Color(0xFFF1F5F9),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                        color:
+                            Theme.of(context).dividerColor.withOpacity(0.15)),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _buildStatCol('总挂单', '${_savedPlans.length}',
+                          const Color(0xFFF59E0B)),
+                      _buildStatCol(
+                          '挂单中',
+                          '${_savedPlans.where((e) => e['status'] == '⏳ 挂单中').length}',
+                          const Color(0xFFD97706)),
+                      _buildStatCol(
+                          '1:1保本',
+                          '${_savedPlans.where((e) => e['status'] == '🎯 1:1已推保本' || e['status'] == '🛡️ 保本离场').length}',
+                          const Color(0xFF059669)),
+                      _buildStatCol(
+                          '全止盈',
+                          '${_savedPlans.where((e) => e['status'] == '💰 全部止盈').length}',
+                          const Color(0xFF16A34A)),
+                      _buildStatCol(
+                          '止损',
+                          '${_savedPlans.where((e) => e['status'] == '❌ 已止损').length}',
+                          const Color(0xFFDC2626)),
+                      _buildStatCol(
+                        '胜率',
+                        () {
+                          final tp = _savedPlans
+                              .where((e) => e['status'] == '💰 全部止盈')
+                              .length;
+                          final be = _savedPlans
+                              .where((e) =>
+                                  e['status'] == '🎯 1:1已推保本' ||
+                                  e['status'] == '🛡️ 保本离场')
+                              .length;
+                          final sl = _savedPlans
+                              .where((e) => e['status'] == '❌ 已止损')
+                              .length;
+                          final closed = tp + be + sl;
+                          return closed > 0
+                              ? '${(((tp + be) / closed) * 100).toStringAsFixed(0)}%'
+                              : '-';
+                        }(),
+                        const Color(0xFF7C3AED),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+              const SizedBox(height: 10),
+              if (_savedPlans.isEmpty) ...[
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? Colors.grey[850]
+                        : const Color(0xFFF1F5F9),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Column(
+                    children: [
+                      Icon(Icons.assignment_outlined,
+                          size: 28, color: Colors.grey),
+                      SizedBox(height: 6),
+                      Text('暂无保存的挂单计划',
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey)),
+                      SizedBox(height: 2),
+                      Text('在上方测算出点位后，点击“📌 存入今日计划”即可随时追踪开单',
+                          style: TextStyle(fontSize: 10, color: Colors.grey),
+                          textAlign: TextAlign.center),
+                    ],
+                  ),
+                ),
+              ] else ...[
+                Column(
+                  children: _savedPlans.asMap().entries.map((entry) {
+                    int idx = entry.key;
+                    Map<String, dynamic> item = entry.value;
+                    return _buildSavedPlanItem(idx, item);
+                  }).toList(),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ),
+
+      const SizedBox(height: 16),
+      // 机械化推保护点计算器
+      Card(
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(
+              color: Theme.of(context).dividerColor.withOpacity(0.3)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(14),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Row(
+                children: [
+                  Icon(Icons.security, size: 16, color: Color(0xFF059669)),
+                  SizedBox(width: 6),
+                  Text('机械化移动止损参考 (Trailing Stop)',
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF065F46))),
+                ],
+              ),
+              const SizedBox(height: 8),
+              const Text('当价格跑赢 1:1 后，或者进入下一交易日，将止损移至前一日极值外加缓冲：',
+                  style: TextStyle(fontSize: 11, color: Colors.grey)),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('做多防守 (昨日最低 - 15pips):',
+                      style: const TextStyle(
+                          fontSize: 11, fontWeight: FontWeight.bold)),
+                  Text(
+                    hasData
+                        ? (lowPrice! - (15 / pipMultiplier))
+                            .toStringAsFixed(decimals)
+                        : '--',
+                    style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFFDC2626)),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('做空防守 (昨日最高 + 15pips):',
+                      style: const TextStyle(
+                          fontSize: 11, fontWeight: FontWeight.bold)),
+                  Text(
+                    hasData
+                        ? (highPrice! + (15 / pipMultiplier))
+                            .toStringAsFixed(decimals)
+                        : '--',
+                    style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF16A34A)),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     ];
 
     return LayoutBuilder(
@@ -3720,9 +5164,14 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
       margin: const EdgeInsets.only(top: 6, bottom: 6),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFF451A03) : const Color(0xFFFFF7ED),
+        color: Theme.of(context).brightness == Brightness.dark
+            ? const Color(0xFF451A03)
+            : const Color(0xFFFFF7ED),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFF9A3412) : const Color(0xFFFDBA74).withOpacity(0.5)),
+        border: Border.all(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? const Color(0xFF9A3412)
+                : const Color(0xFFFDBA74).withOpacity(0.5)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -3732,14 +5181,23 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
               const Text('🏆', style: TextStyle(fontSize: 16)),
               const SizedBox(width: 8),
               Expanded(
-                child: Text('吞没战法实战三句真诀 (必须焊死在脑海)：', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFFFDBA74) : const Color(0xFF9A3412))),
+                child: Text('吞没战法实战三句真诀 (必须焊死在脑海)：',
+                    style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? const Color(0xFFFDBA74)
+                            : const Color(0xFF9A3412))),
               ),
             ],
           ),
           const SizedBox(height: 8),
-          _buildMantraLine(context, '① 做多确认看实体吞没 —— ', '形态真假看 Body，后一根实体必须彻底吃掉前一根；'),
-          _buildMantraLine(context, '② 止损躲在全区最低影线底 —— ', '取整片形态区域 (母烛 + 前置烛) 最低的下影线 (Lowest Wick) - 10p；'),
-          _buildMantraLine(context, '③ 50% 取自全区极高与极低的中点 —— ', '(全区最高 High + 全区最低 Low) ÷ 2，绝不仅看单根母烛！'),
+          _buildMantraLine(
+              context, '① 做多确认看实体吞没 —— ', '形态真假看 Body，后一根实体必须彻底吃掉前一根；'),
+          _buildMantraLine(context, '② 止损躲在全区最低影线底 —— ',
+              '取整片形态区域 (母烛 + 前置烛) 最低的下影线 (Lowest Wick) - 10p；'),
+          _buildMantraLine(context, '③ 50% 取自全区极高与极低的中点 —— ',
+              '(全区最高 High + 全区最低 Low) ÷ 2，绝不仅看单根母烛！'),
         ],
       ),
     );
@@ -3750,9 +5208,16 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
       padding: const EdgeInsets.only(bottom: 4),
       child: RichText(
         text: TextSpan(
-          style: TextStyle(fontSize: 11.5, height: 1.4, color: Theme.of(context).brightness == Brightness.dark ? Colors.white70 : const Color(0xFF431407)),
+          style: TextStyle(
+              fontSize: 11.5,
+              height: 1.4,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.white70
+                  : const Color(0xFF431407)),
           children: [
-            TextSpan(text: title, style: const TextStyle(fontWeight: FontWeight.bold)),
+            TextSpan(
+                text: title,
+                style: const TextStyle(fontWeight: FontWeight.bold)),
             TextSpan(text: desc),
           ],
         ),
@@ -3765,17 +5230,19 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
       margin: const EdgeInsets.only(top: 12, bottom: 6),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFF1E293B) : Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.2)),
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(context).shadowColor.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          )
-        ]
-      ),
+          color: Theme.of(context).brightness == Brightness.dark
+              ? const Color(0xFF1E293B)
+              : Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+              color: Theme.of(context).dividerColor.withOpacity(0.2)),
+          boxShadow: [
+            BoxShadow(
+              color: Theme.of(context).shadowColor.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            )
+          ]),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -3784,7 +5251,9 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
               const Text('📐', style: TextStyle(fontSize: 16)),
               const SizedBox(width: 8),
               const Expanded(
-                child: Text('吞没结构与黄金口袋解剖蓝图', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                child: Text('吞没结构与黄金口袋解剖蓝图',
+                    style:
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -3792,126 +5261,220 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                   color: const Color(0xFFDCFCE7),
                   borderRadius: BorderRadius.circular(4),
                 ),
-                child: const Text('多重 K 线形态区', style: TextStyle(fontSize: 10, color: Color(0xFF166534), fontWeight: FontWeight.bold)),
+                child: const Text('多重 K 线形态区',
+                    style: TextStyle(
+                        fontSize: 10,
+                        color: Color(0xFF166534),
+                        fontWeight: FontWeight.bold)),
               ),
             ],
           ),
           const SizedBox(height: 12),
           Text(
             '黄金口袋 50% 模式：全区极值画网，回踩入场将止损精准压缩',
-            style: TextStyle(fontSize: 11, color: Theme.of(context).brightness == Brightness.dark ? Colors.white60 : Colors.grey.shade700),
+            style: TextStyle(
+                fontSize: 11,
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white60
+                    : Colors.grey.shade700),
           ),
           const SizedBox(height: 16),
           Container(
             height: 160,
             decoration: BoxDecoration(
-              color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFC),
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? const Color(0xFF0F172A)
+                  : const Color(0xFFF8FAFC),
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.1)),
+              border: Border.all(
+                  color: Theme.of(context).dividerColor.withOpacity(0.1)),
             ),
             child: Stack(
               children: [
                 // Top Line (Candle High)
                 Positioned(
-                  top: 25, left: 130, right: 20,
+                  top: 25,
+                  left: 130,
+                  right: 20,
                   child: Row(
                     children: [
                       const Expanded(child: _DashedLine(color: Colors.grey)),
                       const SizedBox(width: 8),
-                      Text('全区最高价 High', style: TextStyle(fontSize: 10, color: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade400 : Colors.grey.shade600)),
+                      Text('全区最高价 High',
+                          style: TextStyle(
+                              fontSize: 10,
+                              color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? Colors.grey.shade400
+                                  : Colors.grey.shade600)),
                     ],
                   ),
                 ),
                 // Middle Line (Entry 50%)
                 Positioned(
-                  top: 80, left: 130, right: 20,
+                  top: 80,
+                  left: 130,
+                  right: 20,
                   child: Row(
                     children: [
-                      const Expanded(child: _DashedLine(color: Color(0xFFF59E0B))),
+                      const Expanded(
+                          child: _DashedLine(color: Color(0xFFF59E0B))),
                       const SizedBox(width: 8),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                        decoration: BoxDecoration(color: const Color(0xFF22C55E), borderRadius: BorderRadius.circular(4)),
-                        child: const Text('Entry / 50%', style: TextStyle(fontSize: 10, color: Colors.white, fontWeight: FontWeight.bold)),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                            color: const Color(0xFF22C55E),
+                            borderRadius: BorderRadius.circular(4)),
+                        child: const Text('Entry / 50%',
+                            style: TextStyle(
+                                fontSize: 10,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold)),
                       ),
                     ],
                   ),
                 ),
                 // Bottom Line (Candle Low)
                 Positioned(
-                  bottom: 35, left: 130, right: 20,
+                  bottom: 35,
+                  left: 130,
+                  right: 20,
                   child: Row(
                     children: [
                       const Expanded(child: _DashedLine(color: Colors.grey)),
                       const SizedBox(width: 8),
-                      Text('全区最低价 Low', style: TextStyle(fontSize: 10, color: Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade400 : Colors.grey.shade600)),
+                      Text('全区最低价 Low',
+                          style: TextStyle(
+                              fontSize: 10,
+                              color: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? Colors.grey.shade400
+                                  : Colors.grey.shade600)),
                     ],
                   ),
                 ),
                 // Stop Loss Line
                 Positioned(
-                  bottom: 15, left: 130, right: 20,
+                  bottom: 15,
+                  left: 130,
+                  right: 20,
                   child: Row(
                     children: [
-                      const Expanded(child: _DashedLine(color: Color(0xFFEF4444))),
+                      const Expanded(
+                          child: _DashedLine(color: Color(0xFFEF4444))),
                       const SizedBox(width: 8),
-                      const Text('Stop Loss (-10p)', style: TextStyle(fontSize: 10, color: Color(0xFFEF4444), fontWeight: FontWeight.bold)),
+                      const Text('Stop Loss (-10p)',
+                          style: TextStyle(
+                              fontSize: 10,
+                              color: Color(0xFFEF4444),
+                              fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ),
-                
+
                 // Candle 1 (Bearish, Highest Wick)
                 Positioned(
-                  bottom: 45, left: 20,
+                  bottom: 45,
+                  left: 20,
                   child: Column(
                     children: [
-                      Container(width: 1.5, height: 45, color: const Color(0xFFEF4444)),
-                      Container(width: 10, height: 35, color: const Color(0xFFEF4444)),
-                      Container(width: 1.5, height: 10, color: const Color(0xFFEF4444)),
+                      Container(
+                          width: 1.5,
+                          height: 45,
+                          color: const Color(0xFFEF4444)),
+                      Container(
+                          width: 10,
+                          height: 35,
+                          color: const Color(0xFFEF4444)),
+                      Container(
+                          width: 1.5,
+                          height: 10,
+                          color: const Color(0xFFEF4444)),
                     ],
                   ),
                 ),
                 // Candle 2 (Bearish, Lowest Wick)
                 Positioned(
-                  bottom: 35, left: 45,
+                  bottom: 35,
+                  left: 45,
                   child: Column(
                     children: [
-                      Container(width: 1.5, height: 10, color: const Color(0xFFEF4444)),
-                      Container(width: 10, height: 20, color: const Color(0xFFEF4444)),
-                      Container(width: 1.5, height: 40, color: const Color(0xFFEF4444)),
+                      Container(
+                          width: 1.5,
+                          height: 10,
+                          color: const Color(0xFFEF4444)),
+                      Container(
+                          width: 10,
+                          height: 20,
+                          color: const Color(0xFFEF4444)),
+                      Container(
+                          width: 1.5,
+                          height: 40,
+                          color: const Color(0xFFEF4444)),
                     ],
                   ),
                 ),
                 // Candle 3 (Bullish, Huge Engulfing)
                 Positioned(
-                  bottom: 45, left: 70,
+                  bottom: 45,
+                  left: 70,
                   child: Column(
                     children: [
-                      Container(width: 1.5, height: 10, color: const Color(0xFF22C55E)),
-                      Container(width: 12, height: 65, color: const Color(0xFF22C55E)), // engulfs the bodies
-                      Container(width: 1.5, height: 15, color: const Color(0xFF22C55E)),
+                      Container(
+                          width: 1.5,
+                          height: 10,
+                          color: const Color(0xFF22C55E)),
+                      Container(
+                          width: 12,
+                          height: 65,
+                          color: const Color(0xFF22C55E)), // engulfs the bodies
+                      Container(
+                          width: 1.5,
+                          height: 15,
+                          color: const Color(0xFF22C55E)),
                     ],
                   ),
                 ),
                 // Candle 4 (Bullish, Small)
                 Positioned(
-                  bottom: 80, left: 95,
+                  bottom: 80,
+                  left: 95,
                   child: Column(
                     children: [
-                      Container(width: 1.5, height: 15, color: const Color(0xFF22C55E)),
-                      Container(width: 10, height: 20, color: const Color(0xFF22C55E)),
-                      Container(width: 1.5, height: 10, color: const Color(0xFF22C55E)),
+                      Container(
+                          width: 1.5,
+                          height: 15,
+                          color: const Color(0xFF22C55E)),
+                      Container(
+                          width: 10,
+                          height: 20,
+                          color: const Color(0xFF22C55E)),
+                      Container(
+                          width: 1.5,
+                          height: 10,
+                          color: const Color(0xFF22C55E)),
                     ],
                   ),
                 ),
                 // Candle 5 (Bullish, Small)
                 Positioned(
-                  bottom: 60, left: 120,
+                  bottom: 60,
+                  left: 120,
                   child: Column(
                     children: [
-                      Container(width: 1.5, height: 10, color: const Color(0xFF22C55E)),
-                      Container(width: 10, height: 15, color: const Color(0xFF22C55E)),
-                      Container(width: 1.5, height: 15, color: const Color(0xFF22C55E)),
+                      Container(
+                          width: 1.5,
+                          height: 10,
+                          color: const Color(0xFF22C55E)),
+                      Container(
+                          width: 10,
+                          height: 15,
+                          color: const Color(0xFF22C55E)),
+                      Container(
+                          width: 1.5,
+                          height: 15,
+                          color: const Color(0xFF22C55E)),
                     ],
                   ),
                 ),
@@ -3927,7 +5490,9 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark ? const Color(0xFF334155) : const Color(0xFFF1F5F9),
+        color: Theme.of(context).brightness == Brightness.dark
+            ? const Color(0xFF334155)
+            : const Color(0xFFF1F5F9),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Row(
@@ -3935,13 +5500,20 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
         children: [
           Text(emoji, style: const TextStyle(fontSize: 10)),
           const SizedBox(width: 4),
-          Text(text, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Theme.of(context).brightness == Brightness.dark ? Colors.white70 : const Color(0xFF475569))),
+          Text(text,
+              style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.white70
+                      : const Color(0xFF475569))),
         ],
       ),
     );
   }
 
-  Widget _buildCheckItem(String title, bool val, ValueChanged<bool?> onChanged) {
+  Widget _buildCheckItem(
+      String title, bool val, ValueChanged<bool?> onChanged) {
     return InkWell(
       onTap: () => onChanged(!val),
       borderRadius: BorderRadius.circular(6),
@@ -3955,13 +5527,17 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
               child: Checkbox(
                 value: val,
                 activeColor: const Color(0xFF059669),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4)),
                 onChanged: onChanged,
               ),
             ),
             const SizedBox(width: 6),
             Expanded(
-              child: Text(title, style: TextStyle(fontSize: 11, fontWeight: val ? FontWeight.w600 : FontWeight.normal)),
+              child: Text(title,
+                  style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: val ? FontWeight.w600 : FontWeight.normal)),
             ),
           ],
         ),
@@ -3980,7 +5556,8 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.3)),
+        border:
+            Border.all(color: Theme.of(context).dividerColor.withOpacity(0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -3991,45 +5568,66 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                     decoration: BoxDecoration(
-                      color: ((item['category'] ?? (item['pair'] == 'XAUUSD' ? 'observed' : 'core')) == 'core'
+                      color: ((item['category'] ??
+                                  (item['pair'] == 'XAUUSD'
+                                      ? 'observed'
+                                      : 'core')) ==
+                              'core'
                           ? const Color(0xFFFEF3C7)
-                          : ((item['category'] ?? '') == 'observed' ? const Color(0xFFFDE68A) : const Color(0xFFEFF6FF))),
+                          : ((item['category'] ?? '') == 'observed'
+                              ? const Color(0xFFFDE68A)
+                              : const Color(0xFFEFF6FF))),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
-                      item['categoryLabel'] ?? (item['pair'] == 'XAUUSD' ? '🥇 观察' : '⭐ 核心'),
+                      item['categoryLabel'] ??
+                          (item['pair'] == 'XAUUSD' ? '🥇 观察' : '⭐ 核心'),
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
-                        color: ((item['category'] ?? (item['pair'] == 'XAUUSD' ? 'observed' : 'core')) == 'core'
+                        color: ((item['category'] ??
+                                    (item['pair'] == 'XAUUSD'
+                                        ? 'observed'
+                                        : 'core')) ==
+                                'core'
                             ? const Color(0xFFB45309)
-                            : ((item['category'] ?? '') == 'observed' ? const Color(0xFF92400E) : const Color(0xFF1D4ED8))),
+                            : ((item['category'] ?? '') == 'observed'
+                                ? const Color(0xFF92400E)
+                                : const Color(0xFF1D4ED8))),
                       ),
                     ),
                   ),
                   const SizedBox(width: 5),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
                       color: color.withOpacity(0.12),
                       borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
                       '${item['pair']}${item['pairChinese'] != null && (item['pairChinese'] as String).isNotEmpty ? " (${item['pairChinese']})" : ""} · ${item['dir']}',
-                      style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: color),
+                      style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                          color: color),
                     ),
                   ),
                   const SizedBox(width: 6),
-                  Text(item['mode'] ?? '', style: const TextStyle(fontSize: 10, color: Colors.grey)),
+                  Text(item['mode'] ?? '',
+                      style: const TextStyle(fontSize: 10, color: Colors.grey)),
                 ],
               ),
               Row(
                 children: [
-                  Text(item['time'] ?? '', style: const TextStyle(fontSize: 10, color: Colors.grey)),
+                  Text(item['time'] ?? '',
+                      style: const TextStyle(fontSize: 10, color: Colors.grey)),
                   IconButton(
-                    icon: const Icon(Icons.delete_outline, size: 16, color: Colors.grey),
+                    icon: const Icon(Icons.delete_outline,
+                        size: 16, color: Colors.grey),
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(),
                     onPressed: () => _deletePlan(idx),
@@ -4042,17 +5640,35 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('入场: ${item['entry']}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, fontFamily: 'monospace')),
-              Text('止损: ${item['sl']} (${item['pips']}p)', style: const TextStyle(fontSize: 11, color: Color(0xFFDC2626), fontFamily: 'monospace')),
-              Text('1:1保本: ${item['tp1']}', style: const TextStyle(fontSize: 11, color: Color(0xFFF59E0B), fontFamily: 'monospace')),
+              Text('入场: ${item['entry']}',
+                  style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'monospace')),
+              Text('止损: ${item['sl']} (${item['pips']}p)',
+                  style: const TextStyle(
+                      fontSize: 11,
+                      color: Color(0xFFDC2626),
+                      fontFamily: 'monospace')),
+              Text('1:1保本: ${item['tp1']}',
+                  style: const TextStyle(
+                      fontSize: 11,
+                      color: Color(0xFFF59E0B),
+                      fontFamily: 'monospace')),
             ],
           ),
           const SizedBox(height: 4),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text((item['isDual'] ?? true) ? '双轨分仓: ${item['lot']} + ${item['lot']} 手' : '单轨全仓: ${item['lot']} 手', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600)),
-              Text('总风控: \$${item['riskUsd']}', style: const TextStyle(fontSize: 11, color: Colors.grey)),
+              Text(
+                  (item['isDual'] ?? true)
+                      ? '双轨分仓: ${item['lot']} + ${item['lot']} 手'
+                      : '单轨全仓: ${item['lot']} 手',
+                  style: const TextStyle(
+                      fontSize: 11, fontWeight: FontWeight.w600)),
+              Text('总风控: \$${item['riskUsd']}',
+                  style: const TextStyle(fontSize: 11, color: Colors.grey)),
             ],
           ),
           if (item['tscfStars'] != null || item['be40'] != null) ...[
@@ -4064,11 +5680,14 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
               children: [
                 if (item['tscfStars'] != null)
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                     decoration: BoxDecoration(
                       color: (item['tscfStars'] == '★★★★'
                               ? const Color(0xFF10B981)
-                              : (item['tscfStars'] == '★★★☆' ? const Color(0xFFF59E0B) : const Color(0xFFDC2626)))
+                              : (item['tscfStars'] == '★★★☆'
+                                  ? const Color(0xFFF59E0B)
+                                  : const Color(0xFFDC2626)))
                           .withOpacity(0.12),
                       borderRadius: BorderRadius.circular(4),
                     ),
@@ -4079,27 +5698,41 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                         fontWeight: FontWeight.bold,
                         color: item['tscfStars'] == '★★★★'
                             ? const Color(0xFF059669)
-                            : (item['tscfStars'] == '★★★☆' ? const Color(0xFFF59E0B) : const Color(0xFFDC2626)),
+                            : (item['tscfStars'] == '★★★☆'
+                                ? const Color(0xFFF59E0B)
+                                : const Color(0xFFDC2626)),
                       ),
                     ),
                   ),
                 if (item['be40'] != null)
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1.5),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 5, vertical: 1.5),
                     decoration: BoxDecoration(
                       color: const Color(0xFF10B981).withOpacity(0.1),
                       borderRadius: BorderRadius.circular(4),
                     ),
-                    child: Text('40p保本: ${item['be40']}', style: const TextStyle(fontSize: 10, color: Color(0xFF059669), fontFamily: 'monospace', fontWeight: FontWeight.bold)),
+                    child: Text('40p保本: ${item['be40']}',
+                        style: const TextStyle(
+                            fontSize: 10,
+                            color: Color(0xFF059669),
+                            fontFamily: 'monospace',
+                            fontWeight: FontWeight.bold)),
                   ),
                 if (item['beBody'] != null)
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1.5),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 5, vertical: 1.5),
                     decoration: BoxDecoration(
                       color: const Color(0xFF0D9488).withOpacity(0.1),
                       borderRadius: BorderRadius.circular(4),
                     ),
-                    child: Text('实体保本: ${item['beBody']}', style: const TextStyle(fontSize: 10, color: Color(0xFF0D9488), fontFamily: 'monospace', fontWeight: FontWeight.bold)),
+                    child: Text('实体保本: ${item['beBody']}',
+                        style: const TextStyle(
+                            fontSize: 10,
+                            color: Color(0xFF0D9488),
+                            fontFamily: 'monospace',
+                            fontWeight: FontWeight.bold)),
                   ),
               ],
             ),
@@ -4109,12 +5742,17 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: ['⏳ 挂单中', '🎯 1:1已推保本', '💰 全部止盈', '🛡️ 保本离场', '❌ 已止损'].map((st) {
+              children: ['⏳ 挂单中', '🎯 1:1已推保本', '💰 全部止盈', '🛡️ 保本离场', '❌ 已止损']
+                  .map((st) {
                 bool sel = currentStatus == st;
                 return Padding(
                   padding: const EdgeInsets.only(right: 6),
                   child: ChoiceChip(
-                    label: Text(st, style: TextStyle(fontSize: 9, fontWeight: sel ? FontWeight.bold : FontWeight.normal)),
+                    label: Text(st,
+                        style: TextStyle(
+                            fontSize: 9,
+                            fontWeight:
+                                sel ? FontWeight.bold : FontWeight.normal)),
                     selected: sel,
                     onSelected: (_) => _updatePlanStatus(idx, st),
                   ),
@@ -4137,11 +5775,26 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: isSel ? const Color(0xFFF59E0B).withOpacity(0.15) : Colors.transparent,
+          color: isSel
+              ? const Color(0xFFF59E0B).withOpacity(0.15)
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: isSel ? const Color(0xFFF59E0B) : Theme.of(context).dividerColor.withOpacity(0.4)),
+          border: Border.all(
+              color: isSel
+                  ? const Color(0xFFF59E0B)
+                  : Theme.of(context).dividerColor.withOpacity(0.4)),
         ),
-        child: Text(label, style: TextStyle(fontSize: 11, fontWeight: isSel ? FontWeight.bold : FontWeight.normal, color: isSel ? const Color(0xFF1E40AF) : Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7))),
+        child: Text(label,
+            style: TextStyle(
+                fontSize: 11,
+                fontWeight: isSel ? FontWeight.bold : FontWeight.normal,
+                color: isSel
+                    ? const Color(0xFF1E40AF)
+                    : Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.color
+                        ?.withOpacity(0.7))),
       ),
     );
   }
@@ -4154,22 +5807,33 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
         decoration: BoxDecoration(
           color: isSelected
-              ? (p.isCore ? const Color(0xFFFEF3C7) : (p.isGold ? const Color(0xFFFDE68A) : const Color(0xFFDBEAFE)))
+              ? (p.isCore
+                  ? const Color(0xFFFEF3C7)
+                  : (p.isGold
+                      ? const Color(0xFFFDE68A)
+                      : const Color(0xFFDBEAFE)))
               : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
               color: isSelected
-                  ? (p.isCore ? const Color(0xFFF59E0B) : (p.isGold ? const Color(0xFFD97706) : const Color(0xFF3B82F6)))
+                  ? (p.isCore
+                      ? const Color(0xFFF59E0B)
+                      : (p.isGold
+                          ? const Color(0xFFD97706)
+                          : const Color(0xFF3B82F6)))
                   : Theme.of(context).dividerColor.withOpacity(0.4)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             p.isCore
-                ? const Icon(Icons.star_rounded, size: 14, color: Color(0xFFD97706))
+                ? const Icon(Icons.star_rounded,
+                    size: 14, color: Color(0xFFD97706))
                 : (p.isGold
-                    ? const Icon(Icons.circle, size: 10, color: Color(0xFFB45309))
-                    : const Icon(Icons.label_outline_rounded, size: 14, color: Color(0xFFF59E0B))),
+                    ? const Icon(Icons.circle,
+                        size: 10, color: Color(0xFFB45309))
+                    : const Icon(Icons.label_outline_rounded,
+                        size: 14, color: Color(0xFFF59E0B))),
             const SizedBox(width: 4),
             Text(
               '${p.symbol} ${p.chineseName}',
@@ -4177,8 +5841,16 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
                 fontSize: 11,
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                 color: isSelected
-                    ? (p.isCore ? const Color(0xFF92400E) : (p.isGold ? const Color(0xFF78350F) : const Color(0xFF1E40AF)))
-                    : Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
+                    ? (p.isCore
+                        ? const Color(0xFF92400E)
+                        : (p.isGold
+                            ? const Color(0xFF78350F)
+                            : const Color(0xFF1E40AF)))
+                    : Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.color
+                        ?.withOpacity(0.7),
               ),
             ),
           ],
@@ -4206,17 +5878,31 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
     final orderType = (entryMode == 1)
         ? (isLong ? 'Buy Limit (回踩挂多)' : 'Sell Limit (反弹挂空)')
         : (isLong ? 'Buy Stop (突破追多)' : 'Sell Stop (跌破追空)');
-    final entryPrice = (entryMode == 1) ? fib50.toStringAsFixed(decimals) : breakoutEntry.toStringAsFixed(decimals);
-    final slPrice = (entryMode == 1) ? fibSl.toStringAsFixed(decimals) : breakoutSl.toStringAsFixed(decimals);
+    final entryPrice = (entryMode == 1)
+        ? fib50.toStringAsFixed(decimals)
+        : breakoutEntry.toStringAsFixed(decimals);
+    final slPrice = (entryMode == 1)
+        ? fibSl.toStringAsFixed(decimals)
+        : breakoutSl.toStringAsFixed(decimals);
     final tp1Price = (entryMode == 1)
-        ? (isLong ? fib50 + fib50Risk : fib50 - fib50Risk).toStringAsFixed(decimals)
-        : (isLong ? breakoutEntry + breakoutRisk : breakoutEntry - breakoutRisk).toStringAsFixed(decimals);
+        ? (isLong ? fib50 + fib50Risk : fib50 - fib50Risk)
+            .toStringAsFixed(decimals)
+        : (isLong ? breakoutEntry + breakoutRisk : breakoutEntry - breakoutRisk)
+            .toStringAsFixed(decimals);
     final tp2Price = (entryMode == 1)
-        ? (isLong ? fib50 + fib50Risk * 2 : fib50 - fib50Risk * 2).toStringAsFixed(decimals)
-        : (isLong ? breakoutEntry + breakoutRisk * 2 : breakoutEntry - breakoutRisk * 2).toStringAsFixed(decimals);
+        ? (isLong ? fib50 + fib50Risk * 2 : fib50 - fib50Risk * 2)
+            .toStringAsFixed(decimals)
+        : (isLong
+                ? breakoutEntry + breakoutRisk * 2
+                : breakoutEntry - breakoutRisk * 2)
+            .toStringAsFixed(decimals);
     final tp3Price = (entryMode == 1)
-        ? (isLong ? fib50 + fib50Risk * 3 : fib50 - fib50Risk * 3).toStringAsFixed(decimals)
-        : (isLong ? breakoutEntry + breakoutRisk * 3 : breakoutEntry - breakoutRisk * 3).toStringAsFixed(decimals);
+        ? (isLong ? fib50 + fib50Risk * 3 : fib50 - fib50Risk * 3)
+            .toStringAsFixed(decimals)
+        : (isLong
+                ? breakoutEntry + breakoutRisk * 3
+                : breakoutEntry - breakoutRisk * 3)
+            .toStringAsFixed(decimals);
     final be40Price = be40.toStringAsFixed(decimals);
     final beBodyPrice = beBody.toStringAsFixed(decimals);
 
@@ -4224,7 +5910,8 @@ class _TpCalculatorPageState extends State<TpCalculatorPage> {
         ? '【🛡️ 开单前 5 项风控铁律：已逐项自审 100% 合格】\n'
         : '【⚠️ 提示：开单前请务必完成 5 项风控铁律自审】\n';
 
-    final tscfSummary = '【⚔️ T.S.C.F. 共振评级：${_tscfRating['stars']} ${_tscfRating['title']} (共振: $_tscfScore/4)】\n● 状态诊断：${_tscfRating['desc']}\n';
+    final tscfSummary =
+        '【⚔️ T.S.C.F. 共振评级：${_tscfRating['stars']} ${_tscfRating['title']} (共振: $_tscfScore/4)】\n● 状态诊断：${_tscfRating['desc']}\n';
 
     final plan = '''
 【DT · 吞没战法实战挂单指令】
@@ -4253,7 +5940,8 @@ $tscfSummary$checklistNote⚠️ 纪律红线：Set & Forget！挂单后绝不�
     copyToClipboard(context, plan.trim(), '完整实战挂单指令');
   }
 
-  Widget _buildPriceCard(BuildContext context, String title, String price, String sub, Color color) {
+  Widget _buildPriceCard(BuildContext context, String title, String price,
+      String sub, Color color) {
     return Expanded(
       child: GestureDetector(
         onTap: () => copyToClipboard(context, price, title),
@@ -4271,16 +5959,28 @@ $tscfSummary$checklistNote⚠️ 纪律红线：Set & Forget！挂单后绝不�
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: Text(title, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: color), overflow: TextOverflow.ellipsis),
+                    child: Text(title,
+                        style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                            color: color),
+                        overflow: TextOverflow.ellipsis),
                   ),
                   const SizedBox(width: 4),
                   Icon(Icons.copy_rounded, size: 11, color: color),
                 ],
               ),
               const SizedBox(height: 4),
-              Text(price, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w900, color: color, fontFamily: 'monospace')),
+              Text(price,
+                  style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w900,
+                      color: color,
+                      fontFamily: 'monospace')),
               const SizedBox(height: 2),
-              Text(sub, style: TextStyle(fontSize: 9, color: color.withOpacity(0.8)), overflow: TextOverflow.ellipsis),
+              Text(sub,
+                  style: TextStyle(fontSize: 9, color: color.withOpacity(0.8)),
+                  overflow: TextOverflow.ellipsis),
             ],
           ),
         ),
@@ -4293,8 +5993,6 @@ $tscfSummary$checklistNote⚠️ 纪律红线：Set & Forget！挂单后绝不�
 // 4. 生存与复利模拟器（资金走势图、蒙特卡洛 12 个月推演）
 // -------------------------------------------------------------
 
-
-  
 class SurvivalSimulatorPage extends StatefulWidget {
   const SurvivalSimulatorPage({super.key});
 
@@ -4339,15 +6037,17 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
 
   void runSimulation() {
     HapticFeedback.mediumImpact();
-    
+
     int blownUpDtCount = 0;
     int blownUpStCount = 0;
     Random rand = Random();
 
     // Determine DT Trade 1 RR based on user's selected RR
     double dtTrade1RR = rr;
-    if (rr == 1.5) dtTrade1RR = 1.0;
-    else if (rr == 2.0) dtTrade1RR = 1.5;
+    if (rr == 1.5)
+      dtTrade1RR = 1.0;
+    else if (rr == 2.0)
+      dtTrade1RR = 1.5;
     else if (rr == 3.0) dtTrade1RR = 2.0;
 
     for (int sim = 0; sim < 1000; sim++) {
@@ -4358,12 +6058,13 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
       bool blowDt = false;
       bool blowSt = false;
 
-      List<bool> simWins = List.generate(120, (_) => (rand.nextDouble() * 100) < winRate);
+      List<bool> simWins =
+          List.generate(120, (_) => (rand.nextDouble() * 100) < winRate);
 
       for (int i = 0; i < 120; i++) {
         bool isWin = simWins[i];
         bool hitPartial = false;
-        
+
         // Check if Single Track loses, but Dual Track hits Trade 1 target
         if (!isWin && rr > dtTrade1RR && rand.nextInt(100) < 30) {
           hitPartial = true;
@@ -4374,13 +6075,19 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
           if (isWin) {
             double runnerRR = 0;
             int runDice = rand.nextInt(100);
-            if (runDice < 30) runnerRR = 0;
-            else if (runDice < 70) runnerRR = rr;
-            else if (runDice < 90) runnerRR = rr + 1.0;
-            else runnerRR = rr + 2.0;
+            if (runDice < 30)
+              runnerRR = 0;
+            else if (runDice < 70)
+              runnerRR = rr;
+            else if (runDice < 90)
+              runnerRR = rr + 1.0;
+            else
+              runnerRR = rr + 2.0;
             balDt += (riskDt / 2.0 * dtTrade1RR) + (riskDt / 2.0 * runnerRR);
           } else if (hitPartial) {
-            balDt += (riskDt / 2.0 * dtTrade1RR); // Trade 1 wins, Trade 2 breakeven (0)
+            balDt += (riskDt /
+                2.0 *
+                dtTrade1RR); // Trade 1 wins, Trade 2 breakeven (0)
           } else {
             balDt -= riskDt;
           }
@@ -4394,7 +6101,8 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
           if (isWin) {
             balSt += riskSt * rr;
           } else {
-            balSt -= riskSt; // Even if hitPartial is true, ST held for rr and eventually lost
+            balSt -=
+                riskSt; // Even if hitPartial is true, ST held for rr and eventually lost
           }
           if (balSt > peakSt) peakSt = balSt;
           double dd = ((peakSt - balSt) / peakSt) * 100;
@@ -4406,7 +6114,8 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
     }
 
     // Actual simulation run (1 time) for chart and table
-    List<bool> actualWins = List.generate(120, (_) => (rand.nextDouble() * 100) < winRate);
+    List<bool> actualWins =
+        List.generate(120, (_) => (rand.nextDouble() * 100) < winRate);
 
     double dtBalance = startBal;
     double stBalance = startBal;
@@ -4431,23 +6140,28 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
       for (int i = 0; i < 10; i++) {
         bool isWin = actualWins[tradeIndex++];
         bool hitPartial = false;
-        
+
         if (!isWin && rr > dtTrade1RR && rand.nextInt(100) < 30) {
           hitPartial = true;
         }
-        
+
         // Dual Track Logic
         if (!dtBlownUp) {
           double riskDt = dtBalance * (riskPct / 100);
           if (isWin) {
             double runnerRR = 0;
             int runDice = rand.nextInt(100);
-            if (runDice < 30) runnerRR = 0;
-            else if (runDice < 70) runnerRR = rr;
-            else if (runDice < 90) runnerRR = rr + 1.0;
-            else runnerRR = rr + 2.0;
-            
-            dtBalance += (riskDt / 2.0 * dtTrade1RR) + (riskDt / 2.0 * runnerRR);
+            if (runDice < 30)
+              runnerRR = 0;
+            else if (runDice < 70)
+              runnerRR = rr;
+            else if (runDice < 90)
+              runnerRR = rr + 1.0;
+            else
+              runnerRR = rr + 2.0;
+
+            dtBalance +=
+                (riskDt / 2.0 * dtTrade1RR) + (riskDt / 2.0 * runnerRR);
             dtCurrentStreak = 0;
           } else if (hitPartial) {
             dtBalance += (riskDt / 2.0 * dtTrade1RR);
@@ -4539,16 +6253,20 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
                   Expanded(
                     child: TextFormField(
                       controller: _balCtrl,
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                      keyboardType:
+                          const TextInputType.numberWithOptions(decimal: true),
                       decoration: InputDecoration(
                         isDense: true,
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
                         labelText: '初始本金 (USD)',
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8)),
                       ),
                       onChanged: (v) {
                         startBal = double.tryParse(v) ?? 700;
-                        SharedPreferences.getInstance().then((p) => p.setDouble('sim_bal', startBal));
+                        SharedPreferences.getInstance()
+                            .then((p) => p.setDouble('sim_bal', startBal));
                       },
                     ),
                   ),
@@ -4556,16 +6274,20 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
                   Expanded(
                     child: TextFormField(
                       controller: _winCtrl,
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                      keyboardType:
+                          const TextInputType.numberWithOptions(decimal: true),
                       decoration: InputDecoration(
                         isDense: true,
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
                         labelText: '交易胜率 (%)',
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8)),
                       ),
                       onChanged: (v) {
                         winRate = double.tryParse(v) ?? 50;
-                        SharedPreferences.getInstance().then((p) => p.setDouble('sim_win', winRate));
+                        SharedPreferences.getInstance()
+                            .then((p) => p.setDouble('sim_win', winRate));
                       },
                     ),
                   ),
@@ -4573,16 +6295,20 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
                   Expanded(
                     child: TextFormField(
                       controller: _riskCtrl,
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                      keyboardType:
+                          const TextInputType.numberWithOptions(decimal: true),
                       decoration: InputDecoration(
                         isDense: true,
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
                         labelText: '单笔总风险 (%)',
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8)),
                       ),
                       onChanged: (v) {
                         riskPct = double.tryParse(v) ?? 2;
-                        SharedPreferences.getInstance().then((p) => p.setDouble('sim_risk', riskPct));
+                        SharedPreferences.getInstance()
+                            .then((p) => p.setDouble('sim_risk', riskPct));
                       },
                     ),
                   ),
@@ -4593,9 +6319,11 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
                       value: rr,
                       decoration: InputDecoration(
                         isDense: true,
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
                         labelText: '基础盈亏比',
-                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8)),
                       ),
                       items: const [
                         DropdownMenuItem(value: 1.0, child: Text('1:1 (保守)')),
@@ -4605,7 +6333,8 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
                       ],
                       onChanged: (v) {
                         setState(() => rr = v ?? 2.0);
-                        SharedPreferences.getInstance().then((p) => p.setDouble('sim_rr', rr));
+                        SharedPreferences.getInstance()
+                            .then((p) => p.setDouble('sim_rr', rr));
                       },
                     ),
                   ),
@@ -4614,12 +6343,14 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
                     height: 40,
                     child: FilledButton.icon(
                       style: FilledButton.styleFrom(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
                         backgroundColor: const Color(0xFF475569),
                       ),
                       onPressed: runSimulation,
                       icon: const Icon(Icons.casino, size: 18),
-                      label: const Text('运行实战推演', style: TextStyle(fontWeight: FontWeight.bold)),
+                      label: const Text('运行实战推演',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
                   ),
                 ],
@@ -4632,18 +6363,40 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
                     Expanded(
                       child: TextFormField(
                         controller: _balCtrl,
-                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                        decoration: InputDecoration(isDense: true, contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10), labelText: '本金(USD)', border: OutlineInputBorder(borderRadius: BorderRadius.circular(8))),
-                        onChanged: (v) { startBal = double.tryParse(v) ?? 700; SharedPreferences.getInstance().then((p) => p.setDouble('sim_bal', startBal)); },
+                        keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true),
+                        decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            labelText: '本金(USD)',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8))),
+                        onChanged: (v) {
+                          startBal = double.tryParse(v) ?? 700;
+                          SharedPreferences.getInstance()
+                              .then((p) => p.setDouble('sim_bal', startBal));
+                        },
                       ),
                     ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: TextFormField(
                         controller: _winCtrl,
-                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                        decoration: InputDecoration(isDense: true, contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10), labelText: '胜率(%)', border: OutlineInputBorder(borderRadius: BorderRadius.circular(8))),
-                        onChanged: (v) { winRate = double.tryParse(v) ?? 50; SharedPreferences.getInstance().then((p) => p.setDouble('sim_win', winRate)); },
+                        keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true),
+                        decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            labelText: '胜率(%)',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8))),
+                        onChanged: (v) {
+                          winRate = double.tryParse(v) ?? 50;
+                          SharedPreferences.getInstance()
+                              .then((p) => p.setDouble('sim_win', winRate));
+                        },
                       ),
                     ),
                   ]),
@@ -4652,26 +6405,59 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
                     Expanded(
                       child: TextFormField(
                         controller: _riskCtrl,
-                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                        decoration: InputDecoration(isDense: true, contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10), labelText: '风险(%)', border: OutlineInputBorder(borderRadius: BorderRadius.circular(8))),
-                        onChanged: (v) { riskPct = double.tryParse(v) ?? 2; SharedPreferences.getInstance().then((p) => p.setDouble('sim_risk', riskPct)); },
+                        keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true),
+                        decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            labelText: '风险(%)',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8))),
+                        onChanged: (v) {
+                          riskPct = double.tryParse(v) ?? 2;
+                          SharedPreferences.getInstance()
+                              .then((p) => p.setDouble('sim_risk', riskPct));
+                        },
                       ),
                     ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: DropdownButtonFormField<double>(
-                        isExpanded: true, value: rr,
-                        decoration: InputDecoration(isDense: true, contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10), labelText: '盈亏比', border: OutlineInputBorder(borderRadius: BorderRadius.circular(8))),
-                        items: const [ DropdownMenuItem(value: 1.0, child: Text('1:1')), DropdownMenuItem(value: 1.5, child: Text('1:1.5')), DropdownMenuItem(value: 2.0, child: Text('1:2')), DropdownMenuItem(value: 3.0, child: Text('1:3')) ],
-                        onChanged: (v) { setState(() => rr = v ?? 2.0); SharedPreferences.getInstance().then((p) => p.setDouble('sim_rr', rr)); },
+                        isExpanded: true,
+                        value: rr,
+                        decoration: InputDecoration(
+                            isDense: true,
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            labelText: '盈亏比',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8))),
+                        items: const [
+                          DropdownMenuItem(value: 1.0, child: Text('1:1')),
+                          DropdownMenuItem(value: 1.5, child: Text('1:1.5')),
+                          DropdownMenuItem(value: 2.0, child: Text('1:2')),
+                          DropdownMenuItem(value: 3.0, child: Text('1:3'))
+                        ],
+                        onChanged: (v) {
+                          setState(() => rr = v ?? 2.0);
+                          SharedPreferences.getInstance()
+                              .then((p) => p.setDouble('sim_rr', rr));
+                        },
                       ),
                     ),
                   ]),
                   const SizedBox(height: 12),
                   FilledButton.icon(
-                    style: FilledButton.styleFrom(padding: const EdgeInsets.symmetric(vertical: 12), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)), backgroundColor: const Color(0xFF475569)),
-                    onPressed: runSimulation, icon: const Icon(Icons.casino),
-                    label: const Text('🎲 运行 12 个月实战走势推演', style: TextStyle(fontWeight: FontWeight.bold)),
+                    style: FilledButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                        backgroundColor: const Color(0xFF475569)),
+                    onPressed: runSimulation,
+                    icon: const Icon(Icons.casino),
+                    label: const Text('🎲 运行 12 个月实战走势推演',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
                 ],
               ),
@@ -4685,54 +6471,76 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
           decoration: BoxDecoration(
             color: isDark ? const Color(0xFF1E293B) : Colors.white,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: isDark ? Colors.grey[800]! : Colors.grey[300]!),
+            border: Border.all(
+                color: isDark ? Colors.grey[800]! : Colors.grey[300]!),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 child: Row(
                   children: [
-                    const Icon(Icons.compare_arrows, color: Colors.blueAccent, size: 20),
+                    const Icon(Icons.compare_arrows,
+                        color: Colors.blueAccent, size: 20),
                     const SizedBox(width: 8),
-                    const Expanded(child: Text('双轨分仓 vs 传统单轨 12个月实战对比', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14))),
+                    const Expanded(
+                        child: Text('双轨分仓 vs 传统单轨 12个月实战对比',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 14))),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(color: const Color(0xFF10B981).withOpacity(0.15), borderRadius: BorderRadius.circular(6)),
-                      child: const Text('DT 终极抗风险', style: TextStyle(color: Color(0xFF059669), fontSize: 11, fontWeight: FontWeight.bold)),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                          color: const Color(0xFF10B981).withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(6)),
+                      child: const Text('DT 终极抗风险',
+                          style: TextStyle(
+                              color: Color(0xFF059669),
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold)),
                     ),
                   ],
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 color: Colors.blueAccent.withOpacity(0.08),
                 child: Row(
                   children: [
-                    const Icon(Icons.check_circle, color: Colors.blueAccent, size: 16),
+                    const Icon(Icons.check_circle,
+                        color: Colors.blueAccent, size: 16),
                     const SizedBox(width: 6),
                     Expanded(
                       child: Text(
-                        '演练生效参数：单笔总风控 ${riskPct.toStringAsFixed(0)}% (\$${riskAmount.toStringAsFixed(0)}) - DT双轨拆分为 2x${(riskPct/2).toStringAsFixed(1)}% (各\$${(riskAmount/2).toStringAsFixed(0)}) · 初始本金 \$${startBal.toStringAsFixed(0)} (≈ RM ${(startBal * 4.5).toStringAsFixed(0)})',
-                        style: const TextStyle(fontSize: 12, color: Colors.blueAccent, fontWeight: FontWeight.w600),
+                        '演练生效参数：单笔总风控 ${riskPct.toStringAsFixed(0)}% (\$${riskAmount.toStringAsFixed(0)}) - DT双轨拆分为 2x${(riskPct / 2).toStringAsFixed(1)}% (各\$${(riskAmount / 2).toStringAsFixed(0)}) · 初始本金 \$${startBal.toStringAsFixed(0)} (≈ RM ${(startBal * 4.5).toStringAsFixed(0)})',
+                        style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.blueAccent,
+                            fontWeight: FontWeight.w600),
                       ),
                     ),
                   ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       child: _buildResultCard(
-                        title: 'DT 双轨 (2x${(riskPct/2).toStringAsFixed(1)}% = ${riskPct.toStringAsFixed(0)}%)',
-                        subtitle: '风控: \$${riskAmount.toStringAsFixed(0)} (A:\$${(riskAmount/2).toStringAsFixed(0)}+B:\$${(riskAmount/2).toStringAsFixed(0)})',
+                        title:
+                            'DT 双轨 (2x${(riskPct / 2).toStringAsFixed(1)}% = ${riskPct.toStringAsFixed(0)}%)',
+                        subtitle:
+                            '风控: \$${riskAmount.toStringAsFixed(0)} (A:\$${(riskAmount / 2).toStringAsFixed(0)}+B:\$${(riskAmount / 2).toStringAsFixed(0)})',
                         finalBal: simResult!['dtFinal'],
-                        maxRisk: '\$${riskAmount.toStringAsFixed(0)} (${riskPct.toStringAsFixed(0)}%)',
+                        maxRisk:
+                            '\$${riskAmount.toStringAsFixed(0)} (${riskPct.toStringAsFixed(0)}%)',
                         drawdown: simResult!['dtDrawdown'],
                         blowRate: simResult!['dtBlowRate'],
                         maxStreak: simResult!['dtMaxStreak'],
@@ -4745,9 +6553,11 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
                     Expanded(
                       child: _buildResultCard(
                         title: '传统单轨 (1x${riskPct.toStringAsFixed(0)}%)',
-                        subtitle: '单笔死扛风控: \$${riskAmount.toStringAsFixed(0)} (无保本)',
+                        subtitle:
+                            '单笔死扛风控: \$${riskAmount.toStringAsFixed(0)} (无保本)',
                         finalBal: simResult!['stFinal'],
-                        maxRisk: '\$${riskAmount.toStringAsFixed(0)} (${riskPct.toStringAsFixed(0)}%)',
+                        maxRisk:
+                            '\$${riskAmount.toStringAsFixed(0)} (${riskPct.toStringAsFixed(0)}%)',
                         drawdown: simResult!['stDrawdown'],
                         blowRate: simResult!['stBlowRate'],
                         maxStreak: simResult!['stMaxStreak'],
@@ -4770,19 +6580,26 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
           decoration: BoxDecoration(
             color: isDark ? const Color(0xFF1E293B) : Colors.white,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: isDark ? Colors.grey[800]! : Colors.grey[300]!),
+            border: Border.all(
+                color: isDark ? Colors.grey[800]! : Colors.grey[300]!),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 child: Row(
                   children: [
                     const Icon(Icons.show_chart, size: 16, color: Colors.grey),
                     const SizedBox(width: 6),
-                    const Expanded(child: Text('资金净值走势对比 (Dual Equity Curve)', style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.bold))),
+                    const Expanded(
+                        child: Text('资金净值走势对比 (Dual Equity Curve)',
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
+                                fontWeight: FontWeight.bold))),
                     _buildLegend(const Color(0xFF10B981), '双轨分仓'),
                     const SizedBox(width: 12),
                     _buildLegend(const Color(0xFF8B5CF6), '传统单轨'),
@@ -4798,24 +6615,32 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
                     Expanded(
                       flex: 48,
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFEEF2FF),
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: const Color(0xFFC7D2FE)),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFEEF2FF),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: const Color(0xFFC7D2FE)),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('💡 概率论破局真相',
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF312E81))),
+                            const SizedBox(height: 6),
+                            const Text(
+                              '传统单轨交易最致命的心态痛点是浮盈 1.5R 却侧漏翻车扫损。而 DT 双轨战法通过 Trade 1 提前落袋保本 + Trade 2 零风险奔跑，将最大回撤显著压缩，从数学概率底层消灭爆仓！',
+                              style: TextStyle(
+                                  fontSize: 11,
+                                  color: Color(0xFF312E81),
+                                  height: 1.5),
+                            ),
+                          ],
+                        ),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('💡 概率论破局真相', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF312E81))),
-                          const SizedBox(height: 6),
-                          const Text(
-                            '传统单轨交易最致命的心态痛点是浮盈 1.5R 却侧漏翻车扫损。而 DT 双轨战法通过 Trade 1 提前落袋保本 + Trade 2 零风险奔跑，将最大回撤显著压缩，从数学概率底层消灭爆仓！',
-                            style: TextStyle(fontSize: 11, color: Color(0xFF312E81), height: 1.5),
-                          ),
-                        ],
-                      ),
-                    ),
                     ),
                     const SizedBox(width: 12),
                     // Right: Chart
@@ -4825,7 +6650,9 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
                         height: 120,
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFC),
+                          color: isDark
+                              ? const Color(0xFF0F172A)
+                              : const Color(0xFFF8FAFC),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: CustomPaint(
@@ -4848,7 +6675,11 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
                   children: const [
                     Icon(Icons.calendar_month, size: 14, color: Colors.grey),
                     SizedBox(width: 6),
-                    Text('逐月利润拆解 (DT 双轨):', style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.bold)),
+                    Text('逐月利润拆解 (DT 双轨):',
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold)),
                   ],
                 ),
               ),
@@ -4861,23 +6692,42 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
                       spacing: 8,
                       runSpacing: 8,
                       children: List.generate(12, (idx) {
-                        final val = (simResult!['dtMonthly'] as List<double>)[idx];
+                        final val =
+                            (simResult!['dtMonthly'] as List<double>)[idx];
                         Color bgColor, borderColor, textColor;
                         String textStr;
                         if (val == 0) {
-                          bgColor = isDark ? const Color(0xFF1F2937) : const Color(0xFFF3F4F6);
-                          borderColor = isDark ? const Color(0xFF374151) : const Color(0xFFE5E7EB);
-                          textColor = isDark ? const Color(0xFF9CA3AF) : const Color(0xFF6B7280);
+                          bgColor = isDark
+                              ? const Color(0xFF1F2937)
+                              : const Color(0xFFF3F4F6);
+                          borderColor = isDark
+                              ? const Color(0xFF374151)
+                              : const Color(0xFFE5E7EB);
+                          textColor = isDark
+                              ? const Color(0xFF9CA3AF)
+                              : const Color(0xFF6B7280);
                           textStr = '-';
                         } else if (val > 0) {
-                          bgColor = isDark ? const Color(0xFF064E3B).withOpacity(0.3) : const Color(0xFFF0FDF4);
-                          borderColor = isDark ? const Color(0xFF059669).withOpacity(0.4) : const Color(0xFFBBF7D0);
-                          textColor = isDark ? const Color(0xFF34D399) : const Color(0xFF15803D);
+                          bgColor = isDark
+                              ? const Color(0xFF064E3B).withOpacity(0.3)
+                              : const Color(0xFFF0FDF4);
+                          borderColor = isDark
+                              ? const Color(0xFF059669).withOpacity(0.4)
+                              : const Color(0xFFBBF7D0);
+                          textColor = isDark
+                              ? const Color(0xFF34D399)
+                              : const Color(0xFF15803D);
                           textStr = '+\$${val.toStringAsFixed(0)}';
                         } else {
-                          bgColor = isDark ? const Color(0xFF7F1D1D).withOpacity(0.3) : const Color(0xFFFEF2F2);
-                          borderColor = isDark ? const Color(0xFFDC2626).withOpacity(0.4) : const Color(0xFFFECACA);
-                          textColor = isDark ? const Color(0xFFF87171) : const Color(0xFFB91C1C);
+                          bgColor = isDark
+                              ? const Color(0xFF7F1D1D).withOpacity(0.3)
+                              : const Color(0xFFFEF2F2);
+                          borderColor = isDark
+                              ? const Color(0xFFDC2626).withOpacity(0.4)
+                              : const Color(0xFFFECACA);
+                          textColor = isDark
+                              ? const Color(0xFFF87171)
+                              : const Color(0xFFB91C1C);
                           textStr = '-\$${val.abs().toStringAsFixed(0)}';
                         }
                         String rmStr = '';
@@ -4885,23 +6735,39 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
                           double rmVal = val.abs() * 4.5;
                           rmStr = '≈ RM ${rmVal.toStringAsFixed(0)}';
                         }
-                        
+
                         return Container(
                           width: (gridConstraints.maxWidth - 24) / 4,
                           padding: const EdgeInsets.symmetric(vertical: 4),
-                          decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(6), border: Border.all(color: borderColor)),
+                          decoration: BoxDecoration(
+                              color: bgColor,
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(color: borderColor)),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text('月', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: textColor)),
+                                Text('月',
+                                    style: TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold,
+                                        color: textColor)),
                                 Row(
                                   children: [
-                                    Text(textStr, style: TextStyle(fontSize: 11.5, fontWeight: FontWeight.w900, color: textColor)),
+                                    Text(textStr,
+                                        style: TextStyle(
+                                            fontSize: 11.5,
+                                            fontWeight: FontWeight.w900,
+                                            color: textColor)),
                                     if (rmStr.isNotEmpty) ...[
                                       const SizedBox(width: 4),
-                                      Text(rmStr, style: TextStyle(fontSize: 8.5, fontWeight: FontWeight.bold, color: textColor.withOpacity(0.6))),
+                                      Text(rmStr,
+                                          style: TextStyle(
+                                              fontSize: 8.5,
+                                              fontWeight: FontWeight.bold,
+                                              color:
+                                                  textColor.withOpacity(0.6))),
                                     ]
                                   ],
                                 ),
@@ -4963,12 +6829,19 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
   Widget _buildLegend(Color color, String text) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-      decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(10)),
+      decoration: BoxDecoration(
+          color: color.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(10)),
       child: Row(
         children: [
-          Container(width: 8, height: 8, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
+          Container(
+              width: 8,
+              height: 8,
+              decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
           const SizedBox(width: 4),
-          Text(text, style: TextStyle(fontSize: 10, color: color, fontWeight: FontWeight.bold)),
+          Text(text,
+              style: TextStyle(
+                  fontSize: 10, color: color, fontWeight: FontWeight.bold)),
         ],
       ),
     );
@@ -4987,9 +6860,12 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
     required bool isDark,
   }) {
     Color valueColor = isBlownUp ? const Color(0xFFDC2626) : color;
-    Color ddColor = drawdown > 30 ? const Color(0xFFDC2626) : (drawdown > 15 ? Colors.orange : const Color(0xFF10B981));
-    Color brColor = blowRate > 0 ? const Color(0xFFDC2626) : const Color(0xFF10B981);
-    
+    Color ddColor = drawdown > 30
+        ? const Color(0xFFDC2626)
+        : (drawdown > 15 ? Colors.orange : const Color(0xFF10B981));
+    Color brColor =
+        blowRate > 0 ? const Color(0xFFDC2626) : const Color(0xFF10B981);
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
       decoration: BoxDecoration(
@@ -5002,35 +6878,61 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
         children: [
           Row(
             children: [
-              Container(width: 6, height: 6, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
+              Container(
+                  width: 6,
+                  height: 6,
+                  decoration:
+                      BoxDecoration(color: color, shape: BoxShape.circle)),
               const SizedBox(width: 4),
-              Expanded(child: Text(title, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: color))),
+              Expanded(
+                  child: Text(title,
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: color))),
             ],
           ),
           const SizedBox(height: 4),
-          Text(subtitle, style: const TextStyle(fontSize: 10, color: Colors.grey)),
+          Text(subtitle,
+              style: const TextStyle(fontSize: 10, color: Colors.grey)),
           const SizedBox(height: 12),
           Row(
             crossAxisAlignment: CrossAxisAlignment.baseline,
             textBaseline: TextBaseline.alphabetic,
             children: [
-              Text('\$${finalBal.toStringAsFixed(0)}', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900, color: valueColor)),
+              Text('\$${finalBal.toStringAsFixed(0)}',
+                  style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w900,
+                      color: valueColor)),
               const SizedBox(width: 8),
-              Text('≈ RM ${(finalBal * 4.5).toStringAsFixed(0)}', style: const TextStyle(fontSize: 11, color: Colors.grey, fontWeight: FontWeight.bold)),
+              Text('≈ RM ${(finalBal * 4.5).toStringAsFixed(0)}',
+                  style: const TextStyle(
+                      fontSize: 11,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold)),
             ],
           ),
-          const Padding(padding: EdgeInsets.symmetric(vertical: 10), child: Divider(height: 1, thickness: 1)),
+          const Padding(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: Divider(height: 1, thickness: 1)),
           Row(
             children: [
-              Expanded(child: _statItem('单笔最大风控', maxRisk, isBlownUp ? const Color(0xFFDC2626) : color)),
+              Expanded(
+                  child: _statItem('单笔最大风控', maxRisk,
+                      isBlownUp ? const Color(0xFFDC2626) : color)),
               const SizedBox(width: 8),
-              Expanded(child: _statItem('最大回撤', '${drawdown.toStringAsFixed(1)}%', ddColor)),
+              Expanded(
+                  child: _statItem(
+                      '最大回撤', '${drawdown.toStringAsFixed(1)}%', ddColor)),
             ],
           ),
           const SizedBox(height: 8),
           Row(
             children: [
-              Expanded(child: _statItem('破产熔断率', '${blowRate.toStringAsFixed(1)}%', brColor)),
+              Expanded(
+                  child: _statItem(
+                      '破产熔断率', '${blowRate.toStringAsFixed(1)}%', brColor)),
               const SizedBox(width: 8),
               Expanded(child: _statItem('最大连亏', '$maxStreak 次', Colors.grey)),
             ],
@@ -5044,8 +6946,12 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Flexible(child: Text(label, style: const TextStyle(fontSize: 11, color: Colors.grey))),
-        Text(value, style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: valueColor)),
+        Flexible(
+            child: Text(label,
+                style: const TextStyle(fontSize: 11, color: Colors.grey))),
+        Text(value,
+            style: TextStyle(
+                fontSize: 12, fontWeight: FontWeight.bold, color: valueColor)),
       ],
     );
   }
@@ -5055,12 +6961,18 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(label, style: const TextStyle(fontSize: 10, color: Colors.grey)),
-        Text(value, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: vColor)),
+        Text(value,
+            style: TextStyle(
+                fontSize: 10, fontWeight: FontWeight.bold, color: vColor)),
       ],
     );
   }
 
-  Widget _buildBanner({required IconData icon, required String title, required String desc, required Color color}) {
+  Widget _buildBanner(
+      {required IconData icon,
+      required String title,
+      required String desc,
+      required Color color}) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
       decoration: BoxDecoration(
@@ -5072,11 +6984,17 @@ class _SurvivalSimulatorPageState extends State<SurvivalSimulatorPage> {
         children: [
           Icon(icon, size: 20, color: color),
           const SizedBox(width: 8),
-          Text(title, style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: color)),
+          Text(title,
+              style: TextStyle(
+                  fontSize: 13, fontWeight: FontWeight.bold, color: color)),
           if (desc.isNotEmpty) ...[
             const SizedBox(width: 12),
             Expanded(
-              child: Text(desc, style: TextStyle(fontSize: 11, color: color.withOpacity(0.85), height: 1.3)),
+              child: Text(desc,
+                  style: TextStyle(
+                      fontSize: 11,
+                      color: color.withOpacity(0.85),
+                      height: 1.3)),
             ),
           ],
         ],
@@ -5129,7 +7047,9 @@ class DualEquityCurvePainter extends CustomPainter {
 
       for (int i = 0; i < points.length; i++) {
         double x = (i / (points.length - 1)) * size.width;
-        double y = size.height - ((points[i] - minVal) / range) * (size.height - 20) - 10;
+        double y = size.height -
+            ((points[i] - minVal) / range) * (size.height - 20) -
+            10;
 
         if (i == 0) {
           path.moveTo(x, y);
@@ -5149,21 +7069,30 @@ class DualEquityCurvePainter extends CustomPainter {
 
       final dotPaint = Paint()..color = color;
       double endX = size.width;
-      double endY = size.height - ((points.last - minVal) / range) * (size.height - 20) - 10;
+      double endY = size.height -
+          ((points.last - minVal) / range) * (size.height - 20) -
+          10;
       canvas.drawCircle(Offset(endX, endY), 4, dotPaint);
     }
 
-    drawLine(stPoints, stBlownUp ? const Color(0xFFEF4444) : const Color(0xFF8B5CF6), stBlownUp);
-    drawLine(dtPoints, dtBlownUp ? const Color(0xFFEF4444) : const Color(0xFF10B981), dtBlownUp);
+    drawLine(
+        stPoints,
+        stBlownUp ? const Color(0xFFEF4444) : const Color(0xFF8B5CF6),
+        stBlownUp);
+    drawLine(
+        dtPoints,
+        dtBlownUp ? const Color(0xFFEF4444) : const Color(0xFF10B981),
+        dtBlownUp);
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
+
 class _DashedLine extends StatelessWidget {
   final Color color;
   const _DashedLine({required this.color});
-  
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
