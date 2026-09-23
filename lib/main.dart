@@ -2875,8 +2875,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
     int rawMicro = (rawLots * 100).floor();
     if (rawMicro % 2 != 0) rawMicro -= 1;
     double finalLots = rawMicro / 100;
-    bool isInsufficient =
-        isMicroMode ? (finalLots < 0.02 * 100) : (finalLots < 0.02);
+    bool isInsufficient = finalLots < 0.02;
 
     final fightIq = _getFightIqDiagnosis(slPips);
     bool isDesktop = MediaQuery.of(context).size.width > 800;
