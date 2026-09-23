@@ -10,6 +10,8 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 jobs:
   build_android:
@@ -69,6 +71,30 @@ jobs:
           name: release-windows
           path: dt_trade_app_setup.exe
 
+  build_web:
+    name: Build & Deploy Web
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build Web
+        run: flutter build web --release --base-href "/dt_trade_app/"
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: build/web
+
   create_release:
     name: Create GitHub Release
     needs: [build_android, build_windows]
@@ -99,12 +125,14 @@ jobs:
           body: |
             🚀 自动编译的最新版本
 
+            ## 🌐 网页版 (直接在浏览器使用)
+            👉 https://gooart-space-media.github.io/dt_trade_app/
+
             ## 📱 Android
             下载 `app-release.apk`，传到手机上安装即可。
 
             ## 💻 Windows
             下载 `dt_trade_app_setup.exe`，双击运行安装程序，按向导安装。
-            安装后会自动在桌面创建快捷方式。
           files: |
             app-release.apk
             dt_trade_app_setup.exe
