@@ -89,11 +89,22 @@ jobs:
       - name: Build Web
         run: flutter build web --release --base-href "/dt_trade_app/"
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: build/web
+          path: build/web
+
+  deploy_pages:
+    name: Deploy to GitHub Pages
+    needs: build_web
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 
   create_release:
     name: Create GitHub Release
