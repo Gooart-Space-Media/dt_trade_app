@@ -5,5 +5,20 @@
   "navRisk": "Risk Check",
   "navDual": "Dual Lots",
   "navSniper": "Sniper",
-  "navTrend": "Compounding"
+  "navTrend": "Compounding",
+  "msgOpeningXM": "Opening XM Official Account Registration...",
+  "titleXMBanner": "XM Official Account Registration (Exclusive)",
+  "descXMBanner": "Click to register now, enjoy ultra-low spreads and deposit bonuses",
+  "titleMantra": "Three Mantras of Engulfing Strategy (Memorize this):",
+  "mantra1Title": "① Long confirmation needs body engulfing —— ",
+  "mantra1Desc": "Judge the pattern by Body, the latter body must completely swallow the former;",
+  "mantra2Title": "② Stop loss hides below the lowest wick —— ",
+  "mantra2Desc": "Take the lowest wick of the entire pattern area (Mother + Previous) - 10p;",
+  "mantra3Title": "③ 50% is from the midpoint of highest and lowest —— ",
+  "mantra3Desc": "(Highest High + Lowest Low) ÷ 2, never just look at the single mother candle!",
+  "titleBlueprint": "Engulfing Structure & Golden Pocket Blueprint",
+  "tagMultiK": "Multi-Candlestick Pattern Zone",
+  "descBlueprint": "Golden Pocket 50% Mode: Draw fibs on extremes, entry on pullback precisely compresses stop loss",
+  "blueprintHigh": "Highest Price High",
+  "blueprintLow": "Lowest Price Low"
 }

@@ -5,5 +5,20 @@
   "navRisk": "组合防呆",
   "navDual": "双轨手数",
   "navSniper": "吞没狙击",
-  "navTrend": "复利走势"
+  "navTrend": "复利走势",
+  "msgOpeningXM": "正在前往 XM 官方认证开户通道...",
+  "titleXMBanner": "XM 官方认证开户通道 (专属活动)",
+  "descXMBanner": "点击立即注册，尊享极低点差与入金赠金",
+  "titleMantra": "吞没战法实战三句真诀 (必须焊死在脑海)：",
+  "mantra1Title": "① 做多确认看实体吞没 —— ",
+  "mantra1Desc": "形态真假看 Body，后一根实体必须彻底吃掉前一根；",
+  "mantra2Title": "② 止损躲在全区最低影线底 —— ",
+  "mantra2Desc": "取整片形态区域 (母烛 + 前置烛) 最低的下影线 (Lowest Wick) - 10p；",
+  "mantra3Title": "③ 50% 取自全区极高与极低的中点 —— ",
+  "mantra3Desc": "(全区最高 High + 全区最低 Low) ÷ 2，绝不仅看单根母烛！",
+  "titleBlueprint": "吞没结构与黄金口袋解剖蓝图",
+  "tagMultiK": "多重 K 线形态区",
+  "descBlueprint": "黄金口袋 50% 模式：全区极值画网，回踩入场将止损精准压缩",
+  "blueprintHigh": "全区最高价 High",
+  "blueprintLow": "全区最低价 Low"
 }

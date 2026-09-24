@@ -5,5 +5,20 @@
   "navRisk": "Semakan",
   "navDual": "Lot Dual",
   "navSniper": "Sniper",
-  "navTrend": "Trend"
+  "navTrend": "Trend",
+  "msgOpeningXM": "Membuka Saluran Pendaftaran Akaun Rasmi XM...",
+  "titleXMBanner": "Saluran Pendaftaran Akaun Rasmi XM (Eksklusif)",
+  "descXMBanner": "Klik untuk daftar sekarang, nikmati spread sangat rendah dan bonus deposit",
+  "titleMantra": "Tiga Mantra Strategi Engulfing (Wajib Ingat):",
+  "mantra1Title": "① Pengesahan Long perlukan engulfing body —— ",
+  "mantra1Desc": "Nilai corak dari Body, body kedua mesti telan body pertama sepenuhnya;",
+  "mantra2Title": "② Stop loss sembunyi di bawah wick terendah —— ",
+  "mantra2Desc": "Ambil wick terendah dari seluruh kawasan corak (Mother + Previous) - 10p;",
+  "mantra3Title": "③ 50% adalah titik tengah tertinggi & terendah —— ",
+  "mantra3Desc": "(High Tertinggi + Low Terendah) ÷ 2, jangan hanya lihat single mother candle!",
+  "titleBlueprint": "Struktur Engulfing & Pelan Tindakan Golden Pocket",
+  "tagMultiK": "Zon Corak Multi-Candlestick",
+  "descBlueprint": "Mod Golden Pocket 50%: Lukis fibs pada nilai ekstrem, entri pada pullback memampatkan stop loss dengan tepat",
+  "blueprintHigh": "Harga Tertinggi High",
+  "blueprintLow": "Harga Terendah Low"
 }

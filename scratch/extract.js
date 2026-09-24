@@ -1,8 +1,11 @@
 const fs = require('fs');
-const content = fs.readFileSync('C:\\Users\\czx01\\.gemini\\antigravity\\brain\\e910d151-e974-48fb-b453-b5e3c6b8a2c3\\.system_generated\\steps\\3609\\output.txt', 'utf-8');
-const urls = content.match(/https:\/\/[^\s\"\'\}]+/g);
-if(urls) {
-  Array.from(new Set(urls)).forEach(u => console.log(u));
-} else {
-  console.log('No URLs found');
+const code = fs.readFileSync('lib/main.dart', 'utf8');
+const regex = /'([^'\\]*[\u4e00-\u9fa5]+[^'\\]*)'|"([^"\\]*[\u4e00-\u9fa5]+[^"\\]*)"/g;
+const matches = new Set();
+let m;
+while ((m = regex.exec(code)) !== null) {
+  matches.add(m[1] || m[2]);
 }
+console.log('Total unique Chinese strings:', matches.size);
+const arr = Array.from(matches);
+fs.writeFileSync('scratch/zh_strings.json', JSON.stringify(arr, null, 2));

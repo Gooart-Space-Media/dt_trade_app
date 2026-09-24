@@ -1370,7 +1370,7 @@ class HomePage extends StatelessWidget {
         // TODO: Insert your actual XM Affiliate Link here
         await launchUrl(Uri.parse('https://clicks.pipaffiliates.com/c?c=1302046&l=zh-hans&p=6'));
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('正在前往 XM 官方认证开户通道...')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.msgOpeningXM)),
         );
       },
       child: Container(
@@ -1403,17 +1403,17 @@ class HomePage extends StatelessWidget {
                   color: Colors.white, size: 24),
             ),
             const SizedBox(width: 12),
-            const Expanded(
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('XM 官方认证开户通道 (专属活动)',
+                  Text(AppLocalizations.of(context)!.titleXMBanner,
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 13,
                           fontWeight: FontWeight.bold)),
                   SizedBox(height: 2),
-                  Text('点击立即注册，尊享极低点差与入金赠金',
+                  Text(AppLocalizations.of(context)!.descXMBanner,
                       style: TextStyle(color: Colors.white70, fontSize: 11)),
                 ],
               ),
@@ -1448,7 +1448,7 @@ class HomePage extends StatelessWidget {
               const Text('🏆', style: TextStyle(fontSize: 16)),
               const SizedBox(width: 8),
               Expanded(
-                child: Text('吞没战法实战三句真诀 (必须焊死在脑海)：',
+                child: Text(AppLocalizations.of(context)!.titleMantra,
                     style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.bold,
@@ -1460,11 +1460,11 @@ class HomePage extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           _buildMantraLine(
-              context, '① 做多确认看实体吞没 —— ', '形态真假看 Body，后一根实体必须彻底吃掉前一根；'),
-          _buildMantraLine(context, '② 止损躲在全区最低影线底 —— ',
-              '取整片形态区域 (母烛 + 前置烛) 最低的下影线 (Lowest Wick) - 10p；'),
-          _buildMantraLine(context, '③ 50% 取自全区极高与极低的中点 —— ',
-              '(全区最高 High + 全区最低 Low) ÷ 2，绝不仅看单根母烛！'),
+              context, AppLocalizations.of(context)!.mantra1Title, AppLocalizations.of(context)!.mantra1Desc),
+          _buildMantraLine(context, AppLocalizations.of(context)!.mantra2Title,
+              AppLocalizations.of(context)!.mantra2Desc),
+          _buildMantraLine(context, AppLocalizations.of(context)!.mantra3Title,
+              AppLocalizations.of(context)!.mantra3Desc),
         ],
       ),
     );
@@ -1517,8 +1517,8 @@ class HomePage extends StatelessWidget {
             children: [
               const Text('📐', style: TextStyle(fontSize: 16)),
               const SizedBox(width: 8),
-              const Expanded(
-                child: Text('吞没结构与黄金口袋解剖蓝图',
+              Expanded(
+                child: Text(AppLocalizations.of(context)!.titleBlueprint,
                     style:
                         TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
               ),
@@ -1528,7 +1528,7 @@ class HomePage extends StatelessWidget {
                   color: const Color(0xFFDCFCE7),
                   borderRadius: BorderRadius.circular(4),
                 ),
-                child: const Text('多重 K 线形态区',
+                child: Text(AppLocalizations.of(context)!.tagMultiK,
                     style: TextStyle(
                         fontSize: 10,
                         color: Color(0xFF166534),
@@ -1538,7 +1538,7 @@ class HomePage extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            '黄金口袋 50% 模式：全区极值画网，回踩入场将止损精准压缩',
+            AppLocalizations.of(context)!.descBlueprint,
             style: TextStyle(
                 fontSize: 11,
                 color: Theme.of(context).brightness == Brightness.dark
@@ -1567,7 +1567,7 @@ class HomePage extends StatelessWidget {
                     children: [
                       const Expanded(child: _DashedLine(color: Colors.grey)),
                       const SizedBox(width: 8),
-                      Text('全区最高价 High',
+                      Text(AppLocalizations.of(context)!.blueprintHigh,
                           style: TextStyle(
                               fontSize: 10,
                               color: Theme.of(context).brightness ==
@@ -1611,7 +1611,7 @@ class HomePage extends StatelessWidget {
                     children: [
                       const Expanded(child: _DashedLine(color: Colors.grey)),
                       const SizedBox(width: 8),
-                      Text('全区最低价 Low',
+                      Text(AppLocalizations.of(context)!.blueprintLow,
                           style: TextStyle(
                               fontSize: 10,
                               color: Theme.of(context).brightness ==

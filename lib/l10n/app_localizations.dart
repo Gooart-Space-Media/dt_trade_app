@@ -135,6 +135,96 @@ abstract class AppLocalizations {
   /// In zh, this message translates to:
   /// **'复利走势'**
   String get navTrend;
+
+  /// No description provided for @msgOpeningXM.
+  ///
+  /// In zh, this message translates to:
+  /// **'正在前往 XM 官方认证开户通道...'**
+  String get msgOpeningXM;
+
+  /// No description provided for @titleXMBanner.
+  ///
+  /// In zh, this message translates to:
+  /// **'XM 官方认证开户通道 (专属活动)'**
+  String get titleXMBanner;
+
+  /// No description provided for @descXMBanner.
+  ///
+  /// In zh, this message translates to:
+  /// **'点击立即注册，尊享极低点差与入金赠金'**
+  String get descXMBanner;
+
+  /// No description provided for @titleMantra.
+  ///
+  /// In zh, this message translates to:
+  /// **'吞没战法实战三句真诀 (必须焊死在脑海)：'**
+  String get titleMantra;
+
+  /// No description provided for @mantra1Title.
+  ///
+  /// In zh, this message translates to:
+  /// **'① 做多确认看实体吞没 —— '**
+  String get mantra1Title;
+
+  /// No description provided for @mantra1Desc.
+  ///
+  /// In zh, this message translates to:
+  /// **'形态真假看 Body，后一根实体必须彻底吃掉前一根；'**
+  String get mantra1Desc;
+
+  /// No description provided for @mantra2Title.
+  ///
+  /// In zh, this message translates to:
+  /// **'② 止损躲在全区最低影线底 —— '**
+  String get mantra2Title;
+
+  /// No description provided for @mantra2Desc.
+  ///
+  /// In zh, this message translates to:
+  /// **'取整片形态区域 (母烛 + 前置烛) 最低的下影线 (Lowest Wick) - 10p；'**
+  String get mantra2Desc;
+
+  /// No description provided for @mantra3Title.
+  ///
+  /// In zh, this message translates to:
+  /// **'③ 50% 取自全区极高与极低的中点 —— '**
+  String get mantra3Title;
+
+  /// No description provided for @mantra3Desc.
+  ///
+  /// In zh, this message translates to:
+  /// **'(全区最高 High + 全区最低 Low) ÷ 2，绝不仅看单根母烛！'**
+  String get mantra3Desc;
+
+  /// No description provided for @titleBlueprint.
+  ///
+  /// In zh, this message translates to:
+  /// **'吞没结构与黄金口袋解剖蓝图'**
+  String get titleBlueprint;
+
+  /// No description provided for @tagMultiK.
+  ///
+  /// In zh, this message translates to:
+  /// **'多重 K 线形态区'**
+  String get tagMultiK;
+
+  /// No description provided for @descBlueprint.
+  ///
+  /// In zh, this message translates to:
+  /// **'黄金口袋 50% 模式：全区极值画网，回踩入场将止损精准压缩'**
+  String get descBlueprint;
+
+  /// No description provided for @blueprintHigh.
+  ///
+  /// In zh, this message translates to:
+  /// **'全区最高价 High'**
+  String get blueprintHigh;
+
+  /// No description provided for @blueprintLow.
+  ///
+  /// In zh, this message translates to:
+  /// **'全区最低价 Low'**
+  String get blueprintLow;
 }
 
 class _AppLocalizationsDelegate
