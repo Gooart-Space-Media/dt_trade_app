@@ -1411,7 +1411,7 @@ class HomePage extends StatelessWidget {
                   Text(AppLocalizations.of(context)!.titleXMBanner,
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: 13,
+                          fontSize: 15.5,
                           fontWeight: FontWeight.bold)),
                   SizedBox(height: 2),
                   Text(AppLocalizations.of(context)!.descXMBanner,
@@ -1451,7 +1451,7 @@ class HomePage extends StatelessWidget {
               Expanded(
                 child: Text(AppLocalizations.of(context)!.titleMantra,
                     style: TextStyle(
-                        fontSize: 13,
+                        fontSize: 15.5,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).brightness == Brightness.dark
                             ? const Color(0xFFFDBA74)
@@ -1477,8 +1477,8 @@ class HomePage extends StatelessWidget {
       child: RichText(
         text: TextSpan(
           style: TextStyle(
-              fontSize: 11.5,
-              height: 1.4,
+              fontSize: 14,
+              height: 1.5,
               color: Theme.of(context).brightness == Brightness.dark
                   ? Colors.white70
                   : const Color(0xFF431407)),
@@ -1521,7 +1521,7 @@ class HomePage extends StatelessWidget {
               Expanded(
                 child: Text(AppLocalizations.of(context)!.titleBlueprint,
                     style:
-                        TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                        TextStyle(fontSize: 17, fontWeight: FontWeight.bold)),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -1531,7 +1531,7 @@ class HomePage extends StatelessWidget {
                 ),
                 child: Text(AppLocalizations.of(context)!.tagMultiK,
                     style: TextStyle(
-                        fontSize: 10,
+                        fontSize: 12,
                         color: Color(0xFF166534),
                         fontWeight: FontWeight.bold)),
               ),
@@ -1541,7 +1541,7 @@ class HomePage extends StatelessWidget {
           Text(
             AppLocalizations.of(context)!.descBlueprint,
             style: TextStyle(
-                fontSize: 11,
+                fontSize: 13.5,
                 color: Theme.of(context).brightness == Brightness.dark
                     ? Colors.white60
                     : Colors.grey.shade700),
