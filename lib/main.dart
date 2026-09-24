@@ -613,6 +613,26 @@ class _MainScreenState extends State<MainScreen> {
           ],
         ),
         actions: [
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.language, color: Color(0xFFF59E0B)),
+            onSelected: (String code) {
+              widget.setLocale(Locale(code));
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              const PopupMenuItem<String>(
+                value: 'zh',
+                child: Text('中文 (Chinese)'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'en',
+                child: Text('English'),
+              ),
+              const PopupMenuItem<String>(
+                value: 'ms',
+                child: Text('Bahasa Melayu'),
+              ),
+            ],
+          ),
           IconButton(
             icon: const Icon(Icons.radar_rounded, color: Color(0xFFF59E0B)),
             tooltip: '盘口雷达',
