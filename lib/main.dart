@@ -784,30 +784,30 @@ class _MainScreenState extends State<MainScreen> {
           HapticFeedback.selectionClick();
           setState(() => _currentIndex = idx);
         },
-        destinations: const [
+        destinations: [
           NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home_rounded),
+            icon: const Icon(Icons.home_outlined),
+            selectedIcon: const Icon(Icons.home_rounded),
             label: AppLocalizations.of(context)!.navHome,
           ),
           NavigationDestination(
-            icon: Icon(Icons.shield_outlined),
-            selectedIcon: Icon(Icons.shield_rounded),
+            icon: const Icon(Icons.shield_outlined),
+            selectedIcon: const Icon(Icons.shield_rounded),
             label: AppLocalizations.of(context)!.navRisk,
           ),
           NavigationDestination(
-            icon: Icon(Icons.calculate_outlined),
-            selectedIcon: Icon(Icons.calculate_rounded),
+            icon: const Icon(Icons.calculate_outlined),
+            selectedIcon: const Icon(Icons.calculate_rounded),
             label: AppLocalizations.of(context)!.navDual,
           ),
           NavigationDestination(
-            icon: Icon(Icons.gps_fixed_outlined),
-            selectedIcon: Icon(Icons.gps_fixed_rounded),
+            icon: const Icon(Icons.gps_fixed_outlined),
+            selectedIcon: const Icon(Icons.gps_fixed_rounded),
             label: AppLocalizations.of(context)!.navSniper,
           ),
           NavigationDestination(
-            icon: Icon(Icons.insights_outlined),
-            selectedIcon: Icon(Icons.insights_rounded),
+            icon: const Icon(Icons.insights_outlined),
+            selectedIcon: const Icon(Icons.insights_rounded),
             label: AppLocalizations.of(context)!.navTrend,
           ),
         ],
