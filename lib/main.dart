@@ -1,6 +1,8 @@
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:dt_trade_app/l10n/app_localizations.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
@@ -22,6 +24,13 @@ class EngulfingMasterApp extends StatefulWidget {
 
 class _EngulfingMasterAppState extends State<EngulfingMasterApp> {
   ThemeMode _themeMode = ThemeMode.light;
+  Locale _locale = const Locale('zh');
+
+  void _setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
 
   @override
   void initState() {
@@ -56,6 +65,9 @@ class _EngulfingMasterAppState extends State<EngulfingMasterApp> {
               .copyWith(textScaler: const TextScaler.linear(1.12)),
           child: child!),
       debugShowCheckedModeBanner: false,
+      locale: _locale,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       themeMode: _themeMode,
       theme: ThemeData(
         useMaterial3: true,
@@ -90,7 +102,11 @@ class _EngulfingMasterAppState extends State<EngulfingMasterApp> {
         ),
       ),
       home: MainScreen(
-          toggleTheme: _toggleTheme, isDark: _themeMode == ThemeMode.dark),
+          toggleTheme: _toggleTheme,
+          isDark: _themeMode == ThemeMode.dark,
+          setLocale: _setLocale,
+          currentLocale: _locale,
+        ),
     );
   }
 }
@@ -98,9 +114,16 @@ class _EngulfingMasterAppState extends State<EngulfingMasterApp> {
 class MainScreen extends StatefulWidget {
   final VoidCallback toggleTheme;
   final bool isDark;
+  final Function(Locale) setLocale;
+  final Locale currentLocale;
 
-  const MainScreen(
-      {super.key, required this.toggleTheme, required this.isDark});
+  const MainScreen({
+    super.key,
+    required this.toggleTheme,
+    required this.isDark,
+    required this.setLocale,
+    required this.currentLocale,
+  });
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -765,27 +788,27 @@ class _MainScreenState extends State<MainScreen> {
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
             selectedIcon: Icon(Icons.home_rounded),
-            label: '首页',
+            label: AppLocalizations.of(context)!.navHome,
           ),
           NavigationDestination(
             icon: Icon(Icons.shield_outlined),
             selectedIcon: Icon(Icons.shield_rounded),
-            label: '组合防呆',
+            label: AppLocalizations.of(context)!.navRisk,
           ),
           NavigationDestination(
             icon: Icon(Icons.calculate_outlined),
             selectedIcon: Icon(Icons.calculate_rounded),
-            label: '双轨手数',
+            label: AppLocalizations.of(context)!.navDual,
           ),
           NavigationDestination(
             icon: Icon(Icons.gps_fixed_outlined),
             selectedIcon: Icon(Icons.gps_fixed_rounded),
-            label: '吞没狙击',
+            label: AppLocalizations.of(context)!.navSniper,
           ),
           NavigationDestination(
             icon: Icon(Icons.insights_outlined),
             selectedIcon: Icon(Icons.insights_rounded),
-            label: '复利走势',
+            label: AppLocalizations.of(context)!.navTrend,
           ),
         ],
       ),
