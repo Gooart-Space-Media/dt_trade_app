@@ -102,11 +102,11 @@ class _EngulfingMasterAppState extends State<EngulfingMasterApp> {
         ),
       ),
       home: MainScreen(
-          toggleTheme: _toggleTheme,
-          isDark: _themeMode == ThemeMode.dark,
-          setLocale: _setLocale,
-          currentLocale: _locale,
-        ),
+        toggleTheme: _toggleTheme,
+        isDark: _themeMode == ThemeMode.dark,
+        setLocale: _setLocale,
+        currentLocale: _locale,
+      ),
     );
   }
 }
@@ -1368,7 +1368,8 @@ class HomePage extends StatelessWidget {
     return GestureDetector(
       onTap: () async {
         // TODO: Insert your actual XM Affiliate Link here
-        await launchUrl(Uri.parse('https://clicks.pipaffiliates.com/c?c=1302046&l=zh-hans&p=6'));
+        await launchUrl(Uri.parse(
+            'https://clicks.pipaffiliates.com/c?c=1302046&l=zh-hans&p=6'));
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(AppLocalizations.of(context)!.msgOpeningXM)),
         );
@@ -1414,7 +1415,7 @@ class HomePage extends StatelessWidget {
                           fontWeight: FontWeight.bold)),
                   SizedBox(height: 2),
                   Text(AppLocalizations.of(context)!.descXMBanner,
-                      style: TextStyle(color: Colors.white70, fontSize: 11)),
+                      style: TextStyle(color: Colors.white70, fontSize: 12)),
                 ],
               ),
             ),
@@ -1459,8 +1460,8 @@ class HomePage extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          _buildMantraLine(
-              context, AppLocalizations.of(context)!.mantra1Title, AppLocalizations.of(context)!.mantra1Desc),
+          _buildMantraLine(context, AppLocalizations.of(context)!.mantra1Title,
+              AppLocalizations.of(context)!.mantra1Desc),
           _buildMantraLine(context, AppLocalizations.of(context)!.mantra2Title,
               AppLocalizations.of(context)!.mantra2Desc),
           _buildMantraLine(context, AppLocalizations.of(context)!.mantra3Title,
@@ -1520,7 +1521,7 @@ class HomePage extends StatelessWidget {
               Expanded(
                 child: Text(AppLocalizations.of(context)!.titleBlueprint,
                     style:
-                        TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                        TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -2554,7 +2555,6 @@ class _AvoidCard extends StatelessWidget {
       ),
     );
   }
-
 }
 
 // -------------------------------------------------------------
