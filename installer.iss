@@ -24,7 +24,7 @@ Name: "{group}\卸载 双轨风控大师 Pro"; Filename: "{uninstallexe}"
 Name: "{autodesktop}\双轨风控大师 Pro"; Filename: "{app}\dt_trade_app.exe"; Tasks: desktopicon
 
 [Tasks]
-Name: "desktopicon"; Description: "创建桌面快捷方式"; GroupDescription: "附加选项:"; Flags: checked
+Name: "desktopicon"; Description: "创建桌面快捷方式"; GroupDescription: "附加选项:"
 
 [Run]
 Filename: "{app}\dt_trade_app.exe"; Description: "立即启动 双轨风控大师 Pro"; Flags: nowait postinstall skipifsilent
