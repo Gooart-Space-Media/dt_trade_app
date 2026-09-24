@@ -151,7 +151,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   // 大马时间 (GMT+8) 盘口时段雷达计算与精准倒计时
-  Map<String, dynamic> _getSessionInfo() {
+  Map<String, dynamic> _getSessionInfo(BuildContext context) {
     final h = _myTime.hour;
     final m = _myTime.minute;
     final totalMinutes = h * 60 + m;
@@ -163,33 +163,33 @@ class _MainScreenState extends State<MainScreen> {
     bool active = false;
 
     if (h == 7) {
-      status = '🌅 晨间设单窗口';
-      desc = 'D1 日线收盘，7:00-8:00 挂单后关闭软件 (Set & Forget)';
+      status = AppLocalizations.of(context)!.radarStatus1;
+      desc = AppLocalizations.of(context)!.radarDesc1;
       color = const Color(0xFFD97706);
       active = true;
       int diff = 8 * 60 - totalMinutes;
-      countdown = '距窗口关闭 ${diff}分';
+      countdown = AppLocalizations.of(context)!.radarCount1(diff.toString());
     } else if (h >= 8 && h < 15) {
-      status = '☕ 亚盘静默观察期';
-      desc = '让市场来找我。亚盘波动小，绝不因 FOMO 手动追单';
+      status = AppLocalizations.of(context)!.radarStatus2;
+      desc = AppLocalizations.of(context)!.radarDesc2;
       color = const Color(0xFF64748B);
       active = false;
       int diff = 15 * 60 - totalMinutes;
       int dh = diff ~/ 60;
       int dm = diff % 60;
-      countdown = '距 15:00 伦敦盘 ${dh}h${dm.toString().padLeft(2, '0')}m';
+      countdown = AppLocalizations.of(context)!.radarCount2(dh.toString(), dm.toString().padLeft(2, '0'));
     } else if (h >= 15 && (h < 20 || (h == 20 && m < 30))) {
-      status = '🇬🇧 伦敦盘爆发中';
-      desc = '欧洲资金进场，日线挂单迎来首波突破与测试';
+      status = AppLocalizations.of(context)!.radarStatus3;
+      desc = AppLocalizations.of(context)!.radarDesc3;
       color = const Color(0xFFF59E0B);
       active = true;
       int diff = (20 * 60 + 30) - totalMinutes;
       int dh = diff ~/ 60;
       int dm = diff % 60;
-      countdown = '距 20:30 主战场 ${dh}h${dm.toString().padLeft(2, '0')}m';
+      countdown = AppLocalizations.of(context)!.radarCount3(dh.toString(), dm.toString().padLeft(2, '0'));
     } else if ((h == 20 && m >= 30) || (h >= 21 && h < 24)) {
-      status = '🔥 伦纽重叠主战场';
-      desc = '全天最大波动窗口！20:30-24:00 留意 Trade 1 止盈与推保本';
+      status = AppLocalizations.of(context)!.radarStatus4;
+      desc = AppLocalizations.of(context)!.radarDesc4;
       color = const Color(0xFFDC2626);
       active = true;
       int diff = 24 * 60 - totalMinutes;
@@ -197,15 +197,15 @@ class _MainScreenState extends State<MainScreen> {
       int dm = diff % 60;
       countdown = '🔥 距尾盘 ${dh}h${dm.toString().padLeft(2, '0')}m';
     } else {
-      status = '🌙 纽约尾盘与休市';
-      desc = '市场趋缓，保持良好作息，迎接明日晨间开盘';
+      status = AppLocalizations.of(context)!.radarStatus5;
+      desc = AppLocalizations.of(context)!.radarDesc5;
       color = const Color(0xFF475569);
       active = false;
       int diff = (7 * 60 - totalMinutes);
       if (diff < 0) diff += 24 * 60;
       int dh = diff ~/ 60;
       int dm = diff % 60;
-      countdown = '距明日 07:00 晨盘 ${dh}h${dm.toString().padLeft(2, '0')}m';
+      countdown = AppLocalizations.of(context)!.radarCount5(dh.toString(), dm.toString().padLeft(2, '0'));
     }
 
     return {
@@ -594,7 +594,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget build(BuildContext context) {
-    final session = _getSessionInfo();
+    final session = _getSessionInfo(context);
     final timeStr =
         "${_myTime.hour.toString().padLeft(2, '0')}:${_myTime.minute.toString().padLeft(2, '0')}";
 
@@ -691,7 +691,7 @@ class _MainScreenState extends State<MainScreen> {
                         final topRowChildren = [
                           Text(session['status'] as String,
                               style: TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 13.5,
                                   fontWeight: FontWeight.bold,
                                   color: Theme.of(context).brightness ==
                                               Brightness.dark &&
@@ -716,7 +716,7 @@ class _MainScreenState extends State<MainScreen> {
                             child: Text(
                               session['countdown'] as String,
                               style: TextStyle(
-                                  fontSize: 9,
+                                  fontSize: 11.5,
                                   fontWeight: FontWeight.w700,
                                   color: Theme.of(context).brightness ==
                                               Brightness.dark &&
@@ -738,7 +738,7 @@ class _MainScreenState extends State<MainScreen> {
                               Expanded(
                                 child: Text(session['desc'] as String,
                                     style: TextStyle(
-                                        fontSize: 10,
+                                        fontSize: 12.5,
                                         color: Theme.of(context).brightness ==
                                                     Brightness.dark &&
                                                 (session['color'] as Color ==
@@ -761,7 +761,7 @@ class _MainScreenState extends State<MainScreen> {
                               const SizedBox(height: 2),
                               Text(session['desc'] as String,
                                   style: TextStyle(
-                                      fontSize: 10,
+                                      fontSize: 12.5,
                                       color: Theme.of(context).brightness ==
                                                   Brightness.dark &&
                                               (session['color'] as Color ==

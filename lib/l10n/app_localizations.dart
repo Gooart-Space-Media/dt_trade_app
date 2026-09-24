@@ -225,6 +225,96 @@ abstract class AppLocalizations {
   /// In zh, this message translates to:
   /// **'全区最低价 Low'**
   String get blueprintLow;
+
+  /// No description provided for @radarStatus1.
+  ///
+  /// In zh, this message translates to:
+  /// **'🌅 晨间设单窗口'**
+  String get radarStatus1;
+
+  /// No description provided for @radarDesc1.
+  ///
+  /// In zh, this message translates to:
+  /// **'D1 日线收盘，7:00-8:00 挂单后关闭软件 (Set & Forget)'**
+  String get radarDesc1;
+
+  /// No description provided for @radarCount1.
+  ///
+  /// In zh, this message translates to:
+  /// **'距窗口关闭 {diff}分'**
+  String radarCount1(String diff);
+
+  /// No description provided for @radarStatus2.
+  ///
+  /// In zh, this message translates to:
+  /// **'☕ 亚盘静默观察期'**
+  String get radarStatus2;
+
+  /// No description provided for @radarDesc2.
+  ///
+  /// In zh, this message translates to:
+  /// **'让市场来找我。亚盘波动小，绝不因 FOMO 手动追单'**
+  String get radarDesc2;
+
+  /// No description provided for @radarCount2.
+  ///
+  /// In zh, this message translates to:
+  /// **'距 15:00 伦敦盘 {h}h{m}m'**
+  String radarCount2(String h, String m);
+
+  /// No description provided for @radarStatus3.
+  ///
+  /// In zh, this message translates to:
+  /// **'🇬🇧 伦敦盘爆发中'**
+  String get radarStatus3;
+
+  /// No description provided for @radarDesc3.
+  ///
+  /// In zh, this message translates to:
+  /// **'欧洲资金进场，日线挂单迎来首波突破与测试'**
+  String get radarDesc3;
+
+  /// No description provided for @radarCount3.
+  ///
+  /// In zh, this message translates to:
+  /// **'距 20:30 主战场 {h}h{m}m'**
+  String radarCount3(String h, String m);
+
+  /// No description provided for @radarStatus4.
+  ///
+  /// In zh, this message translates to:
+  /// **'🔥 伦纽重叠主战场'**
+  String get radarStatus4;
+
+  /// No description provided for @radarDesc4.
+  ///
+  /// In zh, this message translates to:
+  /// **'全天最大波动窗口！20:30-24:00 留意 Trade 1 止盈与推保本'**
+  String get radarDesc4;
+
+  /// No description provided for @radarCount4.
+  ///
+  /// In zh, this message translates to:
+  /// **'距重叠期结束 {h}h{m}m'**
+  String radarCount4(String h, String m);
+
+  /// No description provided for @radarStatus5.
+  ///
+  /// In zh, this message translates to:
+  /// **'🌙 纽约尾盘与休市'**
+  String get radarStatus5;
+
+  /// No description provided for @radarDesc5.
+  ///
+  /// In zh, this message translates to:
+  /// **'市场趋缓，保持良好作息，迎接明日晨间开盘'**
+  String get radarDesc5;
+
+  /// No description provided for @radarCount5.
+  ///
+  /// In zh, this message translates to:
+  /// **'距明日 07:00 晨盘 {h}h{m}m'**
+  String radarCount5(String h, String m);
 }
 
 class _AppLocalizationsDelegate

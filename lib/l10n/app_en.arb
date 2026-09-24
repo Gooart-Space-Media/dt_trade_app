@@ -20,5 +20,67 @@
   "tagMultiK": "Multi-Candlestick Pattern Zone",
   "descBlueprint": "Golden Pocket 50% Mode: Draw fibs on extremes, entry on pullback precisely compresses stop loss",
   "blueprintHigh": "Highest Price High",
-  "blueprintLow": "Lowest Price Low"
+  "blueprintLow": "Lowest Price Low",
+  "radarStatus1": "🌅 Morning Order Window",
+  "radarDesc1": "D1 Closes, set orders 7:00-8:00 and close app (Set & Forget)",
+  "radarCount1": "{diff}m until window closes",
+  "@radarCount1": {
+    "placeholders": {
+      "diff": {
+        "type": "String"
+      }
+    }
+  },
+  "radarStatus2": "☕ Asian Session (Observation)",
+  "radarDesc2": "Let the market come. Low volatility, NO FOMO manual entries.",
+  "radarCount2": "London Session in {h}h{m}m",
+  "@radarCount2": {
+    "placeholders": {
+      "h": {
+        "type": "String"
+      },
+      "m": {
+        "type": "String"
+      }
+    }
+  },
+  "radarStatus3": "🇬🇧 London Session Breakout",
+  "radarDesc3": "European funds enter, first breakout test for daily orders",
+  "radarCount3": "Main NY battle in {h}h{m}m",
+  "@radarCount3": {
+    "placeholders": {
+      "h": {
+        "type": "String"
+      },
+      "m": {
+        "type": "String"
+      }
+    }
+  },
+  "radarStatus4": "🔥 London & NY Overlap (High Volatility)",
+  "radarDesc4": "Biggest volatility window! 20:30-24:00 monitor TP1 and BE moves",
+  "radarCount4": "{h}h{m}m until overlap ends",
+  "@radarCount4": {
+    "placeholders": {
+      "h": {
+        "type": "String"
+      },
+      "m": {
+        "type": "String"
+      }
+    }
+  },
+  "radarStatus5": "🌙 NY Close & Market Closed",
+  "radarDesc5": "Market slows. Maintain good routine for tomorrow's open.",
+  "radarCount5": "Tomorrow's open in {h}h{m}m",
+  "@radarCount5": {
+    "placeholders": {
+      "h": {
+        "type": "String"
+      },
+      "m": {
+        "type": "String"
+      }
+    }
+  }
 }
