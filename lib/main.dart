@@ -177,7 +177,8 @@ class _MainScreenState extends State<MainScreen> {
       int diff = 15 * 60 - totalMinutes;
       int dh = diff ~/ 60;
       int dm = diff % 60;
-      countdown = AppLocalizations.of(context)!.radarCount2(dh.toString(), dm.toString().padLeft(2, '0'));
+      countdown = AppLocalizations.of(context)!
+          .radarCount2(dh.toString(), dm.toString().padLeft(2, '0'));
     } else if (h >= 15 && (h < 20 || (h == 20 && m < 30))) {
       status = AppLocalizations.of(context)!.radarStatus3;
       desc = AppLocalizations.of(context)!.radarDesc3;
@@ -186,7 +187,8 @@ class _MainScreenState extends State<MainScreen> {
       int diff = (20 * 60 + 30) - totalMinutes;
       int dh = diff ~/ 60;
       int dm = diff % 60;
-      countdown = AppLocalizations.of(context)!.radarCount3(dh.toString(), dm.toString().padLeft(2, '0'));
+      countdown = AppLocalizations.of(context)!
+          .radarCount3(dh.toString(), dm.toString().padLeft(2, '0'));
     } else if ((h == 20 && m >= 30) || (h >= 21 && h < 24)) {
       status = AppLocalizations.of(context)!.radarStatus4;
       desc = AppLocalizations.of(context)!.radarDesc4;
@@ -205,7 +207,8 @@ class _MainScreenState extends State<MainScreen> {
       if (diff < 0) diff += 24 * 60;
       int dh = diff ~/ 60;
       int dm = diff % 60;
-      countdown = AppLocalizations.of(context)!.radarCount5(dh.toString(), dm.toString().padLeft(2, '0'));
+      countdown = AppLocalizations.of(context)!
+          .radarCount5(dh.toString(), dm.toString().padLeft(2, '0'));
     }
 
     return {
@@ -1779,9 +1782,9 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
   String? s2;
   String? s3;
 
-  String dir1 = '多';
-  String dir2 = '多';
-  String dir3 = '多';
+  String dir1 = 'Long';
+  String dir2 = 'Long';
+  String dir3 = 'Long';
   List<bool> checklist = [false, false, false, false];
 
   @override
@@ -1796,9 +1799,9 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
       s1 = prefs.getString('ol_s1');
       s2 = prefs.getString('ol_s2');
       s3 = prefs.getString('ol_s3');
-      dir1 = prefs.getString('ol_d1') ?? '多';
-      dir2 = prefs.getString('ol_d2') ?? '多';
-      dir3 = prefs.getString('ol_d3') ?? '多';
+      dir1 = prefs.getString('ol_d1') ?? 'Long';
+      dir2 = prefs.getString('ol_d2') ?? 'Long';
+      dir3 = prefs.getString('ol_d3') ?? 'Long';
       for (int i = 0; i < 4; i++) {
         checklist[i] = prefs.getString('ol_chk_${i}') == 'true';
       }
@@ -1826,7 +1829,7 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
   }
 
   // 晨间 10 秒单向敞口自审算法 (检测同质化做空/做多 USD 或 JPY)
-  Map<String, dynamic> _auditCorrelation() {
+  Map<String, dynamic> _auditCorrelation(BuildContext context) {
     final trades = [
       if (s1 != null) {'pair': s1!, 'dir': dir1},
       if (s2 != null) {'pair': s2!, 'dir': dir2},
@@ -1834,7 +1837,10 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
     ];
 
     if (trades.length < 2) {
-      return {'hasRisk': false, 'msg': '选择 2~3 个品种后，系统将自动自审同向汇率共振风险。'};
+      return {
+        'hasRisk': false,
+        'msg': AppLocalizations.of(context)!.msgNoSelection
+      };
     }
 
     int usdShortCount = 0;
@@ -1842,7 +1848,7 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
 
     for (var t in trades) {
       final p = t['pair'] as String;
-      final isBuy = t['dir'] == '多';
+      final isBuy = t['dir'] == 'Long';
 
       if (p == 'EURUSD' ||
           p == 'GBPUSD' ||
@@ -1870,14 +1876,11 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
     } else if (usdLongCount >= 3) {
       return {
         'hasRisk': true,
-        'msg': '⚠️ 危险重叠！当前 3 笔交易全部在单向【做多美元 (Long USD)】！一旦美元反转将全部止损，建议降低同质化敞口。'
+        'msg': AppLocalizations.of(context)!.msgLongRisk
       };
     }
 
-    return {
-      'hasRisk': false,
-      'msg': '✅ 晨间 10 秒自审通过：3 笔交易不存在单向同质化敞口，结构独立，可安全同时建仓（总日风险控制在 6% 内）！'
-    };
+    return {'hasRisk': false, 'msg': AppLocalizations.of(context)!.msgSafe};
   }
 
   void _showAvoidListDialog() {
@@ -1898,7 +1901,7 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 runSpacing: 4,
                 children: [
-                  const Text('🚫 坚决规避的毒药品种 (The Avoid List)',
+                  Text(AppLocalizations.of(context)!.avoidTitle,
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -1909,28 +1912,28 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
                 ],
               ),
               const SizedBox(height: 10),
-              const Text('以下四类品种在实战中看似有机会，实则暗藏点差与政策陷阱，强烈建议拉黑跳过：',
+              Text(AppLocalizations.of(context)!.avoidDesc,
                   style: TextStyle(fontSize: 12, color: Colors.grey)),
               const Divider(height: 20),
               Expanded(
                 child: ListView(
-                  children: const [
+                  children: [
                     _AvoidCard(
-                        title: '1. 联系汇率挂钩类 (画直线)',
+                        title: AppLocalizations.of(context)!.avoidCard1Title,
                         pairs: 'EURDKK, USDHKD, EURHKD, USDDKK, GBPDKK',
-                        reason: '受央行强行挂钩制度约束，K线基本为水平直线，日波动甚至小于点差，毫无交易价值。'),
+                        reason: AppLocalizations.of(context)!.avoidCard1Reason),
                     _AvoidCard(
-                        title: '2. 高息吃人断崖类 (点差过宽)',
+                        title: AppLocalizations.of(context)!.avoidCard2Title,
                         pairs: 'USDTRY, EURTRY, USDZAR, EURZAR, USDMXN',
-                        reason: '新兴市场货币恶性贬值，看似单边躺赚，但隔夜利息极其昂贵且极易发生政策跳空，利润全被磨光。'),
+                        reason: AppLocalizations.of(context)!.avoidCard2Reason),
                     _AvoidCard(
-                        title: '3. 极低流动性类 (严重滑点)',
+                        title: AppLocalizations.of(context)!.avoidCard3Title,
                         pairs: 'GBPSEK, GBPNOK, CHFSGD, NZDSGD, GBPSGD',
-                        reason: '挂单成交极不活跃，止损往往无法在预设点位成交，遭遇极端滑点击穿账户。'),
+                        reason: AppLocalizations.of(context)!.avoidCard3Reason),
                     _AvoidCard(
-                        title: '4. 恶劣交叉盘规避',
+                        title: AppLocalizations.of(context)!.avoidCard4Title,
                         pairs: 'GBPNZD',
-                        reason: '虽然日均波幅极大，但点差同样极其昂贵，盈利空间往往刚好抵消高额交易成本。'),
+                        reason: AppLocalizations.of(context)!.avoidCard4Reason),
                   ],
                 ),
               ),
@@ -1946,7 +1949,7 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
     bool isDesktop = MediaQuery.of(context).size.width > 800;
     final allPairs = [...corePairs, ...minorPairs, ...observedPairs];
     bool isComplete = (s1 != null && s2 != null && s3 != null);
-    final audit = _auditCorrelation();
+    final audit = _auditCorrelation(context);
 
     return Center(
         child: Container(
@@ -1959,7 +1962,7 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
                   crossAxisAlignment: WrapCrossAlignment.center,
                   runSpacing: 4,
                   children: [
-                    const Text('🛡️ 多单并行防呆与自审',
+                    Text(AppLocalizations.of(context)!.pageOverlapTitle,
                         style: TextStyle(
                             fontSize: 12, fontWeight: FontWeight.bold)),
                     Row(
@@ -1973,7 +1976,7 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
                           onPressed: () => showWatchlistAtlasDialog(context),
                           icon: const Icon(Icons.menu_book_rounded,
                               size: 15, color: Color(0xFFF59E0B)),
-                          label: const Text('16品种图鉴',
+                          label: Text(AppLocalizations.of(context)!.btnAtlas,
                               style: TextStyle(
                                   fontSize: 12,
                                   color: Color(0xFFF59E0B),
@@ -1987,7 +1990,7 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
                           onPressed: _showAvoidListDialog,
                           icon: const Icon(Icons.warning_amber_rounded,
                               size: 15, color: Colors.red),
-                          label: const Text('毒药黑名单',
+                          label: Text(AppLocalizations.of(context)!.btnAvoid,
                               style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.red,
@@ -2021,7 +2024,7 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
                       ),
                       InkWell(
                         onTap: () => showWatchlistAtlasDialog(context),
-                        child: const Text('详解 >',
+                        child: Text(AppLocalizations.of(context)!.btnDetail,
                             style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.bold,
@@ -2037,7 +2040,10 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
                     children: [
                       Expanded(
                           child: _buildDropdownRow(
-                              '交易 1 (首选主线)', s1, dir1, allPairs, [], (p) {
+                              AppLocalizations.of(context)!.trade1,
+                              s1,
+                              dir1,
+                              allPairs, [], (p) {
                         setState(() {
                           s1 = p;
                           s2 = null;
@@ -2053,7 +2059,11 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
                       const SizedBox(width: 12),
                       Expanded(
                           child: _buildDropdownRow(
-                              '交易 2 (独立隔离)', s2, dir2, allPairs, [s1], (p) {
+                              AppLocalizations.of(context)!.trade2,
+                              s2,
+                              dir2,
+                              allPairs,
+                              [s1], (p) {
                         setState(() {
                           s2 = p;
                           s3 = null;
@@ -2067,7 +2077,11 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
                       const SizedBox(width: 12),
                       Expanded(
                           child: _buildDropdownRow(
-                              '交易 3 (独立隔离)', s3, dir3, allPairs, [s1, s2], (p) {
+                              AppLocalizations.of(context)!.trade3,
+                              s3,
+                              dir3,
+                              allPairs,
+                              [s1, s2], (p) {
                         setState(() => s3 = p);
                         _saveState('ol_s3', p);
                       }, (d) {
@@ -2079,8 +2093,8 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
                 else
                   Column(
                     children: [
-                      _buildDropdownRow('交易 1 (首选主线)', s1, dir1, allPairs, [],
-                          (p) {
+                      _buildDropdownRow(AppLocalizations.of(context)!.trade1,
+                          s1, dir1, allPairs, [], (p) {
                         setState(() {
                           s1 = p;
                           s2 = null;
@@ -2094,8 +2108,8 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
                         _saveState('ol_d1', d);
                       }),
                       const SizedBox(height: 10),
-                      _buildDropdownRow('交易 2 (独立隔离)', s2, dir2, allPairs, [s1],
-                          (p) {
+                      _buildDropdownRow(AppLocalizations.of(context)!.trade2,
+                          s2, dir2, allPairs, [s1], (p) {
                         setState(() {
                           s2 = p;
                           s3 = null;
@@ -2107,8 +2121,8 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
                         _saveState('ol_d2', d);
                       }),
                       const SizedBox(height: 10),
-                      _buildDropdownRow(
-                          '交易 3 (独立隔离)', s3, dir3, allPairs, [s1, s2], (p) {
+                      _buildDropdownRow(AppLocalizations.of(context)!.trade3,
+                          s3, dir3, allPairs, [s1, s2], (p) {
                         setState(() => s3 = p);
                         _saveState('ol_s3', p);
                       }, (d) {
@@ -2198,7 +2212,7 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
                             ? Colors.white60
                             : const Color(0xFF475569)),
                     const SizedBox(width: 8),
-                    Text('飞行员起飞前：最后 10 秒防呆自检',
+                    Text(AppLocalizations.of(context)!.chkTitle,
                         style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
@@ -2214,7 +2228,7 @@ class _OverlapCheckerPageState extends State<OverlapCheckerPage> {
                         decoration: BoxDecoration(
                             color: const Color(0xFF22C55E),
                             borderRadius: BorderRadius.circular(20)),
-                        child: const Text('准许执行 (CLEAR TO ENGAGE)',
+                        child: Text(AppLocalizations.of(context)!.chkClear,
                             style: TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.bold,
@@ -2637,56 +2651,56 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
   }
 
   // Fight IQ 物理级蜡烛长短健康诊断
-  Map<String, dynamic> _getFightIqDiagnosis(double pips) {
+  Map<String, dynamic> _getFightIqDiagnosis(BuildContext context, double pips) {
     if (isGoldMode) {
       if (pips < 150) {
         return {
-          'status': '🟡 黄金噪音小蜡烛 (< 150 Pips / < \$15)',
-          'desc': '机构未发力，多为震荡横盘噪音，极易假突破，不建议做突破挂单。',
+          'status': AppLocalizations.of(context)!.iqGold1Title,
+          'desc': AppLocalizations.of(context)!.iqGold1Desc,
           'color': const Color(0xFFD97706),
         };
       } else if (pips <= 250) {
         return {
-          'status': '🟢 黄金标准舒适区 (150 ~ 250 Pips / \$15~\$25)',
-          'desc': '完美标准日线吞没！动能充沛，突破法与 50% 回撤法均可完美执行！',
+          'status': AppLocalizations.of(context)!.iqGold2Title,
+          'desc': AppLocalizations.of(context)!.iqGold2Desc,
           'color': const Color(0xFF16A34A),
         };
       } else if (pips <= 350) {
         return {
-          'status': '🔵 黄金偏大蜡烛 (250 ~ 350 Pips / \$25~\$35)',
-          'desc': '突破止损偏大，严禁追突破挂单！必须用 Fib 50% 回踩折半入场！',
+          'status': AppLocalizations.of(context)!.iqGold3Title,
+          'desc': AppLocalizations.of(context)!.iqGold3Desc,
           'color': const Color(0xFFF59E0B),
         };
       } else {
         return {
-          'status': '🛑 黄金极端力竭蜡烛 (> 350 Pips / > \$35)',
-          'desc': '情绪过热暴冲！次日极易深度反抽或扫损，系统强烈建议直接放弃！',
+          'status': AppLocalizations.of(context)!.iqGold4Title,
+          'desc': AppLocalizations.of(context)!.iqGold4Desc,
           'color': const Color(0xFFDC2626),
         };
       }
     }
     if (pips < 50) {
       return {
-        'status': '🟡 比较短的蜡烛 (< 50 Pips)',
-        'desc': '日内波动偏小。此时 50% 回调位太近易被噪音扫损，建议仅采用【突破法挂单】。',
+        'status': AppLocalizations.of(context)!.iqFx1Title,
+        'desc': AppLocalizations.of(context)!.iqFx1Desc,
         'color': const Color(0xFFD97706),
       };
     } else if (pips <= 80) {
       return {
-        'status': '🟢 标准外汇波动 (50 ~ 80 Pips)',
-        'desc': '完美舒适区！波动充足且方向明确，突破法与 50% 回调法均可完美执行！',
+        'status': AppLocalizations.of(context)!.iqFx2Title,
+        'desc': AppLocalizations.of(context)!.iqFx2Desc,
         'color': const Color(0xFF16A34A),
       };
     } else if (pips <= 100) {
       return {
-        'status': '🔵 偏大蜡烛 (80 ~ 100 Pips)',
-        'desc': '突破止损偏大。强烈建议使用【50% 回调法】，将入场风险折半压缩至 40~50 Pips！',
+        'status': AppLocalizations.of(context)!.iqFx3Title,
+        'desc': AppLocalizations.of(context)!.iqFx3Desc,
         'color': const Color(0xFFF59E0B),
       };
     } else {
       return {
-        'status': '🛑 极端力竭蜡烛 (> 100 Pips)',
-        'desc': '情绪力竭暴冲！盈亏比极差，系统强烈建议直接放弃交易，坚决不介入！',
+        'status': AppLocalizations.of(context)!.iqFx4Title,
+        'desc': AppLocalizations.of(context)!.iqFx4Desc,
         'color': const Color(0xFFDC2626),
       };
     }
@@ -2705,7 +2719,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
             'rm': 2250,
             'risk': 10,
             's50': '0.02 手 (0.01+0.01)',
-            's80': '🚫 不可用 (超标)'
+            's80': AppLocalizations.of(context)!.calcTableNotAvailable
           },
           {
             'bal': 800,
@@ -2771,10 +2785,10 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('🧮 500 - 3,200 美元双轨最大手数对照表',
+              Text(AppLocalizations.of(context)!.calcTableTitle,
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               const SizedBox(height: 4),
-              const Text('点击任意行可直接快速载入该资金配置 (总手数恒为偶数，保证 2 x 1% 完美平分)：',
+              Text(AppLocalizations.of(context)!.calcTableDesc,
                   style: TextStyle(fontSize: 11, color: Colors.grey)),
               const Divider(height: 20),
               Expanded(
@@ -2806,7 +2820,10 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 13)),
-                                Text('2% 红线: \$${row['risk']}',
+                                Text(
+                                    AppLocalizations.of(context)!
+                                        .calcTableRedLine(
+                                            row['risk'].toString()),
                                     style: const TextStyle(
                                         fontSize: 11,
                                         color: Color(0xFF059669),
@@ -2920,7 +2937,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
     double finalLots = rawMicro / 100;
     bool isInsufficient = finalLots < 0.02;
 
-    final fightIq = _getFightIqDiagnosis(slPips);
+    final fightIq = _getFightIqDiagnosis(context, slPips);
     bool isDesktop = MediaQuery.of(context).size.width > 800;
 
     final leftChildren = <Widget>[
@@ -2951,7 +2968,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Center(
-                    child: Text('🏢 XM 标准/Ultra Low (1手=100k)',
+                    child: Text(AppLocalizations.of(context)!.calcAccountStd,
                         style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
@@ -2976,7 +2993,7 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Center(
-                    child: Text('🔬 XM Micro 微型 (1手=1k)',
+                    child: Text(AppLocalizations.of(context)!.calcAccountMicro,
                         style: TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.bold,
@@ -2991,9 +3008,9 @@ class _LotSizeCalcPageState extends State<LotSizeCalcPage> {
       const SizedBox(height: 4),
       Row(
         children: [
-          const Text('点值梯队联动 (自动载入 ATR 止损基准): ',
+          Text(AppLocalizations.of(context)!.calcPointLink,
               style: TextStyle(fontSize: 11, color: Colors.grey)),
-          Text('当前: ' + activePair,
+          Text(AppLocalizations.of(context)!.calcCurrentPair + activePair,
               style: const TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.bold,
